@@ -69,7 +69,6 @@ Hướng dẫn giúp bạn hoàn thành task AI-assisted đầu tiên. Mỗi rol
 - Bạn biết checklist "Ready for Dev" cần check những gì
 
 ### Tiếp theo:
-📖 [Designer Workflow chi tiết](../roles/designer/)
 📖 [Figma Tool Guide](../tools/figma/README.md)
 
 ---

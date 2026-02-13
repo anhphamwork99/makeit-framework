@@ -2,7 +2,7 @@
 
 ## Overview
 
-MakeIt AI Workspace là framework AI-augmented cho team MakeIt, giúp mỗi thành viên có AI assistant được cấu hình sẵn theo đúng vai trò của mình. Framework mirror pattern từ [GSD Framework](https://github.com/your-org/gsd-framework) — mỗi role có GEMINI.md, skills, workflows, và rules riêng.
+MakeIt AI Workspace là framework AI-augmented cho team MakeIt, giúp mỗi thành viên có AI assistant được cấu hình sẵn theo đúng vai trò của mình. Framework mirror pattern từ [GSD Framework](https://github.com/pham-anh/gsd-framework) — mỗi role có GEMINI.md, skills, workflows, và rules riêng.
 
 **Nguyên tắc:** Clone repo → chạy install script chọn role → mở project trong Antigravity IDE → AI hiểu ngay context và quy trình của bạn.
 
@@ -13,8 +13,8 @@ MakeIt AI Workspace là framework AI-augmented cho team MakeIt, giúp mỗi thà
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/your-org/ai-team-blueprint.git
-cd ai-team-blueprint
+git clone https://github.com/anhphamwork99/makeit-framework.git
+cd makeit-framework
 ```
 
 ### 2. Chạy install script

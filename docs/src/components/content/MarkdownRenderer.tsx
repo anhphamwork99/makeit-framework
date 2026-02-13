@@ -8,6 +8,8 @@ import { MermaidDiagram } from "./MermaidDiagram";
 
 interface MarkdownRendererProps {
     content: string;
+    /** True when rendering a section index page (README.md) — affects relative link resolution */
+    isIndex?: boolean;
 }
 
 /**
@@ -30,7 +32,7 @@ interface MarkdownRendererProps {
  * Absolute paths (starting with /):
  *   "/tools/git/setup.md" → "/tools/git/setup"
  */
-function resolveRelativeLink(href: string, currentPath: string): string {
+function resolveRelativeLink(href: string, currentPath: string, isIndex = false): string {
     // Separate the hash fragment (e.g., "first-win-guide.md#product-owner-po")
     const hashIndex = href.indexOf("#");
     const hash = hashIndex >= 0 ? href.slice(hashIndex) : "";
@@ -52,11 +54,13 @@ function resolveRelativeLink(href: string, currentPath: string): string {
         return (cleaned || "/") + hash;
     }
 
-    // Get the "directory" of the current path:
-    // treat the last segment as a "file" and pop it to get the parent dir.
+    // Get the "directory" context of the current path.
+    // - Index/README pages represent directories: /getting-started → dir is /getting-started/
+    // - Leaf pages represent files: /getting-started/how-we-work → dir is /getting-started/
     const allSegments = currentPath.replace(/\/$/, "").split("/").filter(Boolean);
-    // Parent directory segments (pop the "file" = last segment)
-    const dirSegments = allSegments.slice(0, Math.max(0, allSegments.length - 1));
+    const dirSegments = isIndex
+        ? allSegments // Index pages: path IS the directory
+        : allSegments.slice(0, Math.max(0, allSegments.length - 1)); // Leaf pages: pop the file
 
     // For ./something — resolve relative to current directory
     if (cleaned.startsWith("./")) {
@@ -88,7 +92,7 @@ function resolveRelativeLink(href: string, currentPath: string): string {
  * Custom component overrides for react-markdown.
  * Handles code blocks (including mermaid), links, tables, and images.
  */
-function createComponents(currentPath: string) {
+function createComponents(currentPath: string, isIndex = false) {
     return {
         // Code blocks — detect mermaid language for diagram rendering
         code({ className, children, ...props }: any) {
@@ -150,7 +154,7 @@ function createComponents(currentPath: string) {
             }
 
             // Internal link — resolve relative path
-            const routePath = resolveRelativeLink(href, currentPath);
+            const routePath = resolveRelativeLink(href, currentPath, isIndex);
 
             return (
                 <Link to={routePath} className="text-primary hover:text-primary/80" {...props}>
@@ -183,9 +187,9 @@ function createComponents(currentPath: string) {
     };
 }
 
-export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export function MarkdownRenderer({ content, isIndex = false }: MarkdownRendererProps) {
     const location = useLocation();
-    const components = createComponents(location.pathname);
+    const components = createComponents(location.pathname, isIndex);
 
     return (
         <div className="prose-wiki">

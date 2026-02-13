@@ -86,10 +86,7 @@ Checklist giúp bạn setup môi trường và bắt đầu làm việc trong te
 
 ### 🎨 Designer
 
-- [ ] Đọc [How We Work](how-we-work.md) — hiểu team overview và cách vận hành
-- [ ] Đọc [Designer Workflow](../roles/designer/README.md) — hiểu responsibilities và quy trình
-- [ ] Hoàn thành [First Win Guide — Designer](first-win-guide.md#designer) — hiểu AI agents consume design
-- [ ] Đọc [Figma Guide](../tools/figma/README.md) — hiểu Figma conventions trong team
+> ℹ️ Designer không sử dụng Antigravity IDE trực tiếp. Xem [Figma Guide](../tools/figma/README.md) để hiểu conventions team dùng và cách chuẩn bị design cho handoff.
 
 ---
 

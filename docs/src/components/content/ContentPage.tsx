@@ -35,7 +35,7 @@ export function ContentPage({ page }: ContentPageProps) {
 
     return (
         <article ref={articleRef}>
-            <MarkdownRenderer content={page.content} />
+            <MarkdownRenderer content={page.content} isIndex={page.slug === "README"} />
             <PrevNextNav currentPage={page} />
         </article>
     );
