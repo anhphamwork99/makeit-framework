@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllPages } from "@/lib/content";
-import { Command } from "lucide-react";
+import { Command, Github } from "lucide-react";
 
 export function HeroSection() {
     const [isVisible, setIsVisible] = useState(false);
@@ -57,19 +57,33 @@ export function HeroSection() {
                     Quy trình · Công cụ · Chuẩn mực
                 </p>
 
-                {/* Search shortcut hint — clickable to open ⌘K */}
-                <button
-                    type="button"
-                    onClick={() => {
-                        window.dispatchEvent(new CustomEvent("open-command-palette"));
-                    }}
-                    className="mt-8 inline-flex items-center gap-2 rounded-lg border border-border/40 bg-muted/30 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground cursor-pointer"
-                >
-                    <Command className="h-3.5 w-3.5" />
-                    <span>K</span>
-                    <span className="mx-1 text-border">|</span>
-                    <span>Tìm nhanh</span>
-                </button>
+                {/* Action buttons */}
+                <div className="mt-8 flex items-center justify-center gap-3">
+                    {/* Search shortcut hint — clickable to open ⌘K */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            window.dispatchEvent(new CustomEvent("open-command-palette"));
+                        }}
+                        className="inline-flex items-center gap-2 rounded-lg border border-border/40 bg-muted/30 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground cursor-pointer"
+                    >
+                        <Command className="h-3.5 w-3.5" />
+                        <span>K</span>
+                        <span className="mx-1 text-border">|</span>
+                        <span>Tìm nhanh</span>
+                    </button>
+
+                    {/* GitHub repo link */}
+                    <a
+                        href="https://github.com/anhphamwork99/makeit-framework"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-lg border border-border/40 bg-muted/30 px-4 py-2 text-sm text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground hover:bg-foreground/5 cursor-pointer"
+                    >
+                        <Github className="h-4 w-4" />
+                        <span>GitHub</span>
+                    </a>
+                </div>
             </div>
         </section>
     );
