@@ -1,0 +1,12 @@
+{
+    "buildCommand": "rm -rf docs/content && cp -r wiki docs/content && cd docs && pnpm install && pnpm build",
+    "outputDirectory": "docs/dist",
+    "framework": "vite",
+    "installCommand": "cd docs && pnpm install",
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}
