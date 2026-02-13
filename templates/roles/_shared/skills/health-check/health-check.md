@@ -46,8 +46,7 @@ Expected structure:
 ├── agents/
 .makeit/
 ├── sprint/
-├── knowledge/
-└── tasks/
+└── knowledge/
 ```
 
 <check>

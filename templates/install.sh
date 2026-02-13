@@ -115,13 +115,13 @@ install_role() {
   echo "  [6/9] Copy templates..."
   mkdir -p "$target_dir/.makeit/templates"
 
-  # 6a: Category C framework docs from _shared/
+  # 6a: Category C framework docs from _shared/ (excluding legacy task-template)
   if [ -d "$TEMPLATES_DIR/roles/_shared" ]; then
-    cp "$TEMPLATES_DIR/roles/_shared/"*.md "$target_dir/.makeit/templates/" 2>/dev/null || true
-    # Rename to canonical name expected by lifecycle (start-task.md references this)
-    if [ -f "$target_dir/.makeit/templates/task-template.md" ]; then
-      mv "$target_dir/.makeit/templates/task-template.md" "$target_dir/.makeit/templates/TASK-TEMPLATE.md"
-    fi
+    for f in "$TEMPLATES_DIR/roles/_shared/"*.md; do
+      [ -f "$f" ] || continue
+      [[ "$(basename "$f")" == "task-template.md" ]] && continue
+      cp "$f" "$target_dir/.makeit/templates/"
+    done
   fi
 
   # 6b: Sprint lifecycle templates from per-role discovery/templates/
@@ -185,9 +185,6 @@ install_role() {
 
 setup_makeit_dir() {
   local target_dir="$1"
-
-  # Create .makeit task tracking structure
-  mkdir -p "$target_dir/.makeit/tasks/archive"
 
   # Create sprint workspace directory (Phase 4.4)
   mkdir -p "$target_dir/.makeit/sprint"
@@ -259,17 +256,10 @@ verify_installation() {
   fi
 
   # Check .makeit dir
-  if [ -d "$target_dir/.makeit/tasks" ]; then
-    echo "  ✅ Task tracking: .makeit/tasks/"
+  if [ -d "$target_dir/.makeit/sprint" ]; then
+    echo "  ✅ Sprint directory: .makeit/sprint/"
   else
-    echo "  ❌ Task tracking dir missing"; errors=$((errors + 1))
-  fi
-
-  # Check task template
-  if [ -f "$target_dir/.makeit/templates/TASK-TEMPLATE.md" ]; then
-    echo "  ✅ Task template: .makeit/templates/TASK-TEMPLATE.md"
-  else
-    echo "  ⚠️  Task template missing (lifecycle won't auto-create task files)"
+    echo "  ❌ Sprint directory missing"; errors=$((errors + 1))
   fi
 
   # Check agent definitions
@@ -353,9 +343,8 @@ show_summary() {
   echo "   • .agent/workflows/makeit/     — Per-role workflow routers (/makeit:xxx)"
   echo "   • .agent/rules/               — Universal + per-role rules"
   echo "   • .agent/agents/              — Sub-agents + Document Agent (shared)"
-  echo "   • .makeit/tasks/              — Task state tracking"
   echo "   • .makeit/sprint/             — Sprint workspace directory"
-  echo "   • .makeit/templates/           — Sprint + task templates"
+  echo "   • .makeit/templates/           — Sprint lifecycle templates"
   echo "   • .makeit/knowledge/           — Knowledge base (4 categories + templates)"
   echo ""
   echo "🚀 Next steps:"
