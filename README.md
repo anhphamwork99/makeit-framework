@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/banner.png" alt="MakeIt Framework" width="600">
+  <img src="docs/assets/Banner.png" alt="MakeIt Framework" width="600">
 </p>
 
 <p align="center">
@@ -116,8 +116,7 @@ your-project/
 │   └── workflows/makeit/            ← /makeit:xxx slash commands
 └── .makeit/
     ├── sprint/                      ← Sprint workspace (per-sprint)
-    ├── tasks/                       ← Task state tracking
-    ├── templates/                   ← Sprint + task templates
+    ├── templates/                   ← Sprint lifecycle templates
     └── knowledge/                   ← Product memory (4 categories)
 ```
 

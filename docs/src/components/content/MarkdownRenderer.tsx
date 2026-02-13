@@ -12,28 +12,57 @@ interface MarkdownRendererProps {
 
 /**
  * Resolve a relative markdown link against the current route path.
+ *
+ * Wiki markdown uses filesystem-style relative paths, so we treat the last
+ * segment of the current URL as a "file" and resolve from its parent directory.
+ *
+ * Examples (currentPath = "/getting-started/how-we-work"):
+ *   directory context = "/getting-started/"
+ *   "../roles/README.md" → "/roles"
+ *   "first-week-checklist.md" → "/getting-started/first-week-checklist"
+ *   "./first-win-guide.md" → "/getting-started/first-win-guide"
+ *
  * Examples (currentPath = "/roles/ba"):
  *   "./templates.md" → "/roles/ba/templates"
  *   "../README.md" → "/roles"
  *   "../../reference/quality-gates.md" → "/reference/quality-gates"
+ *
+ * Absolute paths (starting with /):
  *   "/tools/git/setup.md" → "/tools/git/setup"
  */
 function resolveRelativeLink(href: string, currentPath: string): string {
-    // Clean .md extension and README
-    let cleaned = href
+    // Separate the hash fragment (e.g., "first-win-guide.md#product-owner-po")
+    const hashIndex = href.indexOf("#");
+    const hash = hashIndex >= 0 ? href.slice(hashIndex) : "";
+    const rawPath = hashIndex >= 0 ? href.slice(0, hashIndex) : href;
+
+    // If it's only a hash fragment, return as-is
+    if (!rawPath && hash) return hash;
+
+    // Clean .md extension and trailing README
+    let cleaned = rawPath
         .replace(/\.md$/, "")
         .replace(/\/README$/, "");
 
-    // Absolute paths — just return cleaned
-    if (cleaned.startsWith("/")) return cleaned;
+    // Also handle bare "README" (without path prefix)
+    if (cleaned === "README") cleaned = "";
 
-    // Get the "directory" of the current path
-    const segments = currentPath.replace(/\/$/, "").split("/").filter(Boolean);
+    // Absolute paths — just return cleaned + hash
+    if (cleaned.startsWith("/")) {
+        return (cleaned || "/") + hash;
+    }
 
-    // For ./something — resolve relative to current path
+    // Get the "directory" of the current path:
+    // treat the last segment as a "file" and pop it to get the parent dir.
+    const allSegments = currentPath.replace(/\/$/, "").split("/").filter(Boolean);
+    // Parent directory segments (pop the "file" = last segment)
+    const dirSegments = allSegments.slice(0, Math.max(0, allSegments.length - 1));
+
+    // For ./something — resolve relative to current directory
     if (cleaned.startsWith("./")) {
         cleaned = cleaned.slice(2);
-        return `/${[...segments, cleaned].join("/")}`;
+        if (!cleaned) return `/${dirSegments.join("/")}` + hash || "/" + hash;
+        return `/${[...dirSegments, ...cleaned.split("/")].join("/")}` + hash;
     }
 
     // For ../something — go up one level per ../
@@ -44,14 +73,15 @@ function resolveRelativeLink(href: string, currentPath: string): string {
             parts.shift();
             upCount++;
         }
-        const base = segments.slice(0, segments.length - upCount);
-        const remaining = parts.join("/");
-        if (!remaining) return `/${base.join("/")}` || "/";
-        return `/${[...base, remaining].join("/")}`;
+        const base = dirSegments.slice(0, Math.max(0, dirSegments.length - upCount));
+        const remaining = parts.filter(Boolean).join("/");
+        if (!remaining) return `/${base.join("/")}` + hash || "/" + hash;
+        return `/${[...base, ...remaining.split("/")].join("/")}` + hash;
     }
 
-    // Bare relative (no ./ or ../) — resolve relative to current path
-    return `/${[...segments, cleaned].join("/")}`;
+    // Bare relative (no ./ or ../) — resolve relative to current directory
+    if (!cleaned) return `/${dirSegments.join("/")}` + hash || "/" + hash;
+    return `/${[...dirSegments, ...cleaned.split("/")].join("/")}` + hash;
 }
 
 /**
