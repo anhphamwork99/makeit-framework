@@ -51,7 +51,7 @@ MakeIt Framework là bộ công cụ giúp team phần mềm vận hành với A
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/anhphamwork99/makeit-framework.git
+git clone https://github.com/pham-anhh/makeit-framework.git
 cd makeit-framework
 ```
 
