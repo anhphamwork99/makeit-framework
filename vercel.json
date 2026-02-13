@@ -1,8 +1,8 @@
 {
-    "buildCommand": "rm -rf docs/content && cp -r wiki docs/content && cd docs && pnpm install && pnpm build",
+    "buildCommand": "rm -rf docs/content && cp -r wiki docs/content && cd docs && npm install --legacy-peer-deps && npx vite build",
     "outputDirectory": "docs/dist",
-    "framework": "vite",
-    "installCommand": "corepack enable && cd docs && pnpm install",
+    "framework": null,
+    "installCommand": "cd docs && npm install --legacy-peer-deps",
     "rewrites": [
         {
             "source": "/(.*)",
