@@ -20,9 +20,9 @@ Checklist giúp bạn setup môi trường và bắt đầu làm việc trong te
 - [ ] Mở terminal trong Antigravity IDE (Terminal → New Terminal)
 - [ ] Clone repo:
   ```bash
-  git clone <repo-url>
+  git clone https://github.com/anhphamwork99/makeit-framework.git
   ```
-  > 💡 Hỏi Techlead hoặc PO để lấy repo URL nếu chưa có.
+  > 📎 **Repo:** [github.com/anhphamwork99/makeit-framework](https://github.com/anhphamwork99/makeit-framework)
 - [ ] Mở folder project trong IDE (File → Open Folder)
 - [ ] **Verify:** Folder project hiển thị trong IDE file explorer — thấy các folders `wiki/`, `templates/`, `.github/`
 
@@ -31,7 +31,7 @@ Checklist giúp bạn setup môi trường và bắt đầu làm việc trong te
 - [ ] Mở terminal trong IDE
 - [ ] Chạy install script:
   ```bash
-  cd templates && bash install.sh
+  bash templates/install.sh
   ```
 - [ ] Script sẽ hỏi role của bạn → **chọn đúng role** (PO, BA, Designer, Techlead, Dev FE, Dev BE)
 - [ ] Script tự động copy `GEMINI.md` + skills + workflows vào workspace của bạn
