@@ -49,9 +49,9 @@ makeit-framework-webui/
 
 # Legacy root-level files (from ai-team-blueprint era)
 playground/
-src/
-public/
-index.html
+/src/
+/public/
+/index.html
 index.html''
 components.json
 commitlint.config.js
