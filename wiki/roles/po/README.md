@@ -7,19 +7,18 @@ Product Owner là người đứng đầu chuỗi giá trị của team MakeIt. 
 **Vị trí trong workflow:**
 
 ```
-┌──────────────┐
-│  ★ BẠN ★     │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐
-│  PO          │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│ ★ Review ★   │
-│  (Stage 1)   │    │ (Stage 2)│    │ (Stage 3)│    │ (Stage 4)│    │ PO approve   │
-└──────────────┘    └──────────┘    └──────────┘    └──────────┘    │ (Stage 5)    │
-                                                                    └──────────────┘
+┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  ★ BẠN ★     │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│  TL Code     │───▶│ ★ PO Review ★│
+│  PO          │    │ (Stage 2)│    │ (Stage 3)│    │ (Stage 4)│    │  Review      │    │  (Stage 6)   │
+│  (Stage 1)   │    └──────────┘    └──────────┘    └──────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────────┘                                                    └──────────────┘
 ```
 
 > 📖 **Tổng quan quy trình team:** Xem [Team Workflow](../../workflows/team-workflow.md) để hiểu end-to-end flow.
 
 PO tham gia **2 thời điểm** trong workflow:
 - **Stage 1** — Chuẩn bị backlog items (đầu vào)
-- **Stage 5** — Review & approve PRs (đầu ra, final authority)
+- **Stage 6** — Review kết quả deploy từ TL (đầu ra, final authority)
 
 ---
 
@@ -66,13 +65,15 @@ PO tham gia **2 thời điểm** trong workflow:
 
 > ⚠️ **Gate 1:** BA sẽ verify output của bạn theo [Gate 1 checklist](../../reference/quality-gates.md#gate-1-designpo--ba-design--backlog-ready-for-story-breakdown). Đảm bảo goal rõ ràng, context đầy đủ, priority đã set.
 
-### Khi review PRs — Stage 5
+### Khi review kết quả — Stage 6
 
-1. **Nhận notification** — Dev request review trên PR
+Sau khi TL code review (Stage 5) và deploy, PO review kết quả:
+
+1. **Nhận notification** — TL gửi review result qua HANDOFF.md (Mode 2)
 2. **Check business logic** — Logic có match specs/goal ban đầu không?
 3. **Check acceptance criteria** — Các tiêu chí đã được đáp ứng chưa?
 4. **Quyết định:**
-   - ✅ **Approve** — Logic đúng, criteria met → merge
+   - ✅ **Approve** — Logic đúng, criteria met → done
    - 🔄 **Request changes** — Comment rõ cần sửa gì, reference lại user story hoặc goal
    - ⏭️ **Override minor** — Deadline tight → approve + tạo follow-up task trong Lark
 
@@ -102,14 +103,16 @@ Team sử dụng **Git-based HANDOFF.md** làm cơ chế giao tiếp chính gi�
 
 > 🚦 **Quality gate:** BA verify theo [Gate 1 checklist](../../reference/quality-gates.md#gate-1-designpo--ba-design--backlog-ready-for-story-breakdown)
 
-### PO Receives (Stage 5 — Review)
+### PO Receives (Stage 6 — Review)
 
 | What | From | What PO Checks |
 |------|------|----------------|
-| PR ready for review | Dev FE/BE | Business logic matches specs |
-| HANDOFF.md từ FE/BE | Dev FE/BE | Implementation notes, known limitations |
+| Review result + deploy URL | TL (Mode 2) | Business logic matches specs |
+| HANDOFF.md từ TL | TL (tl-review/HANDOFF.md) | Review notes, deploy status, known limitations |
 
 > 🚦 **Quality gate:** PO verify theo [Gate 5 checklist](../../reference/quality-gates.md#gate-5-review--done-approved-for-merge)
+
+> 📖 **Pipeline update (Phase 8.1):** Dev FE/BE giờ gửi output cho TL (Stage 5: code review) trước. TL review xong → deploy → gửi kết quả cho PO (Stage 6). PO không nhận trực tiếp từ Dev nữa.
 
 ### Feedback Loop
 
@@ -118,7 +121,7 @@ Khi PO phát hiện issue trong review:
 2. Author fix → re-request review
 3. **Max 3 rounds**, sau đó escalate lên sync meeting
 
-> 📖 Chi tiết iteration protocol: [Team Workflow — Stage 5](../../workflows/team-workflow.md#stage-5-review--feedback-loop)
+> 📖 Chi tiết iteration protocol: [Team Workflow — Stage 6](../../workflows/team-workflow.md#stage-6-po-review--approval)
 
 ---
 
@@ -208,4 +211,4 @@ Mỗi item cần: goal rõ ràng, context cho BA, và priority rationale.
 ---
 *Role: Product Owner · [← Roles](../README.md) · [Templates →](./templates.md)*
 *Phase: 02 — Role Workflows*
-*Last updated: 2026-02-13*
+*Last updated: 2026-02-15*

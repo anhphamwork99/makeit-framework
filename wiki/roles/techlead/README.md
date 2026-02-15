@@ -2,7 +2,9 @@
 
 Trang workflow chi tiết cho vai trò **Tech Lead** trong team MakeIt. Techlead là người chuyển user stories thành technical tasks — đảm bảo Dev FE/BE có đủ thông tin để implement, và giữ chuẩn kiến trúc xuyên suốt dự án.
 
-> 📖 **Vị trí trong workflow:** Techlead đảm nhận **Stage 3** trong [Team Workflow](../../workflows/team-workflow.md) — nhận user stories từ BA, output FE/BE tasks cho Dev.
+> 📖 **Vị trí trong workflow:** Techlead hoạt động **dual mode** trong [Team Workflow](../../workflows/team-workflow.md):
+> - **Mode 1 (Stage 3):** Nhận user stories từ BA → break thành FE/BE tasks cho Dev
+> - **Mode 2 (Stage 5):** Nhận code từ Dev → review + deploy → gửi kết quả cho PO
 
 ---
 
@@ -10,11 +12,11 @@ Trang workflow chi tiết cho vai trò **Tech Lead** trong team MakeIt. Techlead
 
 | | Detail |
 |---|---|
-| **Stage** | Stage 3: Techlead Task Breakdown |
-| **Nhận từ** | BA (user stories + acceptance criteria) |
-| **Giao cho** | Dev FE/BE (tasks + API contracts) |
-| **Gate kiểm tra input** | [Gate 2](../../reference/quality-gates.md#gate-2-ba--techlead-user-stories-ready-for-task-breakdown) — Techlead verify BA stories |
-| **Gate kiểm tra output** | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) — Dev verify Techlead tasks |
+| **Stage** | Stage 3 (Mode 1: Task Breakdown) + Stage 5 (Mode 2: Code Review) |
+| **Nhận từ** | BA (user stories) hoặc Dev FE/BE (code + PR) |
+| **Giao cho** | Dev FE/BE (Mode 1: tasks) hoặc PO (Mode 2: review result) |
+| **Gate kiểm tra input** | [Gate 2](../../reference/quality-gates.md#gate-2-ba--techlead-user-stories-ready-for-task-breakdown) (Mode 1) / [Gate 4](../../reference/quality-gates.md#gate-4-febe--review-code-ready-for-review) (Mode 2) |
+| **Gate kiểm tra output** | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) (Mode 1) / [Gate 5](../../reference/quality-gates.md#gate-5-review--done-approved-for-merge) (Mode 2) |
 | **Tool hỗ trợ** | Antigravity IDE, Lark, Telegram, GitHub |
 
 ---
@@ -193,10 +195,18 @@ TL sử dụng **Git-based HANDOFF.md** — cơ chế giao tiếp chính giữa 
 
 ### Giao cho (Output)
 
+**Mode 1 (Task Breakdown):**
+
 | Giao cho ai | Giao gì | Cách giao | Được verify bằng |
 |-------------|---------|----------|-------------------|
 | Dev FE | HANDOFF.md section `## For FE` (Frontend tasks + Figma refs) | `/makeit:complete` + `git push` | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) |
 | Dev BE | HANDOFF.md section `## For BE` (Backend tasks + API contracts) | `/makeit:complete` + `git push` | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) |
+
+**Mode 2 (Code Review):**
+
+| Giao cho ai | Giao gì | Cách giao | Được verify bằng |
+|-------------|---------|----------|-------------------|
+| PO | `tl-review/HANDOFF.md` (review result, deploy URL, notes) | `/makeit:complete` + `git push` | [Gate 5](../../reference/quality-gates.md#gate-5-review--done-approved-for-merge) |
 
 ---
 
@@ -268,9 +278,10 @@ Review PR này cho:
 
 | Hành động | Xem tài liệu |
 |-----------|---------------|
-| Xem vị trí TL trong workflow | [Team Workflow — Stage 3](../../workflows/team-workflow.md#stage-3-techlead-task-breakdown) |
-| Tra checklist verify stories | [Gate 2](../../reference/quality-gates.md#gate-2-ba--techlead-user-stories-ready-for-task-breakdown) |
-| Tra checklist output cho Dev | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) |
+| Xem vị trí TL trong workflow | [Team Workflow — Stage 3](../../workflows/team-workflow.md#stage-3-techlead-task-breakdown) + [Stage 5](../../workflows/team-workflow.md#stage-5-tl-code-review--deploy) |
+| Tra checklist verify stories (Mode 1) | [Gate 2](../../reference/quality-gates.md#gate-2-ba--techlead-user-stories-ready-for-task-breakdown) |
+| Tra checklist output cho Dev (Mode 1) | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) |
+| Tra checklist verify PRs (Mode 2) | [Gate 4](../../reference/quality-gates.md#gate-4-febe--review-code-ready-for-review) |
 | Source of truth hierarchy | [Team Workflow — Source of Truth](../../workflows/team-workflow.md#source-of-truth-hierarchy) |
 | Coding standards for review | [Coding Standards](../../reference/coding-standards.md) |
 | Templates | [Techlead Templates](./templates.md) |
@@ -278,4 +289,4 @@ Review PR này cho:
 ---
 
 *Role: Tech Lead · [← Roles](../README.md)*
-*Last updated: 2026-02-13*
+*Last updated: 2026-02-15*

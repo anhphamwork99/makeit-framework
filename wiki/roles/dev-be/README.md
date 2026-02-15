@@ -12,7 +12,7 @@ Trang workflow chi tiết cho vai trò **Backend Developer** trong team MakeIt. 
 |---|---|
 | **Stage** | Stage 4: FE/BE Implementation |
 | **Nhận từ** | Techlead (BE tasks + API contracts) |
-| **Giao cho** | Reviewer (code + PR) |
+| **Giao cho** | TL (code + PR cho review) |
 | **Gate kiểm tra input** | [Gate 3](../../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) — Dev verify Techlead tasks |
 | **Gate kiểm tra output** | [Gate 4](../../reference/quality-gates.md#gate-4-febe--review-code-ready-for-review) — Reviewer verify PR |
 | **Tool hỗ trợ** | Antigravity IDE, GitHub, Lark, Telegram |
@@ -177,7 +177,7 @@ Kiến thức chuyên môn dành riêng cho Dev BE trong team MakeIt:
 Dev BE sử dụng **Git-based HANDOFF.md** — cơ chế giao tiếp chính:
 
 1. BE chạy `/makeit:check-handoff` → pull HANDOFF.md từ TL (section `## For BE`)
-2. BE hoàn thành → chạy `/makeit:complete` → commit HANDOFF.md cho Review
+2. BE hoàn thành → chạy `/makeit:complete` → commit HANDOFF.md cho TL (code review)
 3. Telegram dùng để **notify**, Git dùng để **truyền nội dung**
 
 ### Nhận từ (Input)
@@ -190,7 +190,9 @@ Dev BE sử dụng **Git-based HANDOFF.md** — cơ chế giao tiếp chính:
 
 | Giao cho ai | Giao gì | Cách giao | Được verify bằng |
 |-------------|---------|----------|-------------------|
-| PO + Reviewer | HANDOFF.md (implementation notes, PRs, known issues) | `/makeit:complete` + `git push` | [Gate 4](../../reference/quality-gates.md#gate-4-febe--review-code-ready-for-review) |
+| TL (Code Review) | HANDOFF.md (implementation notes, PRs, known issues) | `/makeit:complete` + `git push` | [Gate 4](../../reference/quality-gates.md#gate-4-febe--review-code-ready-for-review) |
+
+> 📖 **Pipeline update (Phase 8.1):** Dev BE giờ gửi output cho TL (Stage 5: code review) thay vì trực tiếp cho PO. TL review xong → deploy → gửi kết quả cho PO (Stage 6).
 
 > 🔑 **Source of Truth reminder:** BA user stories > Techlead tasks. Khi có doubt → check user story → check PO goal → hỏi PO.
 

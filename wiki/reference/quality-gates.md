@@ -4,7 +4,7 @@
 
 Quality gates là các checkpoint trước mỗi lần handoff giữa các vai trò trong team. Mục đích là đảm bảo output đạt tiêu chuẩn trước khi người tiếp theo bắt đầu công việc.
 
-**MakeIt workflow flow:** Design/PO → BA → Techlead → FE/BE → Review → Done
+**MakeIt workflow flow:** Design/PO → BA → Techlead → FE/BE → TL Code Review → PO Review → Done
 
 Mỗi gate có checklist cụ thể. Người **nhận** (receiver) kiểm tra checklist trước khi bắt đầu — đây là **cross-check model** (xem chi tiết ở cuối tài liệu).
 
@@ -85,53 +85,54 @@ Dev kiểm tra các items sau **trước khi** bắt đầu implement:
 
 ---
 
-## Gate 4: FE/BE → Review (Code Ready for Review)
+## Gate 4: FE/BE → TL Code Review (Code Ready for Review)
 
-**Verifier:** Reviewer (người nhận code để review)
+**Verifier:** TL (người nhận code để review — Stage 5)
 
-Reviewer kiểm tra các items sau **trước khi** bắt đầu review code:
+TL kiểm tra các items sau **trước khi** bắt đầu review code:
 
 | # | Check Item | Verifier |
 |---|-----------|----------|
-| 1 | PR follows template (all required sections filled) | Reviewer |
-| 2 | Lark task linked in PR description | Reviewer |
-| 3 | AI Review Checklist completed (all items checked) | Reviewer |
-| 4 | Self-reviewed diff before requesting review | Reviewer |
-| 5 | Commit messages follow conventional commits format (`feat:`, `fix:`, `docs:`, `chore:`) | Reviewer |
-| 6 | FE: Screenshot/video attached for UI changes | Reviewer |
-| 7 | BE: API documentation updated for endpoint changes | Reviewer |
-| 8 | No console errors/warnings in development | Reviewer |
-| 9 | Code follows [Coding Standards](./coding-standards.md) | Reviewer |
+| 1 | PR follows template (all required sections filled) | TL |
+| 2 | Lark task linked in PR description | TL |
+| 3 | AI Review Checklist completed (all items checked) | TL |
+| 4 | Self-reviewed diff before requesting review | TL |
+| 5 | Commit messages follow conventional commits format (`feat:`, `fix:`, `docs:`, `chore:`) | TL |
+| 6 | FE: Screenshot/video attached for UI changes | TL |
+| 7 | BE: API documentation updated for endpoint changes | TL |
+| 8 | No console errors/warnings in development | TL |
+| 9 | Code follows [Coding Standards](./coding-standards.md) | TL |
 
-**Nếu bất kỳ item nào fail:** Reviewer tag Author trên Telegram, ghi rõ PR thiếu gì. Author bổ sung trước khi review chính thức bắt đầu.
+**Nếu bất kỳ item nào fail:** TL tag Author trên Telegram, ghi rõ PR thiếu gì. Author bổ sung trước khi review chính thức bắt đầu.
 
 ---
 
-## Gate 5: Review → Done (Approved for Merge)
+## Gate 5: TL Code Review → PO Review → Done (Approved for Merge)
 
-**Verifier:** Reviewer + Designer + PO
+**Verifier:** TL (code review, Stage 5) + PO (business review, Stage 6)
 
-Đây là gate cuối cùng trước khi merge. Cần nhiều người verify tùy loại thay đổi. Gate này cũng bao gồm **feedback loop** để iterate nếu cần:
+Đây là gate cuối cùng trước khi done. TL review code quality và deploy, sau đó PO verify business logic. Gate này cũng bao gồm **feedback loop** để iterate nếu cần:
 
 | # | Check Item | Verifier |
 |---|-----------|----------|
-| 1 | At least 1 approval from team member | Reviewer |
-| 2 | Designer verified UI matches Figma design (nếu có UI changes) | Designer |
-| 3 | PO verified business logic matches specs (nếu có logic changes) | PO |
-| 4 | All review comments addressed (resolved or explained) | Author |
-| 5 | No unresolved CI checks or merge conflicts | Author |
-| 6 | PO final approval — PO có quyền pass toàn bộ hoặc yêu cầu Designer verify nếu cần | PO |
+| 1 | TL code review approved — code quality, architecture, security | TL |
+| 2 | TL verified no regressions — tests pass, no breaking changes | TL |
+| 3 | TL deployed to staging/production | TL |
+| 4 | PO verified business logic matches specs (qua deploy URL) | PO |
+| 5 | All review comments addressed (resolved or explained) | Author |
+| 6 | No unresolved CI checks or merge conflicts | Author |
+| 7 | PO final approval — PO là final authority cho business correctness | PO |
 
-> **⚡ PO là final authority:** PO có thể approve mà không cần Designer verify nếu thay đổi nhỏ hoặc urgent. PO cũng có thể yêu cầu Designer verify trước khi approve. Quyền quyết định thuộc về PO.
+> **⚡ Pipeline update (Phase 8.1):** Dev FE/BE gửi code cho TL review (Stage 5). TL review code quality → deploy → gửi kết quả cho PO (Stage 6). PO verify business logic trên deploy result. PO là final authority cho business correctness.
 
 ### Feedback Loop
 
 Nếu PO hoặc Designer phát hiện output chưa đạt yêu cầu:
 
-1. **PO/Designer comment** trên PR — ghi rõ cần sửa gì, reference user story hoặc design
+1. **TL/PO comment** trên PR hoặc HANDOFF.md — ghi rõ cần sửa gì, reference user story hoặc design
 2. **Author fix** — sửa code theo feedback
 3. **Re-request review** — Author request review lại từ người đã comment
-4. **Repeat** cho đến khi PO approve
+4. **Repeat** cho đến khi TL + PO approve
 
 > 💡 **Iteration protocol:** Feedback loop tối đa **3 rounds**. Nếu sau 3 rounds vẫn chưa align → escalate lên meeting sync giữa PO, Designer, BA, và Dev để clarify requirements gốc.
 
@@ -149,7 +150,8 @@ Cross-check model là cách team MakeIt kiểm soát chất lượng handoff. Ng
    - BA kiểm tra Design/PO output → vì BA cần chúng để viết stories
    - Techlead kiểm tra BA stories → vì Techlead cần chúng để break tasks
    - Dev kiểm tra Techlead tasks → vì Dev cần chúng để implement
-   - Reviewer kiểm tra Dev code → vì Reviewer cần đánh giá chất lượng
+   - TL kiểm tra Dev code → vì TL cần đánh giá code quality (Stage 5)
+   - PO kiểm tra deploy result → vì PO cần verify business logic (Stage 6)
 
 2. **Check before start** — Receiver kiểm tra checklist **trước khi** bắt đầu công việc của mình. Không phải sau khi xong.
 
@@ -213,10 +215,13 @@ Techlead break tasks  → Create subtasks cho FE/BE với checklist Gate 3
                       → Tag Dev trên Telegram
 
 Dev hoàn thành code   → Tạo PR với checklist Gate 4
-                      → Request review
+                      → Tag TL trên Telegram
 
-Review complete       → Checklist Gate 5
-                      → PO final approve → Merge
+TL code review        → Checklist Gate 4 (code quality)
+                      → TL deploy → gửi kết quả cho PO
+
+PO review result      → Checklist Gate 5 (business logic)
+                      → PO final approve → Done
 ```
 
 ### Return Flow
@@ -233,5 +238,5 @@ Khi receiver phát hiện item fail:
 ---
 
 *Document: wiki/reference/quality-gates.md*
-*Phase: 01 — Wiki Foundation & Conventions (updated for Phase 1.1 workflow)*
-*Last updated: 2026-02-10*
+*Phase: 01 — Wiki Foundation & Conventions (updated for Phase 8.1 pipeline)*
+*Last updated: 2026-02-15*
