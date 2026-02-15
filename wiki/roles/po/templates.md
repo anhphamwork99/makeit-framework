@@ -39,7 +39,7 @@ Ví dụ: "Cho phép customer preview sản phẩm đã personalize trước khi
 
 ## PO Review Checklist
 
-Dùng checklist này khi review PRs ở Stage 5. Copy vào PR comment hoặc dùng như mental checklist:
+Dùng checklist này khi review kết quả deploy ở Stage 6. Copy vào comment hoặc dùng như mental checklist:
 
 ```markdown
 ### PO Review — Business Logic Check

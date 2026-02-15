@@ -10,9 +10,9 @@ Tổng hợp workflow chi tiết cho từng vai trò trong team MakeIt. Mỗi ro
 
 | Role | Folder | Stage | Key Focus |
 |------|--------|-------|-----------|
-| [Product Owner](./po/) | `po/` | Stage 1 & 5 | Vision, backlog goals & context, final review authority |
+| [Product Owner](./po/) | `po/` | Stage 1 & 6 | Vision, backlog goals & context, final review authority |
 | [Business Analyst](./ba/) | `ba/` | Stage 2 | Story breakdown, Figma analysis, user flow documentation |
-| [Tech Lead](./techlead/) | `techlead/` | Stage 3 | Task breakdown (FE+BE), API contracts, code review |
+| [Tech Lead](./techlead/) | `techlead/` | Stage 3 & 5 | Task breakdown (FE+BE), API contracts, code review, deploy |
 | [Frontend Developer](./dev-fe/) | `dev-fe/` | Stage 4 | Component development, Figma-to-code, UI implementation |
 | [Backend Developer](./dev-be/) | `dev-be/` | Stage 4 | API development, database conventions, backend patterns |
 
@@ -42,10 +42,11 @@ Mỗi role page là **self-contained** — bạn chỉ cần đọc trang của 
 ## Workflow Overview
 
 ```
-┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐
-│  Stage 1     │    │  Stage 2 │    │  Stage 3 │    │  Stage 4 │    │  Stage 5     │
-│  PO          │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│  Review      │
-└──────────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────────┘
+┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  Stage 1     │    │  Stage 2 │    │  Stage 3 │    │  Stage 4 │    │  Stage 5     │    │  Stage 6     │
+│  PO          │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│  TL Code     │───▶│  PO Review   │
+└──────────────┘    └──────────┘    └──────────┘    └──────────┘    │  Review      │    └──────────────┘
+                                                                    └──────────────┘
 ```
 
 > 📖 Chi tiết: [Team Workflow](../workflows/team-workflow.md) · [Quality Gates](../reference/quality-gates.md) · [Handoff Format](../reference/handoff-format.md)

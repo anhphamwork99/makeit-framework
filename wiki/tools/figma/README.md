@@ -21,7 +21,7 @@ Mọi thứ liên quan đến thiết kế giao diện đều bắt đầu từ 
       ▲                                                           │
       │              Figma là source of truth cho UI              │
       └───────────────────────────────────────────────────────────┘
-                    Stage 5: Review so sánh UI vs Design
+                     Stage 5: TL + Designer review UI vs Design
 ```
 
 **Luồng thông tin từ Figma:**
@@ -32,7 +32,7 @@ Mọi thứ liên quan đến thiết kế giao diện đều bắt đầu từ 
 | Stage 2 | Business Analyst | Phân tích design screens, document user flow, identify edge cases |
 | Stage 3 | Techlead | Review design specs để break technical tasks |
 | Stage 4 | Dev Frontend | Extract design tokens, implement UI theo design |
-| Stage 5 | Reviewer + Designer | So sánh implementation với design gốc |
+| Stage 5 | TL + Designer | So sánh implementation với design gốc (code review) |
 
 ---
 
@@ -96,4 +96,4 @@ Mọi thứ liên quan đến thiết kế giao diện đều bắt đầu từ 
 
 *Document: wiki/tools/figma/README.md*
 *Phase: 06 — Tool Guides*
-*Last updated: 2026-02-13*
+*Last updated: 2026-02-15*

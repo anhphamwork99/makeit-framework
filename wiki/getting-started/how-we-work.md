@@ -12,10 +12,10 @@ Team gồm 6 roles chuyên biệt, mỗi người có vai trò rõ ràng trong p
 
 | Role | Số lượng | Stage | Focus chính |
 |------|----------|-------|-------------|
-| Product Owner (PO) | 1 | Stage 1 & 5 | Vision, backlog, final review |
-| Designer | 2 | Stage 1 & 5 | UI/UX design, UI verification |
+| Product Owner (PO) | 1 | Stage 1 & 6 | Vision, backlog, final review |
+| Designer | 2 | Stage 1 | UI/UX design, design specs |
 | Business Analyst (BA) | 1 | Stage 2 | User stories, Figma analysis |
-| Tech Lead (TL) | 1 | Stage 3 | Task breakdown, code review |
+| Tech Lead (TL) | 1 | Stage 3 & 5 | Task breakdown, code review, deploy |
 | Dev Frontend (FE) | 2 | Stage 4 | Component development, UI implementation |
 | Dev Backend (BE) | 1 | Stage 4 | API development, backend patterns |
 
@@ -27,14 +27,15 @@ Mỗi role page là self-contained — bạn chỉ cần đọc trang của role
 
 ## Team Workflow Pipeline
 
-Team vận hành theo quy trình 5 stages — từ Design/PO chuẩn bị đến feature shipped. Mỗi stage có input/output rõ ràng, handoff đi qua Git với quality gates tại mỗi điểm chuyển giao.
+Team vận hành theo quy trình **6 stages** — từ Design/PO chuẩn bị đến feature shipped. Mỗi stage có input/output rõ ràng, handoff đi qua Git với quality gates tại mỗi điểm chuyển giao.
 
 ```
-┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐
-│  Stage 1     │    │  Stage 2 │    │  Stage 3 │    │  Stage 4 │    │  Stage 5     │
-│  Design/PO   │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│  Review      │
-└──────────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────────┘
-  PO + Designer        BA            Techlead         Dev FE/BE      Reviewer + PO
+┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  Stage 1     │    │  Stage 2 │    │  Stage 3 │    │  Stage 4 │    │  Stage 5     │    │  Stage 6     │
+│  Design/PO   │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│  TL Code     │───▶│  PO Review   │
+└──────────────┘    └──────────┘    └──────────┘    └──────────┘    │  Review      │    └──────────────┘
+  PO + Designer        BA            Techlead         Dev FE/BE    └──────────────┘       PO
+                                                                     TL (Mode 2)
 ```
 
 Receiver verify input tại mỗi gate — nếu thiếu thông tin, tag người giao trên Telegram để bổ sung trước khi tiếp tục.

@@ -14,15 +14,15 @@ Git là hệ thống quản lý phiên bản (version control) mà team MakeIt s
 
 ---
 
-## Vai trò Git trong 5-Stage Pipeline
+## Vai trò Git trong 6-Stage Pipeline
 
-Team MakeIt vận hành theo [5-stage pipeline](../../workflows/team-workflow.md). Git tham gia xuyên suốt nhưng **đặc biệt quan trọng** ở Stage 4 (Implementation) và Stage 5 (Review).
+Team MakeIt vận hành theo [6-stage pipeline](../../workflows/team-workflow.md). Git tham gia xuyên suốt nhưng **đặc biệt quan trọng** ở Stage 4 (Implementation) và Stage 5 (TL Code Review).
 
 ```
-┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
-│ Stage 1  │    │ Stage 2  │    │ Stage 3  │    │  Stage 4     │    │  Stage 5     │
-│ Design/  │───▶│ BA Story │───▶│ Techlead │───▶│  FE/BE       │───▶│  Review &    │
-│ PO       │    │ Breakdown│    │ Task     │    │  Implement   │    │  Feedback    │
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│ Stage 1  │    │ Stage 2  │    │ Stage 3  │    │  Stage 4     │    │  Stage 5     │    │  Stage 6     │
+│ Design/  │───▶│ BA Story │───▶│ Techlead │───▶│  FE/BE       │───▶│  TL Code     │───▶│  PO Review   │
+│ PO       │    │ Breakdown│    │ Task     │    │  Implement   │    │  Review      │    └──────────────┘
 └──────────┘    └──────────┘    └──────────┘    └──────────────┘    └──────────────┘
                                                   🔧 Git heavy        🔍 Git heavy
                                                   - Create branch     - PR review
@@ -38,7 +38,8 @@ Team MakeIt vận hành theo [5-stage pipeline](../../workflows/team-workflow.md
 | Stage 2 — BA | Ít dùng | BA commit user stories nếu dùng Git-based handoff |
 | Stage 3 — Techlead | Trung bình | Techlead commit task breakdowns, API contracts |
 | Stage 4 — Dev FE/BE | **Nhiều nhất** | Tạo branch, commit code, push, tạo Pull Request |
-| Stage 5 — Review | **Nhiều** | Review Pull Request, approve, merge vào main |
+| Stage 5 — TL Code Review | **Nhiều** | Review Pull Request, approve, deploy |
+| Stage 6 — PO Review | Ít dùng | PO review kết quả deploy, approve/request changes |
 
 ---
 
@@ -83,4 +84,4 @@ Team MakeIt tuân theo các conventions đã được define trong [Coding Stand
 ---
 
 *Thuộc Phase 6: Tool Guides*
-*Cập nhật: 2026-02-13*
+*Cập nhật: 2026-02-15*
