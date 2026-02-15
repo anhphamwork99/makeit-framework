@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "serena": {
+            "command": "uvx",
+            "args": [
+                "--from",
+                "git+https://github.com/AbanteAI/serena",
+                "serena",
+                "--stdio",
+                "--project",
+                "<PROJECT_PATH>"
+            ]
+        }
+    }
+}
