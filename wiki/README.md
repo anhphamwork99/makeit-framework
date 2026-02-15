@@ -21,6 +21,7 @@ Wiki này là **source of truth** duy nhất cho cách team làm việc. Mọi q
 | [Workflows](./workflows/) | Sprint ceremonies: Refinement, Planning, Sync-up, Team Workflow |
 | [Tools](./tools/) | Hướng dẫn sử dụng Git, Figma, Lark, Shopify |
 | [Reference](./reference/) | Coding standards, quality gates, API contracts, handoff format |
+| [Integrations](./integrations/) | Tích hợp MCP servers: Serena (code intelligence) |
 
 > **GEMINI.md templates** nằm trong `templates/roles/` — chạy `cd templates && bash install.sh` để setup.
 >

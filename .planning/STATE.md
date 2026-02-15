@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** Mỗi thành viên clone repo → copy files vào IDE → chạy được ngay
-**Current focus:** Phase 8.2 — Serena MCP Integration (next up)
+**Current focus:** Phase 8.2 — Serena MCP Integration (complete)
 
 ## Current Position
 
-Phase: 8.2 of 23 (Serena MCP Integration) — In Progress
-Plan: 2/4 — Plan 01-02 complete (Serena Foundation + Enhanced map-codebase)
-Status: Executing — Plans 01-02 done, Plans 03-04 pending
-Last activity: 2026-02-15 — Plan 02 executed (semantic mapper instructions + map-codebase Serena detection)
+Phase: 8.2 of 23 (Serena MCP Integration) — ✅ COMPLETE
+Plan: 4/4 — All plans complete
+Status: Complete — Ready to move to next phase
+Last activity: 2026-02-15 — Plan 04 executed (registry + wiki + install updates)
 
-Progress: [██████████░░░░░░░░░░] 50% — Phase 8.2 executing (2/4 plans)
+Progress: [████████████████████] 100% — Phase 8.2 complete (4/4 plans)
 
 ## Performance Metrics
 
@@ -48,6 +48,7 @@ Progress: [██████████░░░░░░░░░░] 50% —
 | 07 Onboarding | 2/2 ✅ | ~8 min | ~4 min |
 | 08 Web App | 5/5 ✅ | ~50 min | ~10 min |
 | 08.1 Lark-centric Task Flow | 8/8 ✅ | ~50 min | ~6 min |
+| 08.2 Serena MCP Integration | 4/4 ✅ | ~20 min | ~5 min |
 
 ## Accumulated Context
 
@@ -166,7 +167,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-15T19:55:00+07:00
-Stopped at: Phase 8.2 Plan 02 complete — Enhanced map-codebase
-Next: Execute Plan 03 (TL code review enhancement)
+Last session: 2026-02-15T20:05:00+07:00
+Stopped at: Phase 8.2 complete — All 4 plans executed
+Next: Move to next phase (Phase 9 or beyond)
 Resume file: `.planning/phases/08.2-serena-mcp-integration/`

@@ -7,6 +7,7 @@ import {
     RefreshCw,
     Wrench,
     BookMarked,
+    Puzzle,
     ChevronRight,
     ChevronDown,
     PanelLeftClose,
@@ -31,6 +32,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     RefreshCw,
     Wrench,
     BookMarked,
+    Puzzle,
 };
 
 const STORAGE_KEY_COLLAPSED = "sidebar-collapsed";

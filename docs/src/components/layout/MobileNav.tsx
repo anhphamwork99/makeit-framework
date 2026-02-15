@@ -8,6 +8,7 @@ import {
     RefreshCw,
     Wrench,
     BookMarked,
+    Puzzle,
 } from "lucide-react";
 import {
     Sheet,
@@ -28,6 +29,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     RefreshCw,
     Wrench,
     BookMarked,
+    Puzzle,
 };
 
 interface MobileNavItemProps {

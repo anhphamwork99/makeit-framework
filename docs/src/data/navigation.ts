@@ -121,4 +121,12 @@ export const sidebarSections: SidebarSection[] = [
             { label: "Plan & Task Limits", path: "/reference/plan-task-limits" },
         ],
     },
+    {
+        label: "Tích hợp",
+        icon: "Puzzle",
+        path: "/integrations",
+        children: [
+            { label: "Serena MCP", path: "/integrations/serena-mcp" },
+        ],
+    },
 ];
