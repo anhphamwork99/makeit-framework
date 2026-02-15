@@ -1,6 +1,6 @@
-# Handoff: Dev BE → PO (Review)
+# Handoff: Dev BE → Techlead (Code Review)
 
-> Agent: Điền template này khi BE hoàn thành sprint deliverables và sẵn sàng handoff cho PO review.
+> Agent: Điền template này khi BE hoàn thành sprint deliverables và sẵn sàng handoff cho TL code review.
 > HANDOFF.md là **routing document** — trỏ đến files, KHÔNG inline nội dung deliverables.
 
 ## Sprint Info
@@ -8,14 +8,35 @@
 - **Sprint:** SPRINT-{NNN}
 - **Date:** {YYYY-MM-DD}
 - **Sender:** Dev BE
-- **Receiver:** PO (Review)
+- **Receiver:** Techlead (Code Review)
 - **Sprint Issue:** [Lark Sprint Issue link]
 
 ---
 
 ## Summary
 
-[1-2 câu tóm tắt: BE đã implement gì — APIs, schema, migrations. PO cần review và approve.]
+[1 câu tóm tắt: BE đã implement APIs, schema, và business logic — TL cần review code + approve PR.]
+
+---
+
+## What I've Done
+
+- [x] {API endpoints implemented} — `src/api/{resource}/route.ts`
+- [x] {Database schema migrated} — `prisma/migrations/NNN_{description}/`
+- [x] {Business logic tested} — `src/services/{feature}.ts`
+- [x] {Security checked} — auth, validation, injection prevention verified
+- [x] {API documentation updated} — `docs/api/{feature}.md`
+
+> Agent: Mỗi deliverable 1 dòng checklist + file path.
+
+---
+
+## Pull Request
+
+- **PR:** #{PR number} — [PR title]
+- **Branch:** `feat/SPRINT-{NNN}-{short-description}`
+- **Files changed:** [N files]
+- **Tests:** [N tests passed, N new tests added]
 
 ---
 
@@ -28,23 +49,6 @@
 | Business logic | ✅ Tested | [Key business rules implemented] |
 | Security | ✅ Checked | [Auth, validation, injection prevention] |
 | Performance | ✅ Acceptable | [Query benchmarks, N+1 checks] |
-
-## Deliverable Paths
-
-> PO agent: Dùng `view_file` để đọc từng file bên dưới.
-
-| # | Path | Type | Description |
-|---|------|------|-------------|
-| 1 | `deliverables/api/API-CONTRACT-{feature}.md` | API Contract | [Brief description] |
-| 2 | `deliverables/schema/SCHEMA-{feature}.md` | Schema Design | [Brief description] |
-| 3 | `deliverables/migrations/MIGRATION-NNN.md` | Migration Doc | [Brief description] |
-
-## Pull Request
-
-- **PR:** #{PR number} — [PR title]
-- **Branch:** `feat/SPRINT-{NNN}-{short-description}`
-- **Files changed:** [N files]
-- **Tests:** [N tests passed, N new tests added]
 
 ## API Endpoints Implemented
 
@@ -68,14 +72,40 @@
 - [Performance notes or caveats]
 - [Migration rollback considerations]
 
-## External Links
+---
+
+## Tasks For Receiver
+
+> AI Agent tự fill tất cả — human chỉ review + approve.
+
+| # | Task | Lark ID | Assignee | Dependencies |
+|---|------|---------|----------|--------------|
+| 1 | {Review PR #{N} — check code quality + architecture compliance} | {LARK-XXXX} | {Display name} | — |
+| 2 | {Check API contracts match specs} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+| 3 | {Verify security + performance} | {LARK-XXXX} | {Display name} | — |
+| 4 | {Approve/reject code quality} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+
+> ⚠️ Nếu Lark MCP không available, ghi "Pending" thay vì Lark IDs. Retry sau hoặc tạo manual.
+
+---
+
+## Shared Context
+
+### Key Decisions
+
+- {Decision 1 — API design, schema choices, business logic approach}
+- {Decision 2 — performance optimization decisions}
+
+### Links
 
 | Type | Link |
 |------|------|
 | Pull Request | [PR link] |
 | Lark Sprint Issue | [Lark link] |
 | API Documentation | [API docs link nếu có] |
-| TL Handoff (received) | [Path to TL HANDOFF.md đã nhận] |
+| Previous Handoff | [Path to TL HANDOFF.md đã nhận] |
+
+---
 
 ## Gate 4 Status (BE)
 
@@ -88,7 +118,7 @@
 - ✅ No sensitive data in logs
 - ✅ API documentation updated
 
-**Verdict:** PASS — ready for PO review
+**Verdict:** PASS — ready for Techlead code review
 
 ## Git Path
 
@@ -97,7 +127,7 @@
 ```
 
 > Commit file này vào product repo khi chạy `stage-complete`.
-> PO sẽ đọc file này khi chạy `/makeit:check-handoff`.
+> TL sẽ đọc file này khi chạy `/makeit:check-handoff`.
 
 ---
 

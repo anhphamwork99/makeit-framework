@@ -24,7 +24,7 @@ Dev BE xây dựng backend systems — implement APIs, quản lý database, xử
 
 ### Sprint Lifecycle
 
-BE tasks follow the Sprint lifecycle with 8 stage commands: **clarify → [discuss-phase] → [research-phase] → plan-phase → execute-phase → verify-phase → verify-work → complete**
+BE tasks follow the Sprint lifecycle with 8 stage commands: **start-my-tasks → [discuss-phase] → [research-phase] → plan-phase → execute-phase → verify-phase → verify-work → complete**
 
 > ⭐ `discuss-phase` and `research-phase` are OPTIONAL — use for complex features involving infrastructure decisions, third-party integrations, or unfamiliar domains.
 
@@ -37,13 +37,13 @@ BE tasks follow the Sprint lifecycle with 8 stage commands: **clarify → [discu
 
 | Stage | Exit When |
 |-------|----------|
-| Clarify | SPECS.md created, ROADMAP.md with phases defined, STATE.md initialized |
+| Start My Tasks | MY-TASKS.md created, workspace scoped to assigned BE tasks |
 | Discuss (optional) | CONTEXT.md with infrastructure/integration decisions captured |
 | Research (optional) | RESEARCH.md with prescriptive recommendations |
 | Plan | PLAN.md ready for execution |
 | Execute | All phase deliverables created. ⚠️ STOP before destructive ops |
 | Verify | Phase deliverables verified, security audit passed. Max 1 revision loop |
-| Complete | PR created, output delivered to Techlead for review |
+| Complete | PR created, handed to TL for code review (Stage 5) |
 
 ## Skills
 
@@ -66,7 +66,7 @@ Skill hub: `@skills/makeit-dev-be/SKILL.md`
 
 | Command | Mô tả |
 |---------|-------|
-| `/makeit:clarify` | Receive TL tasks → tạo sprint workspace + SPECS.md + ROADMAP.md |
+| `/makeit:start-my-tasks` | Select BE tasks from TL handoff, create focused workspace |
 | `/makeit:discuss-phase` | ⭐ OPTIONAL — Gather context: infrastructure, performance, integration decisions |
 | `/makeit:research-phase` | ⭐ OPTIONAL — Deep research: library evaluation, architecture patterns, scalability |
 | `/makeit:plan-phase` | Tạo PLAN.md cho phase hiện tại |
@@ -99,6 +99,7 @@ Skill hub: `@skills/makeit-dev-be/SKILL.md`
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 | `/makeit:progress` | Xem sprint progress với deliverable status |
 | `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+| `/makeit:sync-scope` | Pull scope changes from upstream TL |
 
 > Domain skills (implement, design-api, design-schema, self-review, check-gate, create-pr, fix-feedback) are now internal — called by the orchestrator during `/makeit:execute-phase`. For standalone use without sprint tracking, call the skill directly.
 
@@ -147,12 +148,14 @@ Product Memory System cung cấp trí nhớ dài hạn across sprints.
 ## Pipeline Position
 
 ```
-┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
-│  PO          │───▶│  BA      │───▶│ Techlead │───▶│ ★ Dev BE ★   │───▶│ Review       │
-│  + Designer  │    │ (Stage 2)│    │ (Stage 3)│    │ (Stage 4)    │    │ + PO approve │
-│  (Stage 1)   │    └──────────┘    └──────────┘    └──────────────┘    │ (Stage 5)    │
+┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  PO          │───▶│  BA      │───▶│ Techlead │───▶│ ★ Dev BE ★   │───▶│  TL Code     │───▶│  PO Review   │
+│  + Designer  │    │ (Stage 2)│    │ (Stage 3)│    │  (Stage 4)   │    │  Review      │    │  (Stage 6)   │
+│  (Stage 1)   │    └──────────┘    └──────────┘    └──────────────┘    │  (Stage 5)   │    └──────────────┘
 └──────────────┘                                                        └──────────────┘
 ```
+
+> Dev BE → TL (code review) → Deploy → PO (result review)
 
 **Boundaries:**
 - **Không** thay đổi user story — đó là BA responsibility

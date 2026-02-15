@@ -68,12 +68,18 @@ Skill hub: `@skills/makeit-po/SKILL.md`
 
 | Command | Mô tả |
 |---------|-------|
-| `/makeit:start-sprint` | Đọc Lark Sprint issue → tạo sprint workspace + SPECS.md + ROADMAP.md |
+| `/makeit:start-sprint` | Read Lark Sprint → detect mode → create workspace + verify Gate 1 |
 | `/makeit:plan-phase` | Tạo PLAN.md cho phase hiện tại |
 | `/makeit:execute-phase` | Thực thi plan (inline hoặc spawn sub-agents) |
 | `/makeit:verify-phase` | Verify output phase — goal-backward check |
 | `/makeit:verify-work` | Validate tất cả deliverables so với SPECS.md |
 | `/makeit:complete` | Git sync, update Lark, tạo handoff cho BA+Designer |
+
+### Sprint Management Commands
+
+| Command | Mô tả |
+|---------|-------|
+| `/makeit:update-scope` | Update task scope after handoff (sender only) |
 
 ### Support Commands
 
@@ -90,6 +96,7 @@ Skill hub: `@skills/makeit-po/SKILL.md`
 | `/makeit:pause-work` | Lưu context khi tạm dừng công việc |
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 | `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+| `/makeit:sync-scope` | Pull scope changes from upstream sender |
 
 > Domain skills (draft-backlog, refine-goal, prepare-sprint, manage-sprint-goal, review-pr, check-gate) are now internal — called during `/makeit:execute-phase`. For standalone use without sprint tracking, call the skill directly.
 
@@ -148,12 +155,13 @@ Product Memory System cung cấp trí nhớ dài hạn across sprints.
 ## Pipeline Position
 
 ```
-┌──────────────┐
-│  ★ PO ★      │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐
-│  + Designer  │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│ ★ Review ★   │
-│  (Stage 1)   │    │ (Stage 2)│    │ (Stage 3)│    │ (Stage 4)│    │ PO approve   │
-└──────────────┘    └──────────┘    └──────────┘    └──────────┘    │ (Stage 5)    │
-                                                                    └──────────────┘
+┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  ★ PO ★      │───▶│  BA      │───▶│  Techlead    │───▶│  FE/BE   │───▶│  TL Code     │───▶│ ★ PO Review ★│
+│  + Designer  │    │ (Stage 2)│    │  (Stage 3)   │    │ (Stage 4)│    │  Review      │    │  (Stage 6)   │
+│  (Stage 1)   │    └──────────┘    │  Mode 1:     │    └──────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────────┘                    │  Task Break  │                    │  Mode 2:     │
+                                    └──────────────┘                    │  Review+Deploy│
+                                                                        └──────────────┘
 ```
 
 **Boundaries:**

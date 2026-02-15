@@ -1,10 +1,10 @@
 ---
 name: be-stage-complete
-description: BE sprint completion — package deliverables, git sync, prepare review handoff, draft Telegram notification
+description: BE sprint completion — package deliverables, git sync, prepare Techlead handoff (code review), draft Telegram notification
 ---
 
 <purpose>
-Package BE sprint deliverables, sync to git, update Lark (user-guided), and create structured handoff document for review/PO approval.
+Package BE sprint deliverables, sync to git, update Lark (user-guided), and create structured handoff document for Techlead (code review).
 </purpose>
 
 <required_reading>
@@ -22,12 +22,14 @@ Package BE sprint deliverables, sync to git, update Lark (user-guided), and crea
 4. Lark = user-guided — provide instructions, don't auto-update
 5. PR description complete — include API changes, DB migrations, test results
 6. ⚠️ STOP before force push — never auto-force-push
+7. Lark Tasks at completion — create all tasks simultaneously via Lark MCP, IDs go into HANDOFF
 </rules>
 
 <output>
 - Git commit with all deliverables
 - PR description (using `@be-lifecycle/templates/pr-description.md`)
 - Handoff document → `.makeit/sprint/SPRINT-{NNN}/be/HANDOFF.md` in product repo (template: `@be-lifecycle/templates/handoff.md`)
+- Lark Tasks created for Techlead (or marked Pending if Lark MCP unavailable)
 - Telegram notification draft
 - Updated STATE.md (status = complete)
 </output>
@@ -117,6 +119,18 @@ Package BE sprint deliverables, sync to git, update Lark (user-guided), and crea
     > Lark link is included IN the HANDOFF.md as reference — no need to paste content to Lark.
   </step>
 
+  <step name="create_lark_tasks">
+    Reference: @_shared/skills/lark-task-helper/lark-task-reference.md
+
+    1. Extract tasks from filled HANDOFF.md "Tasks For Receiver" table
+    2. For each task, create Lark Task via Lark MCP:
+       - Title: task description from table (e.g., "Review PR #{N}", "Verify API security", "Check test coverage")
+       - Assignee: Techlead display name (if known) or empty
+       - Description: "Sprint SPRINT-{NNN} task from Dev BE. See HANDOFF: .makeit/sprint/SPRINT-{NNN}/be/HANDOFF.md"
+    3. Write Lark Task IDs back to HANDOFF task table
+    4. If Lark MCP fails: follow fallback pattern (mark Pending, log todo)
+  </step>
+
   <step name="draft_telegram">
     Generate ready-to-send Telegram message:
     ```
@@ -127,8 +141,7 @@ Package BE sprint deliverables, sync to git, update Lark (user-guided), and crea
     PR: [link]
     API Changes: {endpoint summary}
     DB Migrations: {migration summary}
-    @po Ready for review. Run `/makeit:check-handoff` to review.
-    @techlead Ready for code review.
+    @techlead Ready for code review. Run `/makeit:check-handoff` to review.
     ```
   </step>
 
@@ -192,6 +205,8 @@ When PR review feedback arrives, use `@be-lifecycle/workflows/fix-feedback.md`:
 <success_criteria>
 - [ ] Deliverables packaged and committed
 - [ ] PR description created with BE-specific sections
+- [ ] Handoff document created for Techlead
+- [ ] Lark Tasks created (or marked Pending if Lark MCP unavailable)
 - [ ] Telegram draft generated
 - [ ] Lark update instructions provided
 - [ ] STATE.md updated to complete

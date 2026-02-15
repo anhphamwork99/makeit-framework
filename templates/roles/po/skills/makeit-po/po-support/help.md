@@ -34,12 +34,16 @@ Display all available PO commands with descriptions, organized by category for q
     /makeit:pause-work       Save context when pausing mid-phase
     /makeit:resume-work      Restore context from previous pause
     /makeit:check-handoff    Check for incoming handoff from upstream role
+    /makeit:sync-scope       Pull scope changes from upstream sender
 
     ━━━ Knowledge Base ━━━
     /makeit:create-doc       Create knowledge document
     /makeit:search-kb        Search knowledge base
     /makeit:update-doc       Update knowledge document
     /makeit:archive-doc      Archive knowledge document
+
+    ━━━ Sprint Management ━━━
+    /makeit:update-scope     Update task scope after handoff (sender only)
 
     ━━━ PO Dual-Mode ━━━
     Mode 1 (Backlog Creation): start-sprint → plan → execute → verify → verify-work → complete
@@ -53,7 +57,7 @@ Display all available PO commands with descriptions, organized by category for q
 </process>
 
 <success_criteria>
-- [ ] All 18 commands displayed with descriptions
+- [ ] All 20 commands displayed with descriptions
 - [ ] Commands organized by category
 - [ ] Dual-mode guidance included
 </success_criteria>

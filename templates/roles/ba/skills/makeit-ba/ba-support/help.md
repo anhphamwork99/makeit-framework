@@ -13,7 +13,7 @@ Display all available BA commands with descriptions, organized by category for q
     📚 MakeIt BA Commands
 
     ━━━ Stage Commands ━━━
-    /makeit:clarify          Read Lark Sprint → create workspace + verify Gate 1
+    /makeit:start-my-tasks   Select tasks from PO handoff → create focused workspace
     /makeit:discuss-phase    Discuss phase approach with adaptive questions
     /makeit:show-phase-approach  View Agent's assumptions before planning
     /makeit:research-phase   Deep research via sub-agent (optional)
@@ -27,6 +27,7 @@ Display all available BA commands with descriptions, organized by category for q
     /makeit:add-phase        Add phase to end of roadmap
     /makeit:insert-phase     Insert urgent phase (decimal numbering)
     /makeit:remove-phase     Remove future phase + renumber
+    /makeit:update-scope     Update task scope after handoff (sender only)
 
     ━━━ Support ━━━
     /makeit:status           Sprint progress + next action
@@ -42,6 +43,7 @@ Display all available BA commands with descriptions, organized by category for q
     /makeit:health-check     Scan workspace for broken references
     /makeit:what-new         Check and apply framework updates
     /makeit:check-handoff    Check for incoming handoff from upstream role
+    /makeit:sync-scope       Pull scope changes from upstream sender
     ```
   </step>
 </process>

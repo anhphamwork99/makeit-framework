@@ -1,10 +1,10 @@
 ---
 name: be-check-handoff
-description: Check for incoming handoff from Techlead — read BE-specific section from HANDOFF.md
+description: Check for incoming handoff from Techlead — read BE tasks with Lark Task IDs from HANDOFF.md
 ---
 
 <purpose>
-Standalone command that Dev BE runs after receiving a Telegram notification from Techlead. Auto-detects TL as sender, prompts git pull, reads HANDOFF.md, and displays only the BE-relevant section. This is the bridge between receiving a notification and starting a sprint.
+Standalone command that Dev BE runs after receiving a Telegram notification from Techlead. Auto-detects TL as sender, prompts git pull, reads HANDOFF.md, filters to show only BE-relevant tasks with Lark Task IDs, and recommends next action. This is the bridge between receiving a notification and selecting tasks via start-my-tasks.
 </purpose>
 
 <process>
@@ -13,7 +13,7 @@ Standalone command that Dev BE runs after receiving a Telegram notification from
     Path: `.makeit/sprint/SPRINT-{NNN}/tl/HANDOFF.md`
     Sprint number: Check latest sprint folder in `.makeit/sprint/` or ask user for sprint number.
     
-    **Important:** TL's HANDOFF.md contains sections for both FE and BE. Focus on `## For BE` section.
+    **Important:** TL's HANDOFF.md contains sections for both FE and BE. Focus on `### For BE` section within "Tasks For Receiver".
   </step>
 
   <step name="git_pull">
@@ -39,11 +39,11 @@ Standalone command that Dev BE runs after receiving a Telegram notification from
     Verify Techlead has completed `/makeit:complete` and committed HANDOFF.md to the product repo.
     ```
     
-    **Section filtering:** Extract and display only the `## For BE` section from TL's HANDOFF.md. Ignore the `## For FE` section — that's for the FE developer.
+    **Section filtering:** Extract and display only the `### For BE` section from TL's HANDOFF.md. Ignore the `### For FE` section — that's for the FE developer.
   </step>
 
   <step name="display_summary">
-    Show key info from the BE section:
+    Show key info from the BE section with task table preview:
     ```
     📋 Handoff Summary (BE portion)
     
@@ -52,35 +52,50 @@ Standalone command that Dev BE runs after receiving a Telegram notification from
     🔢 Sprint: SPRINT-{NNN}
     📅 Date: {date from handoff}
     
-    🎯 Sprint Goal:
-    {goal summary}
+    🎯 What TL Has Done:
+    {checklist from "What I've Done" section}
     
-    📁 BE Deliverable Paths:
-    {BE-specific task files, API specs, schema designs}
+    📋 BE Tasks From Techlead:
+    | # | Task | Lark ID | Assignee |
+    |---|------|---------|----------|
+    | 1 | {API endpoint task} | {LARK-XXXX or ⚠️ Pending} | {name or —} |
+    | 2 | {schema migration task} | {LARK-XXXX or ⚠️ Pending} | {name or —} |
     
-    🔗 External Links:
-    {Lark issue, API docs, etc.}
+    📊 Total: {N} BE tasks
     
-    ⚠️ Blockers/Notes:
-    {any BE-specific blockers or notes}
+    📎 Shared Context:
+    {key decisions, API docs, dependencies from handoff}
     ```
     
-    > ℹ️ Showing only the `## For BE` section. FE tasks are assigned separately.
+    > ℹ️ Showing only the `### For BE` section. FE tasks are assigned separately.
   </step>
 
   <step name="recommend_next">
     ```
     ✅ HANDOFF.md pulled and reviewed.
     
-    💡 Next step: Run `/makeit:clarify` to start working on this sprint.
+    💡 Next step: Run `/makeit:start-my-tasks` to select your assigned tasks and create a focused workspace.
     ```
   </step>
 </process>
 
+<edge_cases>
+
+**Khi "For BE" section không tồn tại:** Có thể sprint này chỉ có FE tasks. Hiển thị thông báo rõ ràng: "No BE tasks found in this handoff. Check with Techlead if this is expected."
+
+**Khi HANDOFF.md chưa có Lark Task IDs:** Nếu thấy "⚠️ Pending" trong cột Lark ID, nghĩa là Lark MCP không available lúc TL tạo handoff. Dev BE vẫn tiến hành chọn tasks bình thường — Lark IDs chỉ là reference, không block workflow.
+
+**Khi không có tasks nào assigned cho dev:** Task table có thể có Assignee = "—" cho tất cả tasks. start-my-tasks sẽ show full BE list để dev chọn.
+
+**Khi sprint number không rõ:** Hỏi user. Hoặc scan `.makeit/sprint/` để tìm folder mới nhất có HANDOFF.md.
+
+</edge_cases>
+
 <success_criteria>
 - [ ] Techlead identified as sender (no user input needed)
 - [ ] User prompted to git pull before reading
-- [ ] Only `## For BE` section displayed (not FE tasks)
-- [ ] HANDOFF.md summary displayed
-- [ ] Next action recommended (`/makeit:clarify`)
+- [ ] Only `### For BE` section displayed (not FE tasks)
+- [ ] Task table with Lark ID and Assignee columns shown
+- [ ] Total BE task count displayed
+- [ ] Next action recommended (`/makeit:start-my-tasks`)
 </success_criteria>

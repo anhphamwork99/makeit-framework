@@ -4,20 +4,22 @@
 
 Document này mô tả quy trình vận hành end-to-end của team MakeIt — từ lúc Design/PO chuẩn bị đến khi feature shipped. Mỗi thành viên đọc document này sẽ hiểu rõ vị trí của mình trong chuỗi, biết mình nhận input từ ai, deliver output cho ai, và tiêu chuẩn nào cần đạt.
 
-**Quy trình 5 stages:**
+**Quy trình 6 stages:**
 
 ```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│  Stage 1     │    │  Stage 2     │    │  Stage 3     │    │  Stage 4     │    │  Stage 5     │
-│              │    │              │    │              │    │              │    │              │
-│  PO          │───▶│  BA Story    │───▶│  Techlead    │───▶│  FE/BE       │───▶│  Review &    │
-│  Preparation │    │  Breakdown   │    │  Task        │    │  Implement   │    │  Feedback    │
-│              │    │              │    │  Breakdown   │    │              │    │  Loop        │
-└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
-  PO                   BA                  Techlead           Dev FE + BE       Reviewer + PO
-     Gate 1 ──────▶   Gate 2 ──────▶     Gate 3 ──────▶     Gate 4 ──────▶    Gate 5
-  (PO→BA)           (BA→Techlead)      (TL→FE/BE)         (FE/BE→Review)    (Review→Done)
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  Stage 1     │    │  Stage 2     │    │  Stage 3     │    │  Stage 4     │    │  Stage 5     │    │  Stage 6     │
+│              │    │              │    │              │    │              │    │              │    │              │
+│  PO          │───▶│  BA Story    │───▶│  Techlead    │───▶│  FE/BE       │───▶│  TL Code     │───▶│  PO Review   │
+│  Preparation │    │  Breakdown   │    │  Task Break  │    │  Implement   │    │  Review      │    │  & Approve   │
+│              │    │              │    │  (Mode 1)    │    │              │    │  (Mode 2)    │    │              │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+  PO                   BA                  TL (Mode 1)        Dev FE + BE       TL (Mode 2)        PO
+     Gate 1 ──────▶   Gate 2 ──────▶     Gate 3 ──────▶     Gate 4 ──────▶    Gate 5 ─────▶   Gate 6
+  (PO→BA)           (BA→TL)           (TL→FE/BE)         (FE/BE→TL)       (TL→PO)          (PO→Done)
 ```
+
+> 📖 **Techlead operates in dual mode:** Mode 1 (Stage 3) breaks tasks, Mode 2 (Stage 5) reviews code + deploys.
 
 > 📖 **Chi tiết checklist tại mỗi gate:** Xem [Quality Gates](../reference/quality-gates.md)
 
@@ -42,7 +44,7 @@ Document này mô tả quy trình vận hành end-to-end của team MakeIt — t
 |---|---|
 | **Input** | Product vision, user needs, market context |
 | **Output** | HANDOFF.md (goal + context + Figma links) + Lark backlog items |
-| **Handoff** | PO chạy `/makeit:complete` → commit HANDOFF.md → Tag BA trên Telegram → BA chạy `/makeit:check-handoff` |
+| **Handoff** | PO chạy `/makeit:complete` → commit HANDOFF.md + tạo Lark Tasks → Tag BA trên Telegram → BA chạy `/makeit:check-handoff` → `/makeit:start-my-tasks` |
 | **Verification** | BA sẽ verify theo [Gate 1 checklist](../reference/quality-gates.md#gate-1-designpo--ba-design--backlog-ready-for-story-breakdown) |
 
 > 📖 **Handoff format:** Xem [Handoff Format Standard](../reference/handoff-format.md)
@@ -85,7 +87,7 @@ Document này mô tả quy trình vận hành end-to-end của team MakeIt — t
 |---|---|
 | **Input** | PO HANDOFF.md (goal + context + Figma links) |
 | **Output** | User stories + Acceptance criteria |
-| **Handoff** | BA chạy `/makeit:complete` → commit HANDOFF.md → Tag TL trên Telegram → TL chạy `/makeit:check-handoff` |
+| **Handoff** | BA chạy `/makeit:complete` → commit HANDOFF.md + tạo Lark Tasks → Tag TL trên Telegram → TL chạy `/makeit:check-handoff` → `/makeit:start-my-tasks` |
 | **Verification** | Techlead sẽ verify theo [Gate 2 checklist](../reference/quality-gates.md#gate-2-ba--techlead-user-stories-ready-for-task-breakdown) |
 
 ---
@@ -122,7 +124,7 @@ Document này mô tả quy trình vận hành end-to-end của team MakeIt — t
 |---|---|
 | **Input** | BA HANDOFF.md (user stories) |
 | **Output** | FE tasks + BE tasks + API contracts |
-| **Handoff** | TL chạy `/makeit:complete` → commit HANDOFF.md → Tag Dev trên Telegram → Dev chạy `/makeit:check-handoff` |
+| **Handoff** | TL chạy `/makeit:complete` → commit HANDOFF.md + tạo Lark Tasks → Tag Dev trên Telegram → Dev chạy `/makeit:check-handoff` → `/makeit:start-my-tasks` |
 | **Verification** | Dev sẽ verify theo [Gate 3 checklist](../reference/quality-gates.md#gate-3-techlead--febe-tasks-ready-for-implementation) |
 
 ---
@@ -157,7 +159,7 @@ Document này mô tả quy trình vận hành end-to-end của team MakeIt — t
 | **Input** | TL HANDOFF.md (tasks + API contracts) |
 | **Source of truth** | BA user stories |
 | **Output** | Code + PR (theo PR template) + HANDOFF.md |
-| **Handoff** | FE/BE chạy `/makeit:complete` → commit HANDOFF.md → Request PR review |
+| **Handoff** | FE/BE chạy `/makeit:complete` → commit HANDOFF.md → TL chạy `/makeit:check-handoff` (Mode 2) → `/makeit:start-my-tasks` |
 | **Verification** | Reviewer verify theo [Gate 4 checklist](../reference/quality-gates.md#gate-4-febe--review-code-ready-for-review) |
 
 ---
@@ -210,6 +212,26 @@ PO có quyền quyết định cuối cùng:
 | **Output** | Approved & merged code |
 | **Iteration** | Max 3 rounds, sau đó escalate |
 | **Final authority** | PO |
+
+---
+
+## Lark Task Integration
+
+### Lark Tasks trong Workflow
+
+Mỗi handoff tự động tạo **Lark Tasks** cho receiver:
+
+1. `/makeit:complete` tạo Lark Tasks từ danh sách deliverables
+2. Lark Task IDs được ghi vào HANDOFF.md (section "Tasks For Receiver")
+3. Receiver chạy `/makeit:start-my-tasks` → query Lark Tasks assigned cho mình
+4. Receiver chọn tasks → auto-create focused workspace
+
+### Scope Changes
+
+| Command | Who | When |
+|---------|-----|------|
+| `/makeit:update-scope` | Sender | Khi cần thêm/xóa/sửa tasks sau handoff |
+| `/makeit:sync-scope` | Receiver | Pull changes từ sender về workspace |
 
 ---
 
@@ -275,4 +297,4 @@ Dev Implementation ────────── THE CODE (actual product)
 
 *Document: wiki/workflows/team-workflow.md*
 *Phase: 01.1 — Team Workflow Definition*
-*Last updated: 2026-02-13*
+*Last updated: 2026-02-15*

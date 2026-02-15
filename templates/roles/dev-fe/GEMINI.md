@@ -24,7 +24,7 @@ Dev FE implement UI từ Figma designs — chuyển screens thành giao diện t
 
 ### Sprint Lifecycle
 
-FE tasks follow the Sprint lifecycle with 9 stage commands: **clarify → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete**
+FE tasks follow the Sprint lifecycle with 9 stage commands: **start-my-tasks → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete**
 
 - IDE acts as orchestrator — routes commands to skills, manages state
 - Complex tasks spawn **sub-agents** for fresh context (see Sub-agents section below)
@@ -35,11 +35,11 @@ FE tasks follow the Sprint lifecycle with 9 stage commands: **clarify → discus
 
 | Stage | Exit When |
 |-------|----------|
-| Clarify | SPECS.md created, ROADMAP.md with phases defined, STATE.md initialized |
+| Start My Tasks | MY-TASKS.md created, workspace scoped to assigned FE tasks |
 | Discuss & Plan | PLAN.md ready for execution |
 | Execute | All phase deliverables created |
 | Verify | Phase deliverables verified, quality checks passed. Max 1 revision loop |
-| Complete | PR created, handed to Designer for UI verification (Stage 5) |
+| Complete | PR created, handed to TL for code review (Stage 5) |
 
 ## Skills
 
@@ -64,7 +64,7 @@ Skill hub: `@skills/makeit-dev-fe/SKILL.md`
 
 | Command | Mô tả |
 |---------|-------|
-| `/makeit:clarify` | Đọc Lark Sprint issue → tạo sprint workspace + SPECS.md + ROADMAP.md |
+| `/makeit:start-my-tasks` | Select FE tasks from TL handoff, create focused workspace |
 | `/makeit:discuss-phase` | Gather context via adaptive questioning trước khi plan |
 | `/makeit:show-phase-approach` | Agent đề xuất approach → user approve trước khi plan |
 | `/makeit:research-phase` | Deep research technical unknowns (optional, spawns researcher) |
@@ -98,6 +98,7 @@ Skill hub: `@skills/makeit-dev-fe/SKILL.md`
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 | `/makeit:progress` | Xem sprint progress với deliverable status |
 | `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+| `/makeit:sync-scope` | Pull scope changes from upstream TL |
 
 ## Rules
 
@@ -146,12 +147,14 @@ Product Memory System cung cấp trí nhớ dài hạn across sprints.
 ## Pipeline Position
 
 ```
-┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
-│  PO +    │───▶│    BA    │───▶│ Techlead │───▶│  ★ Dev FE ★  │───▶│   Review     │
-│ Designer │    │ (Stage 2)│    │ (Stage 3)│    │  (Stage 4)   │    │  (Stage 5)   │
-│ (Stage 1)│    └──────────┘    └──────────┘    └──────────────┘    └──────────────┘
-└──────────┘
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  PO +    │───▶│    BA    │───▶│ Techlead │───▶│ ★ Dev FE ★   │───▶│  TL Code     │───▶│  PO Review   │
+│ Designer │    │ (Stage 2)│    │ (Stage 3)│    │  (Stage 4)   │    │  Review      │    │  (Stage 6)   │
+│ (Stage 1)│    └──────────┘    └──────────┘    └──────────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────┘                                                        └──────────────┘
 ```
+
+> Dev FE → TL (code review) → Deploy → PO (result review)
 
 **Boundaries:**
 - **Không** ra quyết định architecture — discuss với Techlead trước

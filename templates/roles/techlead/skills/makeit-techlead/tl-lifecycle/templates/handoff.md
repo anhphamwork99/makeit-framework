@@ -15,7 +15,18 @@
 
 ## Summary
 
-[1-2 câu tóm tắt: TL đã làm gì trong sprint này — task breakdown, solution design, estimation. FE/BE cần làm gì tiếp theo.]
+[1 câu tóm tắt: TL đã break down tasks, design API contracts, và estimate complexity — FE/BE cần implement theo task assignments.]
+
+---
+
+## What I've Done
+
+- [x] {Task breakdown completed} — `deliverables/tasks/FE-TASK-NNN.md`, `deliverables/tasks/BE-TASK-NNN.md`
+- [x] {API contracts designed} — `deliverables/contracts/API-CONTRACT-{feature}.md`
+- [x] {Architecture decisions recorded} — `deliverables/architecture/ADR-NNN.md`
+- [x] {Estimation completed} — `deliverables/ESTIMATION-{feature}.md`
+
+> Agent: Mỗi deliverable 1 dòng checklist + file path.
 
 ---
 
@@ -27,16 +38,6 @@
 |------|------|----------|------------|--------------|
 | [Task title] | `deliverables/tasks/FE-TASK-NNN.md` | P1 | [S/M/L] | [API dependencies] |
 | [Task title] | `deliverables/tasks/FE-TASK-NNN.md` | P2 | [S/M/L] | [Component deps] |
-
-### FE Deliverable Paths
-
-> FE agent: Dùng `view_file` để đọc từng file bên dưới.
-
-| # | Path | Type | Description |
-|---|------|------|-------------|
-| 1 | `deliverables/tasks/FE-TASK-NNN.md` | Task Breakdown | [Brief description] |
-| 2 | `deliverables/contracts/API-CONTRACT-{feature}.md` | API Contract | [Brief — for FE integration] |
-| 3 | `deliverables/architecture/ADR-NNN.md` | Architecture Decision | [Brief — if affects FE] |
 
 ### FE Notes
 
@@ -55,16 +56,6 @@
 | [Task title] | `deliverables/tasks/BE-TASK-NNN.md` | P1 | [S/M/L] | [DB dependencies] |
 | [Task title] | `deliverables/tasks/BE-TASK-NNN.md` | P2 | [S/M/L] | [Service deps] |
 
-### BE Deliverable Paths
-
-> BE agent: Dùng `view_file` để đọc từng file bên dưới.
-
-| # | Path | Type | Description |
-|---|------|------|-------------|
-| 1 | `deliverables/tasks/BE-TASK-NNN.md` | Task Breakdown | [Brief description] |
-| 2 | `deliverables/contracts/API-CONTRACT-{feature}.md` | API Contract | [Brief — BE implements this] |
-| 3 | `deliverables/ESTIMATION-{feature}.md` | Estimation Report | [Brief — effort estimates] |
-
 ### BE Notes
 
 - [Context quan trọng cho BE — schema considerations, migration notes]
@@ -73,18 +64,44 @@
 
 ---
 
-## External Links
+## Tasks For Receiver
+
+> AI Agent tự fill tất cả — human chỉ review + approve.
+
+### For FE
+
+| # | Task | Lark ID | Assignee | Dependencies |
+|---|------|---------|----------|--------------|
+| 1 | {Implement component {X} theo FE-TASK-NNN} | {LARK-XXXX} | {Display name} | — |
+| 2 | {Implement screen {Y} theo FE-TASK-NNN} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+
+### For BE
+
+| # | Task | Lark ID | Assignee | Dependencies |
+|---|------|---------|----------|--------------|
+| 1 | {Implement API endpoint {Z} theo BE-TASK-NNN} | {LARK-XXXX} | {Display name} | — |
+| 2 | {Create database migration theo BE-TASK-NNN} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+
+> ⚠️ Nếu Lark MCP không available, ghi "Pending" thay vì Lark IDs. Retry sau hoặc tạo manual.
+
+---
+
+## Shared Context
+
+### Key Decisions
+
+- {Decision 1 — architecture, API design, task splitting rationale}
+- {Decision 2 — scope trade-off, priority reasoning}
+
+### Links
 
 | Type | Link |
 |------|------|
 | Figma | [Figma link từ BA stories] |
 | Lark Sprint Issue | [Lark link] |
-| BA Handoff | [Path to BA HANDOFF.md đã nhận] |
+| Previous Handoff | [Path to BA HANDOFF.md đã nhận] |
 
-## Key Decisions
-
-- [Decision 1 — architecture, API design, task splitting rationale]
-- [Decision 2 — scope trade-off, priority reasoning]
+---
 
 ## Git Path
 

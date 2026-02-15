@@ -11,16 +11,18 @@ Team sử dụng **Git-based HANDOFF.md** — commit vào product repo tại `.m
 .makeit/sprint/SPRINT-{NNN}/
 ├── po/HANDOFF.md      ← PO → BA
 ├── ba/HANDOFF.md      ← BA → TL
-├── tl/HANDOFF.md      ← TL → FE/BE
-├── fe/HANDOFF.md      ← FE → Review
-└── be/HANDOFF.md      ← BE → Review
+├── tl/HANDOFF.md      ← TL → FE/BE (Mode 1)
+├── fe/HANDOFF.md      ← FE → TL (code review)
+├── be/HANDOFF.md      ← BE → TL (code review)
+└── tl-review/HANDOFF.md  ← TL → PO (Mode 2, review result)
 ```
 
 ### Flow:
 
-1. **Sender** hoàn thành sprint → chạy `/makeit:complete` → tạo HANDOFF.md → `git commit` + `git push`
+1. **Sender** hoàn thành sprint → chạy `/makeit:complete` → tạo HANDOFF.md + Lark Tasks → `git commit` + `git push`
 2. **Sender** tag receiver trên Telegram (notification only)
-3. **Receiver** chạy `/makeit:check-handoff` → `git pull` → đọc HANDOFF.md → bắt đầu sprint
+3. **Receiver** chạy `/makeit:check-handoff` → `git pull` → xem preview handoff
+4. **Receiver** chạy `/makeit:start-my-tasks` → chọn tasks → tạo workspace → bắt đầu sprint
 
 > 💡 **Telegram = notification. Git = content.** Nội dung handoff luôn nằm trong Git, không paste vào Telegram hay Lark.
 
@@ -44,10 +46,10 @@ Mọi handoff document bắt buộc có 5 sections sau:
 | # | Section | Mô tả |
 |---|---------|--------|
 | 1 | **Sprint Goal** | Mục tiêu sprint — trích từ SPECS.md |
-| 2 | **Deliverables Summary** | Danh sách deliverables đã tạo (tên, status, path/link) |
+| 2 | **What I've Done** | Danh sách deliverables đã tạo (tên, status, path/link) |
 | 3 | **Key Decisions Made** | Các quyết định ảnh hưởng downstream work |
-| 4 | **Open Questions** | Items chưa resolve, cần receiver xử lý |
-| 5 | **Next Steps** | Hành động cụ thể cho receiver |
+| 4 | **Tasks For Receiver** | Tasks cụ thể cho receiver, với Lark Task IDs |
+| 5 | **Shared Context** | Context chung cần biết (constraints, assumptions, open items) |
 
 ## Role-Specific Sections
 
@@ -94,7 +96,7 @@ Ngoài 5 sections chung, mỗi handoff direction có thêm data riêng:
 | Security Requirements | Auth, authz, validation rules |
 | Integration Points | External services, 3rd party APIs |
 
-### FE/BE → Review Handoff
+### FE/BE → TL Handoff (code review)
 
 | Data | Mô tả |
 |------|--------|
@@ -105,14 +107,33 @@ Ngoài 5 sections chung, mỗi handoff direction có thêm data riêng:
 | Self-Review Evidence | Checklist đã tự review |
 | Screenshots (FE) | Visual evidence so sánh Figma vs Implementation |
 
-## Lark Integration
+### TL → PO Handoff (review result)
 
-Handoff được tạo trong Git. Lark Sprint Issue chứa **link đến HANDOFF.md**, không paste nội dung:
+| Data | Mô tả |
+|------|--------|
+| Code Review Result | Approve/Request Changes + comment summary |
+| Deploy Status | URL của deployed version |
+| Test Summary | Functional tests, e2e results |
+| Demo Checklist | Steps để PO verify features |
 
-- HANDOFF.md trỏ đến Lark issue link (reference)
-- Lark issue comment chứa path đến HANDOFF.md trong repo
+## Lark Task Integration
 
-> 💡 Lark link is included IN the HANDOFF.md as reference — no need to paste content to Lark.
+Khi `/makeit:complete` được chạy, sender tự động:
+
+1. **Tạo Lark Tasks** cho mỗi deliverable trong section "Tasks For Receiver"
+2. **Gán Lark Task IDs** vào HANDOFF.md (task table)
+3. **Receiver** chạy `/makeit:start-my-tasks` → query Lark Tasks → chọn tasks assigned cho mình
+
+> 💡 Lark Tasks là **source of truth** cho task assignment và tracking. HANDOFF.md chỉ chứa IDs để reference.
+
+## Scope Changes After Handoff
+
+| Command | Who | Purpose |
+|---------|-----|---------|
+| `/makeit:update-scope` | Sender | Cập nhật scope tasks sau khi handoff (thêm/xóa/sửa tasks) |
+| `/makeit:sync-scope` | Receiver | Pull scope changes từ sender về workspace của mình |
+
+> ⚠️ Chỉ **sender** mới được dùng `update-scope`. Receiver chỉ dùng `sync-scope` để pull changes.
 
 ## Related
 
@@ -122,4 +143,4 @@ Handoff được tạo trong Git. Lark Sprint Issue chứa **link đến HANDOFF
 
 ---
 *Reference: Handoff Format Standard*
-*Last updated: 2026-02-13*
+*Last updated: 2026-02-15*

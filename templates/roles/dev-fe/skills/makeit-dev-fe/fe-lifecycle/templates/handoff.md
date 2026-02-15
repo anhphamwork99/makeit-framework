@@ -1,6 +1,6 @@
-# Handoff: Dev FE → PO (Review)
+# Handoff: Dev FE → Techlead (Code Review)
 
-> Agent: Điền template này khi FE hoàn thành sprint deliverables và sẵn sàng handoff cho PO review.
+> Agent: Điền template này khi FE hoàn thành sprint deliverables và sẵn sàng handoff cho TL code review.
 > HANDOFF.md là **routing document** — trỏ đến files, KHÔNG inline nội dung deliverables.
 
 ## Sprint Info
@@ -8,14 +8,26 @@
 - **Sprint:** SPRINT-{NNN}
 - **Date:** {YYYY-MM-DD}
 - **Sender:** Dev FE
-- **Receiver:** PO (Review) + Designer (UI verification)
+- **Receiver:** Techlead (Code Review)
 - **Sprint Issue:** [Lark Sprint Issue link]
 
 ---
 
 ## Summary
 
-[1-2 câu tóm tắt: FE đã implement gì — components nào, screens nào, user flow nào. PO cần review và Designer cần verify UI.]
+[1 câu tóm tắt: FE đã implement components và screens theo task assignments — TL cần review code + approve PR.]
+
+---
+
+## What I've Done
+
+- [x] {Component {X} implemented} — `src/components/{component}/index.tsx`
+- [x] {Screen {Y} implemented} — `src/pages/{screen}.tsx`
+- [x] {Interaction states: all 7 states covered} — hover, active, disabled, error, empty, loading, default
+- [x] {Responsive behavior verified} — 3 breakpoints (desktop, tablet, mobile)
+- [x] {Design tokens used} — no hardcoded colors/spacing
+
+> Agent: Mỗi deliverable 1 dòng checklist + file path.
 
 ---
 
@@ -34,16 +46,6 @@
 |-----------|----------|-------------------|------------|---------------|
 | [ComponentName] | `src/components/...` | ✅ All 7 states | ✅ 3 breakpoints | ✅ Tokens only |
 | [ComponentName] | `src/components/...` | ⚠️ Missing loading | ✅ 3 breakpoints | ✅ Tokens only |
-
-## Deliverable Paths
-
-> Reviewer agent: Dùng `view_file` để đọc từng file bên dưới.
-
-| # | Path | Type | Description |
-|---|------|------|-------------|
-| 1 | `src/components/{component}/index.tsx` | Component | [Brief description] |
-| 2 | `src/components/{component}/{component}.module.css` | Styles | [Brief description] |
-| 3 | `phases/{NN}-{name}/UI-COMPARISON.md` | UI Comparison | [Figma vs implementation] |
 
 ## Interaction States Coverage
 
@@ -66,27 +68,40 @@
 - [Browser-specific issues]
 - [Performance notes]
 
-## External Links
+---
+
+## Tasks For Receiver
+
+> AI Agent tự fill tất cả — human chỉ review + approve.
+
+| # | Task | Lark ID | Assignee | Dependencies |
+|---|------|---------|----------|--------------|
+| 1 | {Review PR #{N} — check code quality + architecture compliance} | {LARK-XXXX} | {Display name} | — |
+| 2 | {Check component {X} against Figma design} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+| 3 | {Verify responsive behavior on all breakpoints} | {LARK-XXXX} | {Display name} | — |
+| 4 | {Approve/reject code quality} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+
+> ⚠️ Nếu Lark MCP không available, ghi "Pending" thay vì Lark IDs. Retry sau hoặc tạo manual.
+
+---
+
+## Shared Context
+
+### Key Decisions
+
+- {Decision 1 — component architecture, state management approach}
+- {Decision 2 — design deviation rationale, if any}
+
+### Links
 
 | Type | Link |
 |------|------|
 | Pull Request | [PR link] |
 | Figma | [Main Figma link] |
 | Lark Sprint Issue | [Lark Sprint issue link] |
-| TL Handoff (received) | [Path to TL HANDOFF.md đã nhận] |
+| Previous Handoff | [Path to TL HANDOFF.md đã nhận] |
 
-## For Designer Review
-
-- [ ] UI matches Figma for all components?
-- [ ] Interaction states feel natural?
-- [ ] Responsive behavior acceptable?
-- [ ] Design token usage correct?
-
-## For PO Review
-
-- [ ] Business logic correct per stories?
-- [ ] User flow complete and intuitive?
-- [ ] Edge cases handled?
+---
 
 ## Gate 4 Status (FE)
 
@@ -98,7 +113,7 @@
 - ✅ No console errors/warnings
 - ✅ Accessibility basics (semantic HTML, alt text, keyboard nav)
 
-**Verdict:** PASS — ready for Designer UI verification and PO review
+**Verdict:** PASS — ready for Techlead code review
 
 ## Git Path
 
@@ -107,7 +122,7 @@
 ```
 
 > Commit file này vào product repo khi chạy `stage-complete`.
-> PO sẽ đọc file này khi chạy `/makeit:check-handoff`.
+> TL sẽ đọc file này khi chạy `/makeit:check-handoff`.
 
 ---
 

@@ -18,11 +18,13 @@ Package BA sprint deliverables, sync to git, update Lark (user-guided), and crea
 3. Telegram = notification — draft only, user sends
 4. Lark = user-guided — provide instructions, don't auto-update
 5. Handoff is actionable — Techlead should be able to start immediately
+6. Lark Tasks at completion — create all tasks simultaneously via Lark MCP, IDs go into HANDOFF
 </rules>
 
 <output>
 - Git commit with all deliverables
 - Handoff document → `.makeit/sprint/SPRINT-{NNN}/ba/HANDOFF.md` in product repo (template: `@ba-lifecycle/templates/handoff.md`)
+- Lark Tasks created for Techlead (or marked Pending if Lark MCP unavailable)
 - Telegram notification draft
 - Updated STATE.md (status = complete)
 </output>
@@ -51,6 +53,18 @@ Package BA sprint deliverables, sync to git, update Lark (user-guided), and crea
     Include: summary, deliverables table, stories overview, key decisions,
     edge cases flagged, questions for Techlead, design references, Gate 2 status.
     Include Lark Sprint Issue link as reference.
+  </step>
+
+  <step name="create_lark_tasks">
+    Reference: @_shared/skills/lark-task-helper/lark-task-reference.md
+
+    1. Extract tasks from filled HANDOFF.md "Tasks For Receiver" table
+    2. For each task, create Lark Task via Lark MCP:
+       - Title: task description from table
+       - Assignee: Techlead display name (if known) or empty
+       - Description: "Sprint SPRINT-{NNN} task from BA. See HANDOFF: .makeit/sprint/SPRINT-{NNN}/ba/HANDOFF.md"
+    3. Write Lark Task IDs back to HANDOFF task table
+    4. If Lark MCP fails: follow fallback pattern (mark Pending, log todo)
   </step>
 
   <step name="commit_handoff_to_git">
@@ -140,6 +154,7 @@ Package BA sprint deliverables, sync to git, update Lark (user-guided), and crea
 - [ ] Deliverables packaged with consistent naming
 - [ ] Git commit created with user approval
 - [ ] Handoff document created for Techlead
+- [ ] Lark Tasks created (or marked Pending if Lark MCP unavailable)
 - [ ] Telegram draft generated
 - [ ] Lark update instructions provided
 - [ ] STATE.md updated to complete

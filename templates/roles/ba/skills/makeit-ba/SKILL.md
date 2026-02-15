@@ -10,7 +10,7 @@ description: MakeIt Business Analyst skill set — GSD-aligned stage skills for 
 ## Quick Start
 
 ```
-/makeit:clarify        → Start new sprint (verify PO+Designer input, create workspace)
+/makeit:start-my-tasks → Start new sprint (select tasks from PO handoff, create workspace)
 /makeit:status         → Where am I? What's next?
 /makeit:help           → Show all commands
 ```
@@ -18,7 +18,7 @@ description: MakeIt Business Analyst skill set — GSD-aligned stage skills for 
 ## Sprint Lifecycle
 
 ```
-clarify → discuss-phase → show-approach → research → plan → execute → verify → verify-work → complete
+start-my-tasks → discuss-phase → show-approach → research → plan → execute → verify → verify-work → complete
    ↑                        (optional)     (optional)                  ↑
    └── Gate 1 (input)                                          Gate 2 (output) ──┘
 ```
@@ -28,7 +28,7 @@ clarify → discuss-phase → show-approach → research → plan → execute �
 ### ba-discovery/ — Sprint Entry
 | Skill | Command | Purpose |
 |-------|---------|---------|
-| `stage-clarify.md` | `/makeit:clarify` | Read Lark Sprint issue, verify Gate 1, create workspace |
+| `stage-clarify.md` | `/makeit:start-my-tasks` | Select tasks from PO handoff, verify Gate 1, create workspace |
 
 ### ba-planning/ — Phase Preparation
 | Skill | Command | Purpose |
@@ -71,6 +71,7 @@ clarify → discuss-phase → show-approach → research → plan → execute �
 | `stage-add-phase.md` | `/makeit:add-phase` | Add phase to end of roadmap |
 | `stage-insert-phase.md` | `/makeit:insert-phase` | Insert urgent phase (decimal) |
 | `stage-remove-phase.md` | `/makeit:remove-phase` | Remove future phase + renumber |
+| `update-scope.md` | `/makeit:update-scope` | Update task scope after handoff (sender only) |
 
 ### ba-support/ — Utility Operations
 | Skill | Command | Purpose |
@@ -80,6 +81,7 @@ clarify → discuss-phase → show-approach → research → plan → execute �
 | `decide.md` | `/makeit:decide` | Document a decision with rationale |
 | `estimate.md` | `/makeit:estimate` | Story complexity assessment |
 | `lesson-learned.md` | `/makeit:lesson-learned` | Capture lesson learned |
+| `sync-scope.md` | `/makeit:sync-scope` | Pull scope changes from upstream sender |
 
 ### ba-debugging/ — Troubleshooting
 | Skill | Command | Purpose |
@@ -130,10 +132,11 @@ clarify → discuss-phase → show-approach → research → plan → execute �
 ## Pipeline Position
 
 ```
-┌──────────┐    ┌──────────────┐    ┌──────────┐
-│  PO +    │───▶│   ★ BA ★     │───▶│ Techlead │
-│ Designer │    │  (Stage 2)   │    │ (Stage 3)│
-│ (Stage 1)│    └──────────────┘    └──────────┘
+┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  PO +    │───▶│   ★ BA ★     │───▶│  Techlead    │───▶│  FE/BE   │───▶│  TL Code     │───▶│  PO Review   │
+│ Designer │    │  (Stage 2)   │    │  (Stage 3)   │    │ (Stage 4)│    │  Review      │    │  (Stage 6)   │
+│ (Stage 1)│    └──────────────┘    │  Mode 1      │    └──────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────┘                        └──────────────┘                    └──────────────┘
 ```
 
 **Input:** PO Goal + Context, Designer Specs (Figma "Ready for Dev")

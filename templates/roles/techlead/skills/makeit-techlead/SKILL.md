@@ -7,9 +7,11 @@ description: Techlead skill — sprint lifecycle management, task breakdown, sol
 
 Skill này cung cấp expertise cho Agent trong vai trò **Techlead** của team MakeIt. Techlead là cầu nối giữa BA stories và Dev execution — chuyển user stories thành technical tasks, thiết kế giải pháp, review code và verify quality xuyên suốt dự án.
 
-**TL owns Stage 3** trong team workflow: nhận input từ Stage 2 (BA user stories), sản xuất output cho Stage 4 (Dev FE/BE technical tasks).
+**TL owns Stage 3 (Mode 1)** and **Stage 5 (Mode 2)** trong team workflow:
+- **Mode 1:** nhận input từ Stage 2 (BA user stories), sản xuất output cho Stage 4 (Dev FE/BE technical tasks).
+- **Mode 2:** nhận code từ Stage 4 (Dev FE/BE), review code, deploy, handoff kết quả cho PO.
 
-**Sprint-based lifecycle:** clarify → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete
+**Sprint-based lifecycle:** start-my-tasks → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete
 
 ## Lifecycle
 
@@ -19,7 +21,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 
 | Stage | Command | Purpose |
 |-------|---------|---------|
-| Entry | `/makeit:clarify` | Read Lark Sprint issue, verify Gate 2, create workspace |
+| Entry | `/makeit:start-my-tasks` | Select tasks from BA handoff (Mode 1) or review Dev handoff (Mode 2) |
 | Discuss | `/makeit:discuss-phase` | Gather context via adaptive questioning before planning |
 | Approach | `/makeit:show-phase-approach` | Agent proposes approach → user approves before plan |
 | Research | `/makeit:research-phase` | Deep research on technical unknowns (optional) |
@@ -38,6 +40,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 | `/makeit:add-phase` | Add phase to end of ROADMAP |
 | `/makeit:insert-phase` | Insert phase between existing (decimal) |
 | `/makeit:remove-phase` | Remove future phase + renumber |
+| `/makeit:update-scope` | Update task scope after handoff (sender only) |
 
 ### Sub-agents
 
@@ -56,7 +59,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 
 | Signal từ user | Command |
 |----------------|---------|
-| "Bắt đầu sprint mới" / "Có Lark issue mới" | `/makeit:clarify` |
+| "Bắt đầu sprint mới" / "Có Lark issue mới" | `/makeit:start-my-tasks` |
 | "Discuss phase" / "Cần thảo luận" | `/makeit:discuss-phase` |
 | "Approach nào?" / "Đề xuất cách làm" | `/makeit:show-phase-approach` |
 | "Research thêm" / "Tìm hiểu trước" | `/makeit:research-phase` |
@@ -83,6 +86,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 | "Ghi nhận quyết định" | `/makeit:decide` |
 | "Estimate" / "Đánh giá complexity" | `/makeit:estimate` |
 | "Lesson learned" | `/makeit:lesson-learned` |
+| "Sync scope" / "Cập nhật scope" | `/makeit:sync-scope` |
 
 ### Context Management
 
@@ -99,7 +103,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 
 | Skill | Purpose |
 |-------|---------|
-| `stage-clarify.md` | Read Lark Sprint issue, verify Gate 2, create sprint workspace |
+| `stage-clarify.md` | Select tasks from BA handoff (Mode 1), review Dev handoff (Mode 2), verify gate, create workspace |
 
 **Internal workflows (in `tl-discovery/workflows/`):**
 - Discover Existing Features — map existing features affected by sprint, assess impact, document in CODEBASE-SNAPSHOT.md
@@ -123,7 +127,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 | `templates/code-review.md` | Code review template |
 | `templates/estimation-report.md` | Estimation report template |
 
-> **Internal workflows** (break-tasks, design-solution, assign-tasks, review-code, check-gate, self-review, estimate) are documented inline within `stage-execute-phase.md`. No separate skill files needed.
+> **Internal workflows** (break-tasks, design-solution, assign-tasks, review-code, check-gate, self-review, estimate) are documented inline within `stage-execute-phase.md`. `review-code` is also available as a standalone workflow for Mode 2 code review.
 
 **Additional workflows (in `tl-execution/workflows/`):**
 - Handle Multi-Story — when BA provides 3+ stories: prioritize, group by domain, identify shared work, create execution phases

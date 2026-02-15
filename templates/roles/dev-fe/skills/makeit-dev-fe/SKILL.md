@@ -7,9 +7,9 @@ description: Dev FE skill — sprint lifecycle management, Figma-driven implemen
 
 Skill này cung cấp expertise cho Agent trong vai trò **Frontend Developer** của team MakeIt. Dev FE biến Figma designs thành giao diện thực tế — implement UI components, handle interaction states, đảm bảo responsive behavior, và deliver production-ready code.
 
-**Dev FE owns Stage 4** trong team workflow: nhận input từ Stage 3 (Techlead technical tasks), sản xuất output cho Stage 5 (Review — Designer verifies UI).
+**Dev FE owns Stage 4** trong team workflow: nhận input từ Stage 3 (Techlead technical tasks), sản xuất output cho Stage 5 (TL Code Review).
 
-**Sprint-based lifecycle:** clarify → discuss → approach → research → plan → execute → verify → validate → complete
+**Sprint-based lifecycle:** start-my-tasks → discuss → approach → research → plan → execute → verify → validate → complete
 
 > ⚠️ **STOP Mechanism:** AI PHẢI dừng trước bất kỳ destructive operation (delete, overwrite, force push). Xem `@rules/makeit-dev-fe.md`.
 
@@ -21,7 +21,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 
 | Stage | Command | Purpose |
 |-------|---------|---------|
-| Entry | `/makeit:clarify` | Read Lark Sprint issue, verify Gate 3, create sprint workspace |
+| Entry | `/makeit:start-my-tasks` | Select FE tasks from TL handoff, create focused workspace |
 | Discuss | `/makeit:discuss-phase` | Gather FE context via adaptive questioning |
 | Approach | `/makeit:show-phase-approach` | Surface Agent assumptions for user approval |
 | Research | `/makeit:research-phase` | Deep research — Figma analysis, library evaluation (optional) |
@@ -84,6 +84,8 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 |-------|---------|
 | `stage-clarify.md` | Gate 3 verification, workspace creation, SPECS + ROADMAP |
 
+> `stage-clarify.md` is invoked via `/makeit:start-my-tasks` command.
+
 ### fe-planning/ — Phase Preparation (4 skills)
 
 | Skill | Purpose |
@@ -144,6 +146,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 | `decide.md` | Record implementation decision |
 | `estimate.md` | Assess task complexity |
 | `lesson-learned.md` | Capture lessons |
+| `sync-scope.md` | Pull scope changes from upstream TL |
 
 ### kb-management/ — Knowledge Base Management (4 skills)
 
@@ -213,9 +216,9 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 ## Pipeline Position
 
 ```
-┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
-│  PO +    │───▶│    BA    │───▶│ Techlead │───▶│  ★ Dev FE ★  │───▶│   Review     │
-│ Designer │    │ (Stage 2)│    │ (Stage 3)│    │  (Stage 4)   │    │  (Stage 5)   │
-│ (Stage 1)│    └──────────┘    └──────────┘    └──────────────┘    └──────────────┘
-└──────────┘
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  PO +    │───▶│    BA    │───▶│ Techlead │───▶│  ★ Dev FE ★  │───▶│  TL Code     │───▶│  PO Review   │
+│ Designer │    │ (Stage 2)│    │ (Stage 3)│    │  (Stage 4)   │    │  Review      │    │  (Stage 6)   │
+│ (Stage 1)│    └──────────┘    └──────────┘    └──────────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────┘                                                        └──────────────┘
 ```

@@ -1,10 +1,10 @@
 ---
 name: fe-stage-complete
-description: FE sprint completion — create PR, package deliverables, git sync, prepare Designer/Techlead handoff, draft Telegram message
+description: FE sprint completion — create PR, package deliverables, git sync, prepare Techlead handoff (code review), draft Telegram message
 ---
 
 <purpose>
-Package FE sprint deliverables, create PR, sync to git, and create structured handoff document for Designer (UI verification) and Techlead (code review).
+Package FE sprint deliverables, create PR, sync to git, and create structured handoff document for Techlead (code review).
 </purpose>
 
 <required_reading>
@@ -21,12 +21,14 @@ Package FE sprint deliverables, create PR, sync to git, and create structured ha
 3. STOP before push — ⚠️ MANDATORY pause before git push
 4. Telegram = notification — draft only, user sends
 5. Lark = user-guided — provide instructions, don't auto-update
-6. Handoff is actionable — Designer can verify UI, Techlead can review code
+6. Handoff is actionable — Techlead can review code immediately
+7. Lark Tasks at completion — create all tasks simultaneously via Lark MCP, IDs go into HANDOFF
 </rules>
 
 <output>
 - Git commit + PR with all code deliverables
 - Handoff document → `.makeit/sprint/SPRINT-{NNN}/fe/HANDOFF.md` in product repo (template: `@fe-lifecycle/templates/handoff.md`)
+- Lark Tasks created for Techlead (or marked Pending if Lark MCP unavailable)
 - Telegram notification draft
 - Updated STATE.md (status = complete)
 </output>
@@ -77,6 +79,18 @@ Package FE sprint deliverables, create PR, sync to git, and create structured ha
     > Lark link is included IN the HANDOFF.md as reference — no need to paste content to Lark.
   </step>
 
+  <step name="create_lark_tasks">
+    Reference: @_shared/skills/lark-task-helper/lark-task-reference.md
+
+    1. Extract tasks from filled HANDOFF.md "Tasks For Receiver" table
+    2. For each task, create Lark Task via Lark MCP:
+       - Title: task description from table (e.g., "Review PR #{N}", "Check component quality")
+       - Assignee: Techlead display name (if known) or empty
+       - Description: "Sprint SPRINT-{NNN} task from Dev FE. See HANDOFF: .makeit/sprint/SPRINT-{NNN}/fe/HANDOFF.md"
+    3. Write Lark Task IDs back to HANDOFF task table
+    4. If Lark MCP fails: follow fallback pattern (mark Pending, log todo)
+  </step>
+
   <step name="draft_telegram">
     Generate ready-to-send Telegram message:
     ```
@@ -86,9 +100,7 @@ Package FE sprint deliverables, create PR, sync to git, and create structured ha
     Sprint Issue: [Lark link]
     Deliverables: {summary}
     PR: #{PR number}
-    @po Ready for review. Run `/makeit:check-handoff` to review.
-    @designer Ready for UI verification.
-    @techlead Ready for code review.
+    @techlead Ready for code review. Run `/makeit:check-handoff` to review.
     ```
   </step>
 
@@ -139,7 +151,8 @@ Package FE sprint deliverables, create PR, sync to git, and create structured ha
 - [ ] Deliverables packaged (code files only)
 - [ ] PR created with self-review + compare-ui evidence
 - [ ] Git push approved by user (STOP mechanism)
-- [ ] Handoff document created for Designer + Techlead
+- [ ] Handoff document created for Techlead
+- [ ] Lark Tasks created (or marked Pending if Lark MCP unavailable)
 - [ ] Telegram draft generated
 - [ ] Lark update instructions provided
 - [ ] STATE.md updated to complete

@@ -8,7 +8,7 @@ description: MakeIt Backend Developer skill catalogue — GSD-aligned skills for
 ## Sprint Lifecycle
 
 ```
-clarify → [discuss-phase] → [research-phase] → plan-phase → execute-phase → verify-phase → verify-work → complete
+start-my-tasks → [discuss-phase] → [research-phase] → plan-phase → execute-phase → verify-phase → verify-work → complete
 ```
 
 6-stage base lifecycle + 2 optional stages (discuss-phase, research-phase). Use optional stages for complex features involving infrastructure decisions, third-party integrations, or unfamiliar domains. STOP mechanism active.
@@ -20,7 +20,7 @@ Sprint entry and Gate 3 input verification.
 
 | Skill | Mô tả |
 |-------|--------|
-| `stage-clarify.md` | Receive TL tasks → verify Gate 3 → create workspace → extract API/DB/security requirements |
+| `stage-clarify.md` | Select BE tasks from TL handoff → verify Gate 3 → create workspace → extract API/DB/security requirements |
 
 | Template | Mô tả |
 |----------|--------|
@@ -127,6 +127,7 @@ Utility operations.
 | `decide.md` | Document technical decision |
 | `estimate.md` | Assess implementation complexity |
 | `lesson-learned.md` | Capture lesson learned |
+| `sync-scope.md` | Pull scope changes from upstream TL |
 
 ### kb-management/ — Knowledge Base Management
 | Skill | Mô tả |
@@ -183,7 +184,7 @@ AI MUST stop before:
 ## Pipeline Position
 
 ```
-PO + Designer → BA (Stage 2) → Techlead (Stage 3) → ★ Dev BE (Stage 4) ★ → Review (Stage 5)
+PO + Designer → BA (Stage 2) → Techlead (Stage 3) → ★ Dev BE (Stage 4) ★ → TL Code Review (Stage 5) → PO Review (Stage 6)
 ```
 
 ## Notes

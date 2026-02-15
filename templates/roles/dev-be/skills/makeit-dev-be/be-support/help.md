@@ -13,14 +13,14 @@ Display all available BE commands with descriptions, organized by category for q
     📚 MakeIt Dev BE Commands
 
     ━━━ Stage Commands ━━━
-    /makeit:clarify          Receive TL tasks → verify Gate 3 → create workspace
+    /makeit:start-my-tasks   Select BE tasks from TL handoff → create workspace
     /makeit:discuss-phase    ⭐ OPTIONAL — Gather infrastructure/integration context
     /makeit:research-phase   ⭐ OPTIONAL — Deep research library/architecture patterns
     /makeit:plan-phase       Create PLAN.md for current phase
     /makeit:execute-phase    Execute plan tasks with domain workflows
     /makeit:verify-phase     Verify phase output + Gate 4 check
     /makeit:verify-work      Validate ALL sprint deliverables
-    /makeit:complete         Package, create PR, handoff for review
+    /makeit:complete         Package, create PR, handoff to TL for code review
 
     ━━━ Sprint Management ━━━
     /makeit:add-phase        Add phase to end of roadmap
@@ -42,6 +42,7 @@ Display all available BE commands with descriptions, organized by category for q
     /makeit:what-new         Check and apply framework updates
     /makeit:progress         Sprint progress with deliverable status
     /makeit:check-handoff    Check for incoming handoff from upstream role
+    /makeit:sync-scope       Pull scope changes from upstream TL
 
     ━━━ Knowledge Base ━━━
     /makeit:create-doc       Create knowledge document
@@ -56,7 +57,7 @@ Display all available BE commands with descriptions, organized by category for q
 </process>
 
 <success_criteria>
-- [ ] All 28 commands displayed with descriptions
+- [ ] All 29 commands displayed with descriptions
 - [ ] Commands organized by category
 - [ ] STOP mechanism noted
 </success_criteria>

@@ -1,10 +1,10 @@
 ---
 name: ba-check-handoff
-description: Check for incoming handoff from PO — read HANDOFF.md from product repo
+description: Check for incoming handoff from PO — read HANDOFF.md with task preview and Lark Task IDs
 ---
 
 <purpose>
-Standalone command that BA runs after receiving a Telegram notification from PO. Auto-detects PO as sender, prompts git pull, reads HANDOFF.md, shows summary, and recommends next action. This is the bridge between receiving a notification and starting a sprint.
+Standalone command that BA runs after receiving a Telegram notification from PO. Auto-detects PO as sender, prompts git pull, reads HANDOFF.md, shows summary with task table and Lark Task IDs, and recommends next action. This is the bridge between receiving a notification and selecting tasks via start-my-tasks.
 </purpose>
 
 <process>
@@ -39,7 +39,7 @@ Standalone command that BA runs after receiving a Telegram notification from PO.
   </step>
 
   <step name="display_summary">
-    Show key info from HANDOFF.md:
+    Show key info from HANDOFF.md with task table preview:
     ```
     📋 Handoff Summary
     
@@ -48,17 +48,17 @@ Standalone command that BA runs after receiving a Telegram notification from PO.
     🔢 Sprint: SPRINT-{NNN}
     📅 Date: {date from handoff}
     
-    🎯 Sprint Goal:
-    {goal summary}
+    🎯 What PO Has Done:
+    {checklist from "What I've Done" section}
     
-    📁 Deliverable Paths:
-    {list of file paths to review}
+    📋 Tasks For You:
+    | # | Task | Lark ID | Assignee |
+    |---|------|---------|----------|
+    | 1 | {task description} | {LARK-XXXX or ⚠️ Pending} | {name or —} |
+    | 2 | {task description} | {LARK-XXXX or ⚠️ Pending} | {name or —} |
     
-    🔗 External Links:
-    {Figma, Lark issue, etc.}
-    
-    ⚠️ Blockers/Notes:
-    {any blockers or special notes}
+    📎 Shared Context:
+    {key decisions and links from handoff}
     ```
   </step>
 
@@ -66,14 +66,25 @@ Standalone command that BA runs after receiving a Telegram notification from PO.
     ```
     ✅ HANDOFF.md pulled and reviewed.
     
-    💡 Next step: Run `/makeit:clarify` to start working on this sprint.
+    💡 Next step: Run `/makeit:start-my-tasks` to select your assigned tasks and create a focused workspace.
     ```
   </step>
 </process>
 
+<edge_cases>
+
+**Khi HANDOFF.md chưa có Lark Task IDs:** Nếu thấy "⚠️ Pending" trong cột Lark ID, nghĩa là Lark MCP không available lúc PO tạo handoff. BA vẫn tiến hành chọn tasks bình thường — chỉ thiếu Lark tracking reference.
+
+**Khi không có tasks nào assigned cho BA:** Task table có thể có Assignee = "—" cho tất cả tasks. start-my-tasks sẽ show full list để BA chọn.
+
+**Khi sprint number không rõ:** Hỏi user. Hoặc scan `.makeit/sprint/` để tìm folder mới nhất có HANDOFF.md.
+
+</edge_cases>
+
 <success_criteria>
 - [ ] PO identified as sender (no user input needed)
 - [ ] User prompted to git pull before reading
-- [ ] HANDOFF.md read and summary displayed
-- [ ] Next action recommended (`/makeit:clarify`)
+- [ ] HANDOFF.md read and summary displayed with Lark Task IDs
+- [ ] Task table with Lark ID and Assignee columns shown
+- [ ] Next action recommended (`/makeit:start-my-tasks`)
 </success_criteria>

@@ -22,7 +22,7 @@ BA là cầu nối giữa business (PO) và technical (Techlead). BA nhận goal
 
 ### Sprint Lifecycle
 
-BA tasks follow the Sprint lifecycle with 9 stage commands: **clarify → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete**
+BA tasks follow the Sprint lifecycle with 9 stage commands: **start-my-tasks → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete**
 
 - IDE acts as orchestrator — routes commands to skills, manages state
 - Complex tasks spawn **sub-agents** for fresh context (see Sub-agents section below)
@@ -33,7 +33,7 @@ BA tasks follow the Sprint lifecycle with 9 stage commands: **clarify → discus
 
 | Stage | Exit When |
 |-------|----------|
-| Clarify | SPECS.md created, ROADMAP.md with phases defined, STATE.md initialized |
+| Start My Tasks | MY-TASKS.md created, workspace scoped to assigned tasks |
 | Discuss & Plan | PLAN.md ready for execution |
 | Execute | All phase deliverables created |
 | Verify | Phase deliverables verified, quality checks passed. Max 1 revision loop |
@@ -62,7 +62,7 @@ Skill hub: `@skills/makeit-ba/SKILL.md`
 
 | Command | Mô tả |
 |---------|-------|
-| `/makeit:clarify` | Đọc Lark Sprint issue → tạo sprint workspace + SPECS.md + ROADMAP.md |
+| `/makeit:start-my-tasks` | Select tasks from PO handoff, create focused workspace |
 | `/makeit:discuss-phase` | Gather context via adaptive questioning trước khi plan |
 | `/makeit:show-phase-approach` | Agent đề xuất approach → user approve trước khi plan |
 | `/makeit:research-phase` | Deep research technical unknowns (optional, spawns researcher) |
@@ -79,6 +79,7 @@ Skill hub: `@skills/makeit-ba/SKILL.md`
 | `/makeit:add-phase` | Thêm phase vào cuối ROADMAP |
 | `/makeit:insert-phase` | Chèn phase giữa các phases hiện tại (decimal) |
 | `/makeit:remove-phase` | Xóa future phase + renumber |
+| `/makeit:update-scope` | Update task scope after handoff (sender only) |
 
 ### Support Commands
 
@@ -96,6 +97,7 @@ Skill hub: `@skills/makeit-ba/SKILL.md`
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 | `/makeit:progress` | Xem sprint progress với deliverable status |
 | `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+| `/makeit:sync-scope` | Pull scope changes from upstream sender |
 
 ## Rules
 
@@ -145,11 +147,11 @@ Product Memory System cung cấp trí nhớ dài hạn across sprints.
 ## Pipeline Position
 
 ```
-┌──────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-│  PO +    │───▶│   ★ BA ★     │───▶│ Techlead │───▶│  FE/BE   │───▶│  Review  │
-│ Designer │    │  (Stage 2)   │    │ (Stage 3)│    │ (Stage 4)│    │ (Stage 5)│
-│ (Stage 1)│    └──────────────┘    └──────────┘    └──────────┘    └──────────┘
-└──────────┘
+┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  PO +    │───▶│   ★ BA ★     │───▶│  Techlead    │───▶│  FE/BE   │───▶│  TL Code     │───▶│  PO Review   │
+│ Designer │    │  (Stage 2)   │    │  (Stage 3)   │    │ (Stage 4)│    │  Review      │    │  (Stage 6)   │
+│ (Stage 1)│    └──────────────┘    │  Mode 1      │    └──────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────┘                        └──────────────┘                    └──────────────┘
 ```
 
 **Boundaries:**

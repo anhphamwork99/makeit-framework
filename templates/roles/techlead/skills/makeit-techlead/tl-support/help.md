@@ -14,7 +14,7 @@ Display all available Techlead commands with descriptions, organized by category
     **Stage Commands (Sprint Lifecycle):**
     | Command | Description |
     |---------|-------------|
-    | `/makeit:clarify` | Start new sprint — read Lark issue, verify Gate 2, create workspace |
+    | `/makeit:start-my-tasks` | Select tasks from BA handoff (Mode 1) or review Dev handoff (Mode 2) |
     | `/makeit:discuss-phase` | Gather context via adaptive questioning before planning |
     | `/makeit:show-phase-approach` | View Agent's approach and assumptions before planning |
     | `/makeit:research-phase` | Deep research unknowns via sub-agent (optional) |
@@ -22,7 +22,7 @@ Display all available Techlead commands with descriptions, organized by category
     | `/makeit:execute-phase` | Execute plan tasks with TL domain workflows |
     | `/makeit:verify-phase` | Goal-backward check on phase output + Gate 3 |
     | `/makeit:verify-work` | Validate ALL sprint deliverables against SPECS |
-    | `/makeit:complete` | Package deliverables, git sync, Dev FE/BE handoff |
+    | `/makeit:complete` | Package deliverables, git sync, Dev FE/BE handoff (Mode 1) or PO handoff (Mode 2) |
 
     **Sprint Management:**
     | Command | Description |
@@ -30,6 +30,7 @@ Display all available Techlead commands with descriptions, organized by category
     | `/makeit:add-phase` | Add phase to end of roadmap |
     | `/makeit:insert-phase` | Insert urgent phase (decimal numbering) |
     | `/makeit:remove-phase` | Remove future phase + renumber |
+    | `/makeit:update-scope` | Update task scope after handoff (sender only) |
 
     **Support:**
     | Command | Description |
@@ -50,6 +51,7 @@ Display all available Techlead commands with descriptions, organized by category
     | `/makeit:resume-work` | Restore context from saved state |
     | `/makeit:progress` | Sprint progress with deliverable status |
     | `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+    | `/makeit:sync-scope` | Pull scope changes from upstream sender |
 
     **Knowledge Base:**
     | Command | Description |
@@ -62,6 +64,6 @@ Display all available Techlead commands with descriptions, organized by category
 </process>
 
 <success_criteria>
-- [ ] All 25 commands displayed with descriptions
+- [ ] All 28 commands displayed with descriptions
 - [ ] Commands organized by category
 </success_criteria>

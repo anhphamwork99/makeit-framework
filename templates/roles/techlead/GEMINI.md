@@ -18,11 +18,14 @@
 
 ## Role: Techlead
 
-Techlead là cầu nối giữa BA stories và Dev execution — chuyển user stories thành technical tasks, thiết kế giải pháp, review code và verify quality. Techlead owns **Stage 3** trong pipeline.
+Techlead là cầu nối giữa BA stories và Dev execution — chuyển user stories thành technical tasks, thiết kế giải pháp, review code và verify quality. Techlead operates in **dual mode**:
+
+- **Mode 1 (Stage 3):** Nhận BA stories → break thành FE/BE tasks → handoff to Dev
+- **Mode 2 (Stage 5):** Nhận Dev code → review → deploy → handoff kết quả cho PO
 
 ### Sprint Lifecycle
 
-TL tasks follow the Sprint lifecycle with 9 stage commands: **clarify → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete**
+TL tasks follow the Sprint lifecycle with 9 stage commands: **start-my-tasks → discuss-phase → show-phase-approach → research-phase → plan-phase → execute-phase → verify-phase → verify-work → complete**
 
 - IDE acts as orchestrator — routes commands to skills, manages state
 - Complex tasks spawn **sub-agents** for fresh context (see Sub-agents section below)
@@ -33,11 +36,11 @@ TL tasks follow the Sprint lifecycle with 9 stage commands: **clarify → discus
 
 | Stage | Exit When |
 |-------|----------|
-| Clarify | SPECS.md created, ROADMAP.md with phases defined, STATE.md initialized |
+| Start My Tasks | MY-TASKS.md created, workspace scoped to assigned tasks (Mode 1 from BA, Mode 2 from Dev) |
 | Discuss & Plan | PLAN.md ready for execution |
 | Execute | All phase deliverables created |
 | Verify | Phase deliverables verified, quality checks passed. Max 1 revision loop |
-| Complete | Output delivered to Dev FE/BE, sprint archived |
+| Complete | Output delivered to Dev FE/BE (Mode 1) or PO (Mode 2), sprint archived |
 
 ## Skills
 
@@ -62,7 +65,7 @@ Skill hub: `@skills/makeit-techlead/SKILL.md`
 
 | Command | Mô tả |
 |---------|-------|
-| `/makeit:clarify` | Đọc Lark Sprint issue → tạo sprint workspace + SPECS.md + ROADMAP.md |
+| `/makeit:start-my-tasks` | Select tasks from BA handoff (Mode 1) or review Dev handoff (Mode 2) |
 | `/makeit:discuss-phase` | Gather context via adaptive questioning trước khi plan |
 | `/makeit:show-phase-approach` | Agent đề xuất approach → user approve trước khi plan |
 | `/makeit:research-phase` | Deep research technical unknowns (optional, spawns researcher) |
@@ -79,6 +82,7 @@ Skill hub: `@skills/makeit-techlead/SKILL.md`
 | `/makeit:add-phase` | Thêm phase vào cuối ROADMAP |
 | `/makeit:insert-phase` | Chèn phase giữa các phases hiện tại (decimal) |
 | `/makeit:remove-phase` | Xóa future phase + renumber |
+| `/makeit:update-scope` | Update task scope after handoff (sender only) |
 
 ### Support Commands
 
@@ -96,6 +100,7 @@ Skill hub: `@skills/makeit-techlead/SKILL.md`
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 | `/makeit:progress` | Xem sprint progress với deliverable status |
 | `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+| `/makeit:sync-scope` | Pull scope changes from upstream sender |
 
 ## Rules
 
@@ -142,11 +147,13 @@ Product Memory System cung cấp trí nhớ dài hạn across sprints.
 ## Pipeline Position
 
 ```
-┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────┐
-│  Design  │───▶│  BA      │───▶│ ★ Techlead ★ │───▶│  FE/BE   │───▶│  Review  │
-│  + PO    │    │ (Stage 2)│    │  (Stage 3)   │    │ (Stage 4)│    │ (Stage 5)│
-│ (Stage 1)│    └──────────┘    └──────────────┘    └──────────┘    └──────────┘
-└──────────┘
+┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  PO +    │───▶│  BA      │───▶│ ★ Techlead ★ │───▶│  FE/BE   │───▶│ ★ TL Code  ★ │───▶│  PO Review   │
+│ Designer │    │ (Stage 2)│    │  (Stage 3)   │    │ (Stage 4)│    │  Review      │    │  (Stage 6)   │
+│ (Stage 1)│    └──────────┘    │  Mode 1:     │    └──────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────┘                    │  Task Break  │                    │  Mode 2:     │
+                                └──────────────┘                    │  Review+Deploy│
+                                                                    └──────────────┘
 ```
 
 **Boundaries:**

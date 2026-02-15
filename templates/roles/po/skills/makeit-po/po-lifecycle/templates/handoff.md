@@ -16,15 +16,18 @@
 
 ## Summary
 
-[1-2 câu tóm tắt: PO đã chuẩn bị gì — backlog items, sprint goal, design coordination. BA cần breakdown stories, Designer cần prepare designs.]
+[1 câu tóm tắt: PO đã chuẩn bị backlog items và sprint goal — BA cần breakdown stories, Designer cần prepare designs.]
 
 ---
 
-## Sprint Goal
+## What I've Done
 
-[Mục tiêu business chính của sprint — 1-2 câu. Copy từ SPECS.md.]
+- [x] {Backlog item 1 — business goal} — `deliverables/backlog/TASK-NNN-{feature}.md`
+- [x] {Backlog item 2 — business goal} — `deliverables/backlog/TASK-NNN-{feature}.md`
+- [x] {Sprint plan defined} — `deliverables/SPRINT-PLAN-{sprint}.md`
+- [x] {Sprint goal clarified} — Goal: {1-sentence business objective}
 
-> Agent: Nếu goal đã thay đổi mid-sprint, ghi goal hiện tại + note thay đổi.
+> Agent: Mỗi deliverable 1 dòng checklist + file path. PO verification = ✅ reviewed and approved.
 
 ---
 
@@ -34,28 +37,12 @@
 
 ---
 
-## Deliverable Paths
-
-> BA/Designer agent: Dùng `view_file` để đọc từng file bên dưới.
-
-| # | Path | Type | Description |
-|---|------|------|-------------|
-| 1 | `deliverables/backlog/TASK-NNN-{feature}.md` | Backlog Item | [Brief — business goal 1 câu] |
-| 2 | `deliverables/backlog/TASK-NNN-{feature}.md` | Backlog Item | [Brief — business goal 1 câu] |
-| 3 | `deliverables/SPRINT-PLAN-{sprint}.md` | Sprint Plan | [Brief description] |
-
 ## Backlog Items Summary
 
 | Task | Goal | Priority | Design Status |
 |------|------|----------|---------------|
 | TASK-NNN | [1-sentence business goal — answer WHY] | P1 | Ready / In Progress / Not Started |
 | TASK-NNN | [1-sentence business goal] | P2 | Ready / In Progress / Not Started |
-
-## Priority Rationale
-
-- **P1 items:** [Tại sao must-have — business impact + urgency]
-- **P2 items:** [Tại sao should-have — important nhưng có thể defer]
-- **P3 items:** [Tại sao nice-to-have — nếu có capacity]
 
 ## Design Coordination
 
@@ -70,18 +57,39 @@
 
 > Ghi chú: BA sẽ identify thêm edge cases trong story breakdown (Stage 2).
 
-## PO Context Notes
+---
 
-- [Context quan trọng — ví dụ: stakeholder đã confirm Y approach]
-- [Decisions — ví dụ: đã quyết định KHÔNG include feature Z trong scope]
-- [Adjustments — ví dụ: timeline adjusted do dependency X]
+## Tasks For Receiver
 
-## External Links
+> AI Agent tự fill tất cả — human chỉ review + approve.
+
+| # | Task | Lark ID | Assignee | Dependencies |
+|---|------|---------|----------|--------------|
+| 1 | {Analyze backlog item TASK-NNN — breakdown into user stories} | {LARK-XXXX} | {Display name} | — |
+| 2 | {Document user flows for {feature}} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+| 3 | {Prepare Figma designs for {feature}} | {LARK-XXXX} | {Display name} | — |
+
+> ⚠️ Nếu Lark MCP không available, ghi "Pending" thay vì Lark IDs. Retry sau hoặc tạo manual.
+
+---
+
+## Shared Context
+
+### Key Decisions
+
+- {Decision 1 — ví dụ: stakeholder confirmed Y approach}
+- {Decision 2 — ví dụ: đã quyết định KHÔNG include feature Z trong scope}
+- {Decision 3 — ví dụ: P1 items must-have vì business impact + urgency}
+
+### Links
 
 | Type | Link |
 |------|------|
 | Lark Sprint Issue | [Lark link] |
 | Figma | [Figma links nếu có] |
+| Previous Handoff | [path to upstream handoff nếu có] |
+
+---
 
 ## Gate 1 Sender Status (PO Items 3-5)
 

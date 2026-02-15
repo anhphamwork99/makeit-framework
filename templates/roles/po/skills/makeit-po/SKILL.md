@@ -71,7 +71,7 @@ Dual-Mode Operation:
 | review-feedback | `po-verification/templates/` | review-pr workflow |
 | handoff | `po-lifecycle/templates/` | stage-complete |
 
-## All Commands (14)
+## All Commands (16)
 
 ### Stage Commands (6)
 
@@ -84,7 +84,13 @@ Dual-Mode Operation:
 | `/makeit:verify-work` | Validate ALL deliverables against SPECS.md |
 | `/makeit:complete` | Git sync + BA/Designer handoff + Telegram draft |
 
-### Support Commands (6)
+### Sprint Management Commands (1)
+
+| Command | Description |
+|---------|-------------|
+| `/makeit:update-scope` | Update task scope after handoff (sender only) |
+
+### Support Commands (7)
 
 | Command | Description |
 |---------|-------------|
@@ -94,6 +100,7 @@ Dual-Mode Operation:
 | `/makeit:estimate` | Estimate backlog item complexity |
 | `/makeit:lesson-learned` | Capture improvement opportunities |
 | `/makeit:debug` | Systematic debugging for workflow issues |
+| `/makeit:sync-scope` | Pull scope changes from upstream sender |
 
 ### Lifecycle Commands (2)
 
@@ -110,12 +117,13 @@ Dual-Mode Operation:
 ## PO Pipeline Position
 
 ```
-┌──────────────┐
-│  ★ PO ★      │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐
-│  + Designer  │───▶│  BA      │───▶│ Techlead │───▶│  FE/BE   │───▶│ ★ Review ★   │
-│  (Stage 1)   │    │ (Stage 2)│    │ (Stage 3)│    │ (Stage 4)│    │ PO approve   │
-└──────────────┘    └──────────┘    └──────────┘    └──────────┘    │ (Stage 5)    │
-                                                                    └──────────────┘
+┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│  ★ PO ★      │───▶│  BA      │───▶│  Techlead    │───▶│  FE/BE   │───▶│  TL Code     │───▶│ ★ PO Review ★│
+│  + Designer  │    │ (Stage 2)│    │  (Stage 3)   │    │ (Stage 4)│    │  Review      │    │  (Stage 6)   │
+│  (Stage 1)   │    └──────────┘    │  Mode 1:     │    └──────────┘    │  (Stage 5)   │    └──────────────┘
+└──────────────┘                    │  Task Break  │                    │  Mode 2:     │
+                                    └──────────────┘                    │  Review+Deploy│
+                                                                        └──────────────┘
 ```
 
 **Role boundaries:**

@@ -13,7 +13,7 @@ Display all available FE commands organized by category for quick reference.
     📖 Dev FE Commands
 
     ━━━ Stage Commands (Primary) ━━━
-    /makeit:clarify          Read Lark Sprint → create workspace + Gate 3
+    /makeit:start-my-tasks   Select FE tasks from TL handoff → create workspace
     /makeit:discuss-phase    Gather context via adaptive questioning
     /makeit:show-phase-approach  Surface Agent assumptions for approval
     /makeit:research-phase   Deep research (spawns researcher)
@@ -21,7 +21,7 @@ Display all available FE commands organized by category for quick reference.
     /makeit:execute-phase    Execute plan tasks (implement, compare-ui)
     /makeit:verify-phase     Goal-backward + Gate 4 verification
     /makeit:verify-work      Final deliverable validation vs SPECS.md
-    /makeit:complete         PR creation + Designer/Techlead handoff
+    /makeit:complete         PR creation + TL code review handoff
 
     ━━━ Sprint Management ━━━
     /makeit:add-phase        Add phase to end of ROADMAP
@@ -45,6 +45,7 @@ Display all available FE commands organized by category for quick reference.
     /makeit:health-check     Scan workspace for broken references
     /makeit:what-new         Check and apply framework updates
     /makeit:check-handoff    Check for incoming handoff from upstream role
+    /makeit:sync-scope       Pull scope changes from upstream TL
 
     ⚠️ STOP Mechanism: AI pauses before destructive operations
        (file deletion, force push, shared dependency changes)

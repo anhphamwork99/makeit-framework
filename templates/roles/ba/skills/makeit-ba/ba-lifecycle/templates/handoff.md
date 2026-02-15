@@ -15,26 +15,21 @@
 
 ## Summary
 
-[1-2 câu tóm tắt: BA đã phân tích gì — user stories, user flows, edge cases. TL cần review stories và break thành FE/BE tasks.]
+[1 câu tóm tắt: BA đã phân tích user stories, user flows, và edge cases — TL cần review và break thành FE/BE tasks.]
 
 ---
 
-## Sprint Goal
+## What I've Done
 
-[Goal statement từ SPECS.md — mục tiêu business chính của sprint này.]
+- [x] {User story US-NNN analyzed} — `deliverables/stories/US-NNN-{feature}.md`
+- [x] {User story US-NNN analyzed} — `deliverables/stories/US-NNN-{feature}.md`
+- [x] {User flow documented} — `deliverables/flows/FLOW-{feature}.md`
+- [x] {Figma analysis completed} — `deliverables/analysis/ANALYSIS-{feature}.md`
+- [x] {Edge cases identified and integrated into ACs}
+
+> Agent: Mỗi deliverable 1 dòng checklist + file path.
 
 ---
-
-## Deliverable Paths
-
-> TL agent: Dùng `view_file` để đọc từng file bên dưới.
-
-| # | Path | Type | Description |
-|---|------|------|-------------|
-| 1 | `deliverables/stories/US-NNN-{feature}.md` | User Story | [Brief description] |
-| 2 | `deliverables/stories/US-NNN-{feature}.md` | User Story | [Brief description] |
-| 3 | `deliverables/flows/FLOW-{feature}.md` | User Flow | [Brief description] |
-| 4 | `deliverables/analysis/ANALYSIS-{feature}.md` | Figma Analysis | [Brief description] |
 
 ## Stories Overview
 
@@ -46,27 +41,43 @@
 ## Edge Cases Flagged
 
 | Category | Edge Case | Priority | In Story AC? |
-|----------|-----------|----------|-------------|
+|----------|-----------|----------|--------------|
 | [Data/State/UI/Business/Error] | [Description] | [Critical/Important/Nice] | [Yes — US-NNN / No] |
 
-## Key Decisions Made
+---
 
-- [Decision 1 — scope, interpretation, edge case handling]
-- [Decision 2 — design vs requirement trade-off]
+## Tasks For Receiver
 
-## Questions for Techlead
+> AI Agent tự fill tất cả — human chỉ review + approve.
 
-- [Open question 1 — needs technical decision]
-- [Clarification 2 — BA scope vs TL scope]
+| # | Task | Lark ID | Assignee | Dependencies |
+|---|------|---------|----------|--------------|
+| 1 | {Break down US-NNN into FE/BE tasks} | {LARK-XXXX} | {Display name} | — |
+| 2 | {Design API contract for {feature}} | {LARK-XXXX} | {Display name} | LARK-XXXX |
+| 3 | {Validate edge case handling approach} | {LARK-XXXX} | {Display name} | — |
+| 4 | {Estimate task complexity and assign to FE/BE} | {LARK-XXXX} | {Display name} | LARK-XXXX |
 
-## External Links
+> ⚠️ Nếu Lark MCP không available, ghi "Pending" thay vì Lark IDs. Retry sau hoặc tạo manual.
+
+---
+
+## Shared Context
+
+### Key Decisions
+
+- {Decision 1 — scope, interpretation, edge case handling}
+- {Decision 2 — design vs requirement trade-off}
+
+### Links
 
 | Type | Link |
 |------|------|
 | Figma | [Main Figma link] |
 | Lark Sprint Issue | [Lark Sprint issue link] |
 | PO Goal | [Lark-ID or goal reference] |
-| PO Handoff (received) | [Path to PO HANDOFF.md đã nhận] |
+| Previous Handoff | [Path to PO HANDOFF.md đã nhận] |
+
+---
 
 ## Gate 2 Status
 
@@ -78,13 +89,6 @@
 - ✅ Source context referenced
 
 **Verdict:** PASS — ready for Techlead task breakdown
-
-## Next Steps for Techlead
-
-1. [Review stories and break into FE/BE tasks]
-2. [Validate edge case handling approach]
-3. [Check API dependency availability]
-4. [Estimate task complexity and assign to FE/BE]
 
 ## Git Path
 
