@@ -466,3 +466,39 @@ if [ -d "$TEMPLATES_DIR/addons/hitl" ]; then
   prompt_hitl_addon "$target_dir"
 fi
 
+# ─── Serena MCP (Optional — Code Intelligence) ───
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🔮 Serena MCP — Symbol-level Code Intelligence"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Serena provides IDE-like semantic tools for AI agents:"
+echo "  - Find symbols, trace references, rename across codebase"
+echo "  - Impact analysis for code reviews"
+echo "  - Enhanced codebase mapping"
+echo ""
+echo "Requires: uv (Python package manager)"
+echo "Optional: Framework works fully without Serena."
+echo ""
+read -rp "Setup Serena MCP? (y/N): " setup_serena
+
+if [[ "$setup_serena" =~ ^[Yy]$ ]]; then
+  # Check if uv is installed
+  if command -v uv &> /dev/null; then
+    echo "✅ uv found"
+  else
+    echo "❌ uv not found. Install with: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    echo "   After installing uv, run the serena-workspace setup skill."
+  fi
+
+  # Copy MCP config template
+  if [ -f "$TEMPLATES_DIR/mcp/serena-mcp.json" ]; then
+    echo "📄 Serena MCP config template: templates/mcp/serena-mcp.json"
+    echo "   Copy this to your IDE's MCP settings and update <PROJECT_PATH>"
+  fi
+
+  echo ""
+  echo "💡 After setup, run the serena-workspace skill for full configuration."
+else
+  echo "⏭️  Skipping Serena MCP (can be set up later via serena-workspace skill)"
+fi
+
