@@ -111,6 +111,9 @@ Skill hub: `@skills/makeit-techlead/SKILL.md`
 
 - **Lark MCP** — Giao tiếp với Lark: gửi messages, đọc sprint issues (Bitable), quản lý tasks, đọc documents
 - Skill: `@.agent/skills/lark-workspace/SKILL.md` | Config template: `templates/mcp/lark-mcp.json`
+- **Serena MCP** (Optional) — Symbol-level code intelligence: find symbols, trace references, rename across codebase, impact analysis for code review
+- Skill: `@.agent/skills/serena-workspace/SKILL.md` | Config template: `templates/mcp/serena-mcp.json`
+- TL uses Serena's `find_referencing_symbols` in `review-code` workflow for impact analysis
 
 ## Knowledge Base
 

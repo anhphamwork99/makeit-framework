@@ -111,6 +111,9 @@ Skill hub: `@skills/makeit-dev-fe/SKILL.md`
 - Skill: `@.agent/skills/figma-official/SKILL.md` | Config template: `templates/mcp/figma-official-mcp.json`
 - **Lark MCP** — Giao tiếp với Lark: gửi messages, đọc sprint issues (Bitable), quản lý tasks
 - Skill: `@.agent/skills/lark-workspace/SKILL.md` | Config template: `templates/mcp/lark-mcp.json`
+- **Serena MCP** (Optional) — Symbol-level code intelligence: find symbols, trace references, rename across codebase, semantic code navigation
+- Skill: `@.agent/skills/serena-workspace/SKILL.md` | Config template: `templates/mcp/serena-mcp.json`
+- Dev FE uses Serena for refactoring, symbol search, and code navigation during implementation
 
 ## Knowledge Base
 
