@@ -37,11 +37,12 @@ MakeIt Framework là bộ công cụ giúp team phần mềm vận hành với A
 ## ✨ Features
 
 - **🎭 5 Roles** — PO, BA, Techlead, Dev FE, Dev BE — mỗi role có bộ skills riêng
-- **⚡ Sprint Lifecycle** — 9 stage commands: clarify → plan → execute → verify → complete
+- **⚡ Sprint Lifecycle** — 9 stage commands: start → plan → execute → verify → complete
 - **🧠 Knowledge Base** — Product memory system across sprints
 - **🔄 HITL Spawning** — Spawn sub-agents trong Antigravity IDE sessions riêng
 - **📐 Figma MCP** — Agent đọc design trực tiếp từ Figma (BA, Dev FE)
-- **💬 Lark Integration** — Đồng bộ tasks và communication qua Lark MCP
+- **💬 Lark Integration** — Task tracking, communication, scope management qua Lark MCP
+- **🧩 Serena MCP** — Symbol-level code intelligence cho TL, Dev FE, Dev BE (optional)
 - **📖 Wiki** — Tài liệu đầy đủ cho workflows, conventions, tool guides
 
 ---
@@ -86,20 +87,21 @@ Agent tự động nhận diện role và quy trình từ GEMINI.md
 
 | Role | Stage | Mô tả |
 |------|-------|--------|
-| **PO** (Product Owner) | 1 & 5 | Tạo backlog items, review PRs, final approval |
+| **PO** (Product Owner) | 1 & 6 | Tạo backlog items, review kết quả deploy |
 | **BA** (Business Analyst) | 2 | Phân tích design + PO goals → user stories cho Techlead |
-| **Techlead** | 3 | Break stories thành FE/BE tasks, thiết kế solution, review code |
+| **Techlead** | 3 & 5 | Break stories thành FE/BE tasks, review code, deploy |
 | **Dev FE** (Frontend) | 4 | Implement UI từ Figma, handle states, responsive behavior |
 | **Dev BE** (Backend) | 4 | Implement APIs, database, business logic, security |
 
 ### Pipeline
 
 ```
-┌──────────┐    ┌──────┐    ┌──────────┐    ┌─────────┐    ┌────────┐
-│ PO +     │───▶│  BA  │───▶│ Techlead │───▶│ Dev     │───▶│ Review │
-│ Designer │    │      │    │          │    │ FE / BE │    │ + PO   │
-│ Stage 1  │    │  S2  │    │    S3    │    │   S4    │    │  S5    │
-└──────────┘    └──────┘    └──────────┘    └─────────┘    └────────┘
+┌──────────┐    ┌──────┐    ┌──────────┐    ┌─────────┐    ┌─────────┐    ┌────────┐
+│ PO +     │───▶│  BA  │───▶│ Techlead │───▶│ Dev     │───▶│ TL Code │───▶│   PO   │
+│ Designer │    │      │    │ Mode 1:  │    │ FE / BE │    │ Review  │    │ Review │
+│ Stage 1  │    │  S2  │    │ TaskBreak│    │   S4    │    │ Mode 2  │    │   S6   │
+└──────────┘    └──────┘    │   S3     │    └─────────┘    │   S5    │    └────────┘
+                            └──────────┘                   └─────────┘
 ```
 
 ---
@@ -127,9 +129,10 @@ your-project/
 | MCP Server | Roles | Mục đích |
 |------------|-------|----------|
 | **Figma (Official)** | BA, Dev FE | Đọc design context, extract tokens |
-| **Lark** | All | Task tracking, team communication |
+| **Lark** | All | Task tracking, team communication, scope management |
+| **Serena** *(optional)* | TL, Dev FE, Dev BE | Symbol-level code intelligence — find symbols, trace references, impact analysis |
 
-> Cấu hình MCP templates nằm trong `templates/mcp/`.
+> Cấu hình MCP templates nằm trong `templates/mcp/`. Xem [Integrations wiki](wiki/integrations/) để biết chi tiết.
 
 ---
 
@@ -141,11 +144,12 @@ Mỗi role có ~20 slash commands. Một số phổ biến:
 |---------|--------|
 | `/makeit:help` | Xem danh sách commands |
 | `/makeit:status` | Trạng thái sprint/task hiện tại |
-| `/makeit:clarify` | Bắt đầu sprint mới — đọc input, tạo SPECS + ROADMAP |
+| `/makeit:start-my-tasks` | Chọn tasks được assign từ handoff |
 | `/makeit:plan-phase` | Lập kế hoạch cho phase hiện tại |
 | `/makeit:execute-phase` | Thực thi plan |
 | `/makeit:verify-work` | Kiểm tra deliverables so với specs |
 | `/makeit:complete` | Hoàn thành sprint, handoff deliverables |
+| `/makeit:check-handoff` | Xem handoff từ upstream role |
 | `/makeit:pause-work` | Lưu context khi tạm dừng |
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 
@@ -161,6 +165,7 @@ Wiki bao gồm:
 - **Workflows** — Sprint ceremonies
 - **Tools** — Git, Figma, Lark, Shopify guides
 - **Reference** — Coding standards, quality gates, handoff format
+- **Integrations** — MCP server setup guides (Serena, Figma, Lark)
 
 ---
 
@@ -180,7 +185,8 @@ makeit-framework/
 │   ├── roles/               ← Per-role workflows
 │   ├── workflows/           ← Sprint ceremonies
 │   ├── tools/               ← Tool guides
-│   └── reference/           ← Standards & conventions
+│   ├── reference/           ← Standards & conventions
+│   └── integrations/        ← MCP integration guides
 └── docs/                    ← 🌐 Web UI (Vercel)
     └── (React + Vite app)
 ```
