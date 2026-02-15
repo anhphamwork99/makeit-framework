@@ -438,6 +438,214 @@ prompt_hitl_addon() {
   done
 }
 
+setup_serena_mcp() {
+  local target_dir="$1"
+  local abs_target
+  abs_target="$(cd "$target_dir" && pwd)"
+
+  echo ""
+  echo "╔══════════════════════════════════════════════════════════════╗"
+  echo "║  🧩 Optional: Serena MCP — Symbol-level Code Intelligence  ║"
+  echo "╚══════════════════════════════════════════════════════════════╝"
+  echo ""
+
+  # Role-specific description
+  case "$role" in
+    techlead)
+      echo "  📌 Recommended cho Techlead"
+      echo ""
+      echo "  Serena cung cấp IDE-like semantic tools cho AI agent:"
+      echo "   • Impact Analysis khi code review — trace xem thay đổi ảnh hưởng đâu"
+      echo "   • Symbol search — tìm functions, classes, references across codebase"
+      echo "   • Enhanced codebase mapping — dependency graph ở symbol level"
+      echo ""
+      echo "  → Agent sẽ tự dùng khi review PR (Stage 5) và map codebase."
+      ;;
+    dev-fe|dev-be)
+      echo "  📌 Recommended cho Developer"
+      echo ""
+      echo "  Serena cung cấp IDE-like semantic tools cho AI agent:"
+      echo "   • Code navigation — find symbols, jump to definition, trace references"
+      echo "   • Refactoring support — rename across codebase, find all usages"
+      echo "   • Hover info — xem type signatures, documentation tại symbol"
+      echo ""
+      echo "  → Agent sẽ tự dùng khi implement code (Stage 4)."
+      ;;
+  esac
+
+  echo ""
+  echo "  ⚙️  Yêu cầu: uv (Python package manager)"
+  echo "  💡 Optional: Framework hoạt động 100% bình thường không có Serena."
+  echo ""
+
+  while true; do
+    read -rp "  Setup Serena MCP? (y/N): " serena_choice
+    serena_choice="${serena_choice:-N}"
+    case "$serena_choice" in
+      [Yy]|[Yy][Ee][Ss]) break ;;
+      [Nn]|[Nn][Oo])
+        echo ""
+        echo "  ⏭️  Skipped. Có thể setup sau bằng serena-workspace skill."
+        echo ""
+        return 0
+        ;;
+      *)
+        echo "  Nhập Y hoặc N."
+        ;;
+    esac
+  done
+
+  echo ""
+  echo "  ── Step 1/5: Kiểm tra Python ──"
+  if command -v python3 &> /dev/null; then
+    local py_version
+    py_version=$(python3 --version 2>&1 | awk '{print $2}')
+    echo "  ✅ Python $py_version"
+  elif command -v python &> /dev/null; then
+    local py_version
+    py_version=$(python --version 2>&1 | awk '{print $2}')
+    echo "  ✅ Python $py_version"
+  else
+    echo "  ❌ Python chưa cài. Serena cần Python 3.10+."
+    echo "     Cài Python: https://www.python.org/downloads/"
+    echo "     Sau khi cài xong, chạy lại install hoặc dùng serena-workspace skill."
+    echo ""
+    return 0
+  fi
+
+  echo ""
+  echo "  ── Step 2/5: Kiểm tra uv ──"
+  if command -v uv &> /dev/null; then
+    local uv_version
+    uv_version=$(uv --version 2>&1 | head -1)
+    echo "  ✅ $uv_version"
+  else
+    echo "  ❌ uv chưa cài."
+    echo ""
+    read -rp "  Cài uv ngay bây giờ? (Y/n): " install_uv
+    install_uv="${install_uv:-Y}"
+    if [[ "$install_uv" =~ ^[Yy] ]]; then
+      echo "  📦 Đang cài uv..."
+      if curl -LsSf https://astral.sh/uv/install.sh | sh 2>&1 | tail -3; then
+        # Source shell profile to get uv in PATH
+        export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+        if command -v uv &> /dev/null; then
+          echo "  ✅ uv installed: $(uv --version 2>&1 | head -1)"
+        else
+          echo "  ⚠️  uv đã cài nhưng chưa có trong PATH."
+          echo "     Mở terminal mới hoặc chạy: source ~/.bashrc (hoặc ~/.zshrc)"
+          echo "     Sau đó dùng serena-workspace skill để hoàn tất setup."
+          echo ""
+          return 0
+        fi
+      else
+        echo "  ❌ Không thể cài uv. Cài manual: https://docs.astral.sh/uv/"
+        echo ""
+        return 0
+      fi
+    else
+      echo "  ⏭️  Skipped. Cài uv trước rồi dùng serena-workspace skill."
+      echo ""
+      return 0
+    fi
+  fi
+
+  echo ""
+  echo "  ── Step 3/5: Pre-download Serena ──"
+  if command -v uvx &> /dev/null; then
+    echo "  📦 Đang download Serena (lần đầu có thể mất 30-60s)..."
+    if uvx --from git+https://github.com/AbanteAI/serena serena --help &> /dev/null; then
+      echo "  ✅ Serena downloaded và cached thành công"
+    else
+      echo "  ⚠️  Download chưa thành công. Agent sẽ tự retry khi kết nối MCP."
+    fi
+  else
+    echo "  ⚠️  uvx không tìm thấy. Serena sẽ được download khi IDE kết nối MCP."
+  fi
+
+  echo ""
+  echo "  ── Step 4/5: Tạo MCP config ──"
+  if [ -f "$TEMPLATES_DIR/mcp/serena-mcp.json" ]; then
+    # Generate config with real project path
+    local config_content
+    config_content=$(sed "s|<PROJECT_PATH>|$abs_target|g" "$TEMPLATES_DIR/mcp/serena-mcp.json")
+
+    # Save to target directory for reference
+    mkdir -p "$target_dir/.makeit"
+    echo "$config_content" > "$target_dir/.makeit/serena-mcp.json"
+
+    echo "  ✅ Config tạo tại: .makeit/serena-mcp.json"
+    echo ""
+    echo "  📋 Copy nội dung dưới đây vào MCP settings của IDE:"
+    echo ""
+    echo "  ┌────────────────────────────────────────────────"
+    echo "$config_content" | sed 's/^/  │ /'
+    echo "  └────────────────────────────────────────────────"
+    echo ""
+    echo "  💡 Cách thêm vào IDE:"
+    echo "     Antigravity/Cursor: Settings → MCP Servers → paste config vào"
+    echo "     Windsurf: .windsurf/mcp_config.json"
+  else
+    echo "  ⚠️  Template serena-mcp.json không tìm thấy."
+  fi
+
+  echo ""
+  echo "  ── Step 5/5: Tạo Serena project config ──"
+
+  # Auto-detect languages
+  local detected_langs=""
+  [ -f "$target_dir/tsconfig.json" ] || [ -f "$target_dir/package.json" ] && detected_langs="${detected_langs}  - typescript\n"
+  [ -f "$target_dir/pyproject.toml" ] || [ -f "$target_dir/requirements.txt" ] && detected_langs="${detected_langs}  - python\n"
+  [ -f "$target_dir/go.mod" ] && detected_langs="${detected_langs}  - go\n"
+  [ -f "$target_dir/Cargo.toml" ] && detected_langs="${detected_langs}  - rust\n"
+  [ -f "$target_dir/pom.xml" ] || [ -f "$target_dir/build.gradle" ] && detected_langs="${detected_langs}  - java\n"
+
+  if [ -z "$detected_langs" ]; then
+    detected_langs="  - typescript  # Update với ngôn ngữ project của bạn\n"
+    echo "  ⚠️  Không detect được ngôn ngữ — default: typescript"
+  else
+    echo "  🔍 Detected languages: $(echo -e "$detected_langs" | sed 's/  - //g' | tr '\n' ' ')"
+  fi
+
+  local project_name
+  project_name=$(basename "$abs_target")
+
+  mkdir -p "$target_dir/.serena"
+  cat > "$target_dir/.serena/project.yml" << SERENA_EOF
+project_name: $project_name
+languages:
+$(echo -e "$detected_langs")exclude_patterns:
+  - node_modules
+  - .next
+  - dist
+  - build
+  - .git
+  - __pycache__
+  - .makeit
+  - .planning
+SERENA_EOF
+
+  echo "  ✅ Created: .serena/project.yml"
+
+  # Summary
+  echo ""
+  echo "  ╔══════════════════════════════════════════════════╗"
+  echo "  ║  ✅ Serena MCP Setup Complete                   ║"
+  echo "  ╚══════════════════════════════════════════════════╝"
+  echo ""
+  echo "  📁 Files tạo:"
+  echo "     • .makeit/serena-mcp.json    — MCP config (copy vào IDE)"
+  echo "     • .serena/project.yml        — Serena project config"
+  echo ""
+  echo "  🚀 Bước tiếp theo:"
+  echo "     1. Copy MCP config (ở trên) vào IDE settings"
+  echo "     2. Restart IDE để kết nối Serena MCP"
+  echo "     3. Agent sẽ TỰ ĐỘNG detect và dùng Serena khi cần"
+  echo ""
+  echo "  📖 Chi tiết: wiki/integrations/serena-mcp.md"
+  echo ""
+}
+
 # ============================================================
 # Main
 # ============================================================
@@ -467,38 +675,8 @@ if [ -d "$TEMPLATES_DIR/addons/hitl" ]; then
 fi
 
 # ─── Serena MCP (Optional — Code Intelligence) ───
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🔮 Serena MCP — Symbol-level Code Intelligence"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Serena provides IDE-like semantic tools for AI agents:"
-echo "  - Find symbols, trace references, rename across codebase"
-echo "  - Impact analysis for code reviews"
-echo "  - Enhanced codebase mapping"
-echo ""
-echo "Requires: uv (Python package manager)"
-echo "Optional: Framework works fully without Serena."
-echo ""
-read -rp "Setup Serena MCP? (y/N): " setup_serena
-
-if [[ "$setup_serena" =~ ^[Yy]$ ]]; then
-  # Check if uv is installed
-  if command -v uv &> /dev/null; then
-    echo "✅ uv found"
-  else
-    echo "❌ uv not found. Install with: curl -LsSf https://astral.sh/uv/install.sh | sh"
-    echo "   After installing uv, run the serena-workspace setup skill."
-  fi
-
-  # Copy MCP config template
-  if [ -f "$TEMPLATES_DIR/mcp/serena-mcp.json" ]; then
-    echo "📄 Serena MCP config template: templates/mcp/serena-mcp.json"
-    echo "   Copy this to your IDE's MCP settings and update <PROJECT_PATH>"
-  fi
-
-  echo ""
-  echo "💡 After setup, run the serena-workspace skill for full configuration."
-else
-  echo "⏭️  Skipping Serena MCP (can be set up later via serena-workspace skill)"
+# Only offer for coding roles (TL, Dev FE, Dev BE)
+if [[ "$role" == "techlead" || "$role" == "dev-fe" || "$role" == "dev-be" ]]; then
+  setup_serena_mcp "$target_dir"
 fi
 
