@@ -13,6 +13,7 @@ This is the quality gate between Dev implementation and PO result review. TL ens
 - `@tl-execution/templates/code-review.md` — Code review checklist template
 - `@tl-lifecycle/templates/handoff-to-po.md` — TL → PO handoff template (Mode 2)
 - `@_shared/references/quality-gates.md` — Gate 5a standards
+- `@serena-workspace/references/tools-reference.md` — Serena MCP tools (optional — for impact analysis)
 </required_reading>
 
 <rules>
@@ -49,6 +50,61 @@ This is the quality gate between Dev implementation and PO result review. TL ens
     📄 Dev Self-Review Summary:
     {summary from handoff}
     ```
+  </step>
+
+  <step name="impact_analysis">
+    **Optional — Serena MCP Enhanced**
+
+    > This step runs only when Serena is configured. If Serena is not available, skip entirely and proceed to `code_review`. This step is advisory — TL makes all final decisions.
+
+    **1. Detect Serena availability:**
+    ```
+    Check if `.serena/project.yml` exists in project root.
+    If NOT found:
+      Display: "ℹ️ Serena not configured — skipping impact analysis"
+      → Skip to code_review step
+    ```
+
+    **2. Extract changed symbols from PR diff:**
+    - Get list of changed files from PR diff (from `receive_pr_context`)
+    - For each changed file: run `get_symbols_overview` to list symbols in that file
+    - Cross-reference with Git diff hunks to identify which symbols were actually modified
+
+    **3. Trace impact with `find_referencing_symbols`:**
+    - For each modified symbol (function, class, type):
+      - Run `find_referencing_symbols` to find all callers/consumers
+      - Categorize by risk:
+        - **🟢 Low** — consumers in same module only
+        - **🟡 Medium** — 1-3 cross-module consumers
+        - **⚠️ High** — 4+ cross-module consumers
+    - Build impact summary
+
+    **4. Display impact report:**
+    ```
+    🔮 Impact Analysis (Serena)
+
+    | Changed Symbol | Type | Consumers | Risk |
+    |---------------|------|-----------|------|
+    | `UserService.createUser` | function | 5 modules | ⚠️ High |
+    | `UserDTO` | type | 3 modules | 🟡 Medium |
+    | `formatDate` | util | 1 module | 🟢 Low |
+
+    ⚠️ High-impact changes: `UserService.createUser` is called by:
+    - src/api/users/route.ts (line 45)
+    - src/api/admin/users.ts (line 23)
+    - src/services/auth.ts (line 89)
+    - src/services/onboarding.ts (line 34)
+    - tests/integration/user.test.ts (line 12)
+
+    💡 Review these callers to verify compatibility.
+    ```
+
+    **5. Store impact data** for use in `code_review` step and `code-review.md` template (section 0).
+
+    **Error handling:**
+    - If any Serena tool call fails → log warning, continue without impact data
+    - Never block the review workflow due to Serena errors
+    - Display: "⚠️ Serena impact analysis failed — continuing with standard review"
   </step>
 
   <step name="code_review">
