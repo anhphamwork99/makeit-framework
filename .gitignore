@@ -1,21 +1,73 @@
 # Dependencies
 node_modules/
-.pnpm-debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
 
 # Build output
 docs/dist/
 docs/content/
 docs/.tanstack/
 
-# OS
-.DS_Store
-Thumbs.db
+# ============================================
+# Workspace-only files (not part of deliverable)
+# ============================================
 
-# IDE
-.idea/
-*.swp
-*.swo
+# GSD Framework (installed per-project)
+.agent/
 
-# Environment
-.env
-.env.local
+# Planning & project management
+.planning/
+
+# Sprint data
+.makeit/
+
+# Workspace orchestrator config
+GEMINI.md
+
+# Legacy git history (archive of ai-team-blueprint)
+.git-archive/
+
+# Legacy web UI dev directory (merged into docs/)
+makeit-framework-webui/
+
+# Legacy root-level files (from ai-team-blueprint era)
+playground/
+src/
+public/
+index.html
+index.html''
+components.json
+commitlint.config.js
+eslint.config.js
+postcss.config.js
+tailwind.config.js
+vite.config.ts
+tsconfig.json
+tsconfig.app.json
+tsconfig.node.json
+package.json
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+.husky/
+.github/
+
+# Vercel
+.vercel/
