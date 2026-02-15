@@ -15,6 +15,32 @@
 
 ---
 
+## 0. Impact Analysis (Optional — Serena)
+
+> This section is auto-populated when Serena MCP is available. Skip if not using Serena.
+
+### Changed Symbols
+
+| Symbol | Type | File | Consumers |
+|--------|------|------|-----------|
+| | | | |
+
+### High-Impact Changes (cross-module)
+
+| Symbol | Affected Modules | Risk Assessment |
+|--------|-----------------|-----------------|
+| | | |
+
+### Review Recommendations
+
+- [ ] Callers of changed functions verified for compatibility
+- [ ] Type changes propagated correctly to consumers
+- [ ] No broken references detected by Serena
+
+> 💡 If Serena is not available, skip this section. Impact analysis is advisory — TL makes final decisions.
+
+---
+
 ## Architecture Compliance
 
 | # | Check Item | Status | Notes |
