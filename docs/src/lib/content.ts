@@ -66,6 +66,7 @@ const SECTION_MAP: Record<string, string> = {
     workflows: "workflows",
     tools: "tools",
     reference: "reference",
+    integrations: "integrations",
 };
 
 /**
@@ -85,6 +86,7 @@ const SECTION_ORDER: Record<string, string[]> = {
         "lifecycle-types",
         "plan-task-limits",
     ],
+    integrations: ["README", "serena-mcp"],
 };
 
 /**

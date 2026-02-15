@@ -78,6 +78,7 @@ export const sectionLabels: Record<string, string> = {
     workflows: "Sprint",
     tools: "Công cụ",
     reference: "Chuẩn mực",
+    integrations: "Tích hợp",
 };
 
 /**

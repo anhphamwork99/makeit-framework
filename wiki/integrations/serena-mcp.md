@@ -19,19 +19,34 @@ Serena sử dụng LSP (Language Server Protocol) backends để phân tích cod
 
 ## Setup
 
-### Prerequisites
+### Cách 1: Qua Install Script (Recommended)
+
+Khi chạy `bash templates/install.sh` và chọn role **Techlead**, **Dev FE**, hoặc **Dev BE**, script sẽ hỏi setup Serena MCP với:
+
+- Auto-detect Python và uv
+- Cài uv nếu chưa có
+- Pre-download Serena
+- Tạo `.makeit/serena-mcp.json` với project path thật
+- Tạo `.serena/project.yml` với auto-detected languages
+
+> Chỉ cần copy MCP config vào IDE settings → restart → done!
+
+### Cách 2: Manual Setup
+
+#### Prerequisites
 
 - `uv` installed: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
-### Quick Start
+#### Steps
 
 1. Copy `templates/mcp/serena-mcp.json` to your IDE's MCP config
 2. Update `<PROJECT_PATH>` with your project root
-3. Run the serena-workspace skill for full setup
+3. Create `.serena/project.yml` (see Configuration section below)
+4. Restart IDE
 
-### Detailed Setup
+### Detailed Guide
 
-See `.agent/skills/serena-workspace/workflows/setup.md` for step-by-step guide including:
+See `.agent/skills/serena-workspace/workflows/setup.md` for step-by-step including:
 - uv installation verification
 - Serena MCP config setup
 - Project configuration (`.serena/project.yml`)
