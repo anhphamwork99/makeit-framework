@@ -20,10 +20,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Build output
-docs/dist/
-docs/content/
-docs/.tanstack/
+# Build output (none — docs moved to makeit-docs repo)
 
 # ============================================
 # Workspace-only files (not part of deliverable)
@@ -71,3 +68,6 @@ pnpm-workspace.yaml
 
 # Vercel
 .vercel/
+# Deprecated — migrated to makeit-docs repo
+docs/
+wiki/

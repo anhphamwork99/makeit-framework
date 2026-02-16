@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/Banner.png" alt="MakeIt Framework" width="600">
+  <strong style="font-size: 2em;">🤖 MakeIt Framework</strong>
 </p>
 
 <p align="center">
@@ -132,7 +132,7 @@ your-project/
 | **Lark** | All | Task tracking, team communication, scope management |
 | **Serena** *(optional)* | TL, Dev FE, Dev BE | Symbol-level code intelligence — find symbols, trace references, impact analysis |
 
-> Cấu hình MCP templates nằm trong `templates/mcp/`. Xem [Integrations wiki](wiki/integrations/) để biết chi tiết.
+> Cấu hình MCP templates nằm trong `templates/mcp/`. Xem [Integrations](https://makeit-framework.vercel.app/integrations) để biết chi tiết.
 
 ---
 
@@ -180,16 +180,12 @@ makeit-framework/
 │   ├── mcp/                 ← MCP server config templates
 │   ├── VERSION              ← Framework version
 │   └── CHANGELOG.md         ← Release notes
-├── wiki/                    ← 📖 Team documentation
-│   ├── getting-started/     ← Onboarding guides
-│   ├── roles/               ← Per-role workflows
-│   ├── workflows/           ← Sprint ceremonies
-│   ├── tools/               ← Tool guides
-│   ├── reference/           ← Standards & conventions
-│   └── integrations/        ← MCP integration guides
-└── docs/                    ← 🌐 Web UI (Vercel)
-    └── (React + Vite app)
+├── scripts/                 ← 🔧 Helper scripts
+│   └── check-update.sh      ← Version update checker
+└── README.md
 ```
+
+> 📖 Documentation website: [makeit-docs](https://github.com/anhphamwork99/makeit-docs) (separate repo)
 
 ---
 
