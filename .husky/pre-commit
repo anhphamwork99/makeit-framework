@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# ============================================================
+# 🛡️ Pre-commit Guard: Block workspace-only files
+# Ngăn commit files thuộc .agent/, .planning/, .makeit/
+# Đây là development artifacts, không phải deliverables
+# ============================================================
+
+# Lấy danh sách files đang staged (sẽ được commit)
+# Note: "|| true" prevents grep exit code 1 (no match) from
+# triggering sh -e (Husky runs hooks with set -e)
+BLOCKED_FILES=$(git diff --cached --name-only | grep -E '^\.(agent|planning|makeit)/' || true)
+
+if [ -n "$BLOCKED_FILES" ]; then
+  echo ""
+  echo "🛑 BLOCKED: Workspace-only files detected in commit!"
+  echo ""
+  echo "Các files sau thuộc .gitignore và không nên commit:"
+  echo "$BLOCKED_FILES" | sed 's/^/  ❌ /'
+  echo ""
+  echo "💡 Fix:"
+  echo "  git reset HEAD <file>        — unstage file"
+  echo "  git rm --cached <file>       — untrack file khỏi git"
+  echo ""
+  echo "⚠️  Nếu THỰC SỰ cần commit (rất hiếm):"
+  echo "  git commit --no-verify       — bypass hook"
+  echo ""
+  exit 1
+fi

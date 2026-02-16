@@ -66,7 +66,7 @@ package.json
 package-lock.json
 pnpm-lock.yaml
 pnpm-workspace.yaml
-.husky/
+# .husky/ — NOT ignored: pre-commit hook guards workspace files
 .github/
 
 # Vercel
