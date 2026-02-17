@@ -19,7 +19,10 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ## [0.6.0] — 2026-02-17
 
 ### Summary
-Thêm `product/` làm category thứ 5 trong Knowledge Base. Agents giờ scan product docs khi rebuild INDEX.md và được nhắc update INDEX khi thay đổi knowledge files. Kèm theo 4 product knowledge docs cho makeit-framework.
+- Thêm `product/` làm category thứ 5 trong Knowledge Base + 4 shared product docs
+- Rename `/makeit:what-new` → `/makeit:whats-new` (fix typo)
+- `/makeit:whats-new` giờ auto `git pull` blueprint trước khi check → luôn nhận update mới nhất
+- `install.sh` tạo 5 KB categories + copy shared knowledge docs cho workspace mới
 
 ### ✨ New
 
@@ -35,35 +38,56 @@ Thêm `product/` làm category thứ 5 trong Knowledge Base. Agents giờ scan p
 
 | File | Roles | Thay đổi | ⚠️ |
 |------|-------|----------|-----|
-| `_shared/skills/kb-management/_rebuild-index.md` | [ALL] | Thêm `product/` vào scan directories, find command, Quick Stats (4→5 categories) | |
+| `_shared/skills/kb-management/_rebuild-index.md` | [ALL] | Thêm `product/` vào scan dirs + Quick Stats (4→5 categories) | |
 | `_shared/knowledge/INDEX-TEMPLATE.md` | [ALL] | Thêm `Product` row trong template + example | |
 | `{role}/GEMINI.md` | [ALL] | Thêm `product` vào knowledge docs path + INDEX update rule | ⚠️ USER FILE |
-| `.gitignore` | Framework | Un-ignore `.makeit/knowledge/` (shared team resource) | |
+| `_shared/skills/whats-new/whats-new.md` | [ALL] | Rename từ `what-new` + auto git-pull blueprint | |
+| `{role}/workflows/makeit/whats-new.md` | [ALL] | Rename từ `what-new.md` | |
+| `{role}/skills/{skill}/SKILL.md` | [ALL] | Update reference `what-new` → `whats-new` | |
+| `{role}/skills/{skill}/{prefix}-support/help.md` | [ALL] | Update command name in help | |
+| `install.sh` | Framework | Thêm `product/` folder + copy shared knowledge docs + INDEX.md | |
 
 ### 📋 Update Instructions
 
 **Áp dụng cho mỗi role workspace đã cài đặt:**
 
-#### Bước 1: Copy files mới (an toàn)
+> 💡 Thay `{BLUEPRINT}` = path tới makeit-framework repo, `{WORKSPACE}` = path tới project workspace, `{SKILL}` = tên skill folder (vd: `makeit-po`, `makeit-ba`...)
+
+#### Bước 1: Copy knowledge docs vào workspace
 
 ```bash
-# Thay {BLUEPRINT} = path tới makeit-framework repo
-# Thay {WORKSPACE} = path tới project workspace
+# Tạo product/ folder + copy shared docs
+mkdir -p {WORKSPACE}/.makeit/knowledge/product/
+cp {BLUEPRINT}/.makeit/knowledge/product/*.md {WORKSPACE}/.makeit/knowledge/product/
+cp {BLUEPRINT}/.makeit/knowledge/INDEX.md {WORKSPACE}/.makeit/knowledge/INDEX.md
+```
 
-# 1a. Copy _rebuild-index skill (đã update)
+#### Bước 2: Update skills (copy đè — an toàn)
+
+```bash
+# 2a. Copy _rebuild-index (đã thêm product/)
 cp {BLUEPRINT}/templates/roles/_shared/skills/kb-management/_rebuild-index.md \
    {WORKSPACE}/.agent/skills/{SKILL}/_shared/skills/kb-management/_rebuild-index.md
 
-# 1b. Copy INDEX-TEMPLATE (đã update)  
+# 2b. Copy INDEX-TEMPLATE (đã thêm Product row)
 cp {BLUEPRINT}/templates/roles/_shared/knowledge/INDEX-TEMPLATE.md \
    {WORKSPACE}/.agent/skills/{SKILL}/_shared/knowledge/INDEX-TEMPLATE.md
+
+# 2c. Rename what-new → whats-new (skill + workflow)
+rm -rf {WORKSPACE}/.agent/skills/what-new 2>/dev/null
+cp -r {BLUEPRINT}/templates/roles/_shared/skills/whats-new/ {WORKSPACE}/.agent/skills/whats-new/
+
+# 2d. Rename workflow router (thay {ROLE} = po|ba|techlead|dev-fe|dev-be)
+rm -f {WORKSPACE}/.agent/workflows/makeit/what-new.md 2>/dev/null
+cp {BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/whats-new.md \
+   {WORKSPACE}/.agent/workflows/makeit/whats-new.md
 ```
 
-#### Bước 2: Merge thay đổi vào GEMINI.md (⚠️ manual — user đã customize)
+#### Bước 3: Merge thay đổi vào GEMINI.md (⚠️ manual — user đã customize)
 
-Mở `{WORKSPACE}/GEMINI.md`, tìm `## Knowledge Base` section:
+Mở `{WORKSPACE}/GEMINI.md`:
 
-1. Sửa Knowledge docs line:
+1. Tìm `## Knowledge Base` → sửa Knowledge docs line:
 ```markdown
 - **Knowledge docs:** `.makeit/knowledge/{architecture,business,product,technical,operational}/`
 ```
@@ -73,11 +97,7 @@ Mở `{WORKSPACE}/GEMINI.md`, tìm `## Knowledge Base` section:
 > 📝 **Update rule:** Khi tạo, sửa nội dung, hoặc xóa file trong `.makeit/knowledge/`, PHẢI update INDEX.md (qua `/makeit:update-doc` hoặc `/makeit:create-doc`).
 ```
 
-#### Bước 3: Tạo product/ folder (optional — cho projects mới)
-
-```bash
-mkdir -p {WORKSPACE}/.makeit/knowledge/product/
-```
+3. Tìm `/makeit:what-new` → đổi thành `/makeit:whats-new`
 
 ---
 
