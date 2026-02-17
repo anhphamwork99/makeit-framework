@@ -27,13 +27,13 @@ Workspace cần có:
 
 ## Process
 
-### Step 1: Detect Current State
+### Step 1: Detect Current State + Resolve Variables
 
-Đọc thông tin workspace:
+Đọc thông tin workspace và tự động detect tất cả biến cần thiết:
 
 ```
 Required files:
-.makeit/FRAMEWORK-VERSION  → version hiện tại (e.g. "0.4.0")
+.makeit/FRAMEWORK-VERSION  → version hiện tại (e.g. "0.5.0")
 .makeit/BLUEPRINT-PATH     → path tới blueprint repo
 ```
 
@@ -51,7 +51,20 @@ Required files:
    - If pull succeeds → blueprint is now up-to-date
 5. Read `{BLUEPRINT_PATH}/templates/VERSION` → `REMOTE_VERSION`
 6. Read `{BLUEPRINT_PATH}/templates/CHANGELOG.md` → `CHANGELOG`
+7. **Auto-detect workspace variables:**
+   - `WORKSPACE` = workspace root (thư mục chứa `.makeit/`)
+   - `BLUEPRINT` = giá trị từ `.makeit/BLUEPRINT-PATH`
+   - `ROLE` = detect từ `.agent/skills/makeit-{role}/` folder name:
+     - `makeit-po` → ROLE=`po`
+     - `makeit-ba` → ROLE=`ba`
+     - `makeit-techlead` → ROLE=`techlead`
+     - `makeit-dev-fe` → ROLE=`dev-fe`
+     - `makeit-dev-be` → ROLE=`dev-be`
+   - `SKILL` = tên folder skill chính (vd: `makeit-po`, `makeit-ba`...)
+   - Detect bằng: `ls .agent/skills/ | grep makeit-`
 </process>
+
+> ⚠️ Agent PHẢI resolve hết variables **trước khi** hiển thị CHANGELOG instructions cho user. User KHÔNG BAO GIỜ phải tự thay `{BLUEPRINT}`, `{WORKSPACE}`, `{SKILL}`, hay `{ROLE}`.
 
 ### Step 2: Compare Versions
 
@@ -68,9 +81,10 @@ Parse CHANGELOG.md và hiển thị tất cả versions từ LOCAL_VERSION đế
 <display_format>
 ## 📦 What's New
 
-**Workspace:** {workspace path}
+**Workspace:** {WORKSPACE}  ← (đã resolve, không phải placeholder)
 **Your version:** v{LOCAL_VERSION}
 **Latest:** v{REMOTE_VERSION}
+**Role:** {ROLE} | **Skill:** {SKILL}
 
 ---
 
@@ -89,22 +103,13 @@ Parse CHANGELOG.md và hiển thị tất cả versions từ LOCAL_VERSION đế
 ---
 </display_format>
 
-### Step 4: Detect User's Role
-
-Xác định role của workspace hiện tại:
-
-<process>
-1. Read GEMINI.md — look for role indicators
-2. Check `.agent/skills/` — folder name reveals role:
-   - `makeit-ba` → BA
-   - `makeit-dev-be` → Dev BE  
-   - `makeit-dev-fe` → Dev FE
-   - `makeit-po` → PO
-   - `makeit-techlead` → Techlead
-3. Set ROLE and SKILL_NAME accordingly
-4. Set ROLE_PREFIX:
-   - BA → `ba`, Dev BE → `be`, Dev FE → `fe`, PO → `po`, Techlead → `tl`
-</process>
+> 🔑 **Variable Resolution Rule:** Khi hiển thị "Update Instructions" từ CHANGELOG, agent PHẢI thay thế:
+> - `{BLUEPRINT}` → giá trị thực từ `.makeit/BLUEPRINT-PATH`
+> - `{WORKSPACE}` → đường dẫn absolute tới workspace root
+> - `{SKILL}` → tên skill folder detected (vd: `makeit-po`)
+> - `{ROLE}` → role name detected (vd: `po`, `ba`, `techlead`, `dev-fe`, `dev-be`)
+>
+> Kết quả: user nhận được commands **ready-to-run**, chỉ cần copy-paste và chạy.
 
 ### Step 5: Apply Updates (Interactive)
 
