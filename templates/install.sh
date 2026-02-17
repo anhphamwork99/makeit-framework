@@ -14,7 +14,7 @@ TEMPLATES_DIR="$SCRIPT_DIR"
 # Kiểm tra đang chạy từ đúng vị trí
 if [ ! -d "$TEMPLATES_DIR/roles" ]; then
   echo "❌ Lỗi: Không tìm thấy thư mục templates/roles/"
-  echo "   Hãy chạy script từ root của repo ai-team-blueprint:"
+  echo "   Hãy chạy script từ root của repo makeit-framework:"
   echo "   bash templates/install.sh"
   exit 1
 fi
@@ -65,6 +65,16 @@ select_role() {
   echo ""
 }
 
+ask_product_name() {
+  echo "Tên sản phẩm (project) bạn đang phát triển:"
+  echo ""
+  read -rp "  Tên sản phẩm: " product_name
+  product_name="${product_name:-My Product}"
+  echo ""
+  echo "✅ Sản phẩm: $product_name"
+  echo ""
+}
+
 install_role() {
   local target_dir="$1"
   local role_dir="$TEMPLATES_DIR/roles/$role"
@@ -72,10 +82,12 @@ install_role() {
   echo "📦 Đang cài đặt MakeIt AI Workspace..."
   echo ""
 
-  # Step 1: Copy GEMINI.md per role
+  # Step 1: Copy GEMINI.md per role (with product name filled)
   echo "  [1/9] Copy GEMINI.md cho role $role..."
   if [ -f "$role_dir/GEMINI.md" ]; then
-    cp "$role_dir/GEMINI.md" "$target_dir/GEMINI.md"
+    sed "s/\[Tên sản phẩm — cập nhật khi install\]/$product_name/g" \
+      "$role_dir/GEMINI.md" > "$target_dir/GEMINI.md"
+    echo "       Sản phẩm: $product_name"
   else
     echo "  ⚠️  GEMINI.md chưa có cho role $role"
   fi
@@ -665,6 +677,7 @@ SERENA_EOF
 
 show_banner
 select_role
+ask_product_name
 
 # Target directory
 read -rp "Target workspace directory (default: ./): " target_dir
