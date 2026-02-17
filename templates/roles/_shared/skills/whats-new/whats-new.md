@@ -6,24 +6,27 @@ trigger: /makeit:whats-new
 
 # What's New — Framework Update Assistant
 
-> Kiểm tra phiên bản framework, hiển thị thay đổi mới, và hướng dẫn user apply updates vào workspace hiện tại.
+> Scan blueprint repo, phát hiện workspace gaps, và hướng dẫn user sync workspace với blueprint mới nhất.
 
 ## Purpose
 
-Khi framework maintainer release version mới (thêm skills, fix bugs, cải thiện workflows), user cần biết **có gì mới** và **cần update gì**. Skill này đóng vai trò "update assistant" — đọc CHANGELOG, so sánh version, và hướng dẫn từng bước.
+Khi framework maintainer release thay đổi mới (thêm skills, fix bugs, thêm knowledge docs), user cần biết **workspace thiếu gì** và **cần sync gì**. Skill này đóng vai trò "sync assistant" — scan blueprint repo, so sánh trực tiếp với workspace files, và hướng dẫn copy/update.
+
+> 🔑 **Source of truth = blueprint repo files, NOT version number.**
+> Version chỉ là thông tin hiển thị. Luôn check thực tế files từ repo.
 
 ## When to Use
 
-- Khi muốn kiểm tra có bản cập nhật nào không
+- Khi muốn kiểm tra workspace có đầy đủ files không
 - Sau khi maintainer thông báo release mới
-- Khi nghi ngờ workspace đang dùng version cũ
+- Khi nghi ngờ workspace thiếu files
 - Định kỳ (weekly/bi-weekly)
 
 ## Prerequisites
 
 Workspace cần có:
-- `.makeit/FRAMEWORK-VERSION` — version hiện tại (tạo bởi `install.sh`)
 - `.makeit/BLUEPRINT-PATH` — đường dẫn tới blueprint repo (tạo bởi `install.sh`)
+- `.makeit/FRAMEWORK-VERSION` — version hiển thị (optional, dùng cho display)
 
 ## Process
 
@@ -31,26 +34,17 @@ Workspace cần có:
 
 Đọc thông tin workspace và tự động detect tất cả biến cần thiết:
 
-```
-Required files:
-.makeit/FRAMEWORK-VERSION  → version hiện tại (e.g. "0.5.0")
-.makeit/BLUEPRINT-PATH     → path tới blueprint repo
-```
-
 <process>
-1. Read `.makeit/FRAMEWORK-VERSION` → `LOCAL_VERSION`
-2. Read `.makeit/BLUEPRINT-PATH` → `BLUEPRINT_PATH`
-3. If either file missing:
-   - Ask user for blueprint repo path
-   - If FRAMEWORK-VERSION missing → assume version "0.0.0" (needs full update)
-4. **Auto-sync blueprint repo** (ensure latest version):
+1. Read `.makeit/BLUEPRINT-PATH` → `BLUEPRINT_PATH`
+2. Read `.makeit/FRAMEWORK-VERSION` → `LOCAL_VERSION` (optional — display only)
+3. If BLUEPRINT-PATH missing → Ask user for blueprint repo path
+4. If FRAMEWORK-VERSION missing → set LOCAL_VERSION = "unknown"
+5. **Auto-sync blueprint repo** (ensure latest):
    ```bash
    git -C {BLUEPRINT_PATH} pull --ff-only 2>/dev/null
    ```
-   - If pull fails (no internet, merge conflict) → warn user but continue with local version
-   - If pull succeeds → blueprint is now up-to-date
-5. Read `{BLUEPRINT_PATH}/templates/VERSION` → `REMOTE_VERSION`
-6. Read `{BLUEPRINT_PATH}/templates/CHANGELOG.md` → `CHANGELOG`
+   - If pull fails → warn user but continue with local files
+6. Read `{BLUEPRINT_PATH}/templates/VERSION` → `BLUEPRINT_VERSION` (display only)
 7. **Auto-detect workspace variables:**
    - `WORKSPACE` = workspace root (thư mục chứa `.makeit/`)
    - `BLUEPRINT` = giá trị từ `.makeit/BLUEPRINT-PATH`
@@ -64,73 +58,88 @@ Required files:
    - Detect bằng: `ls .agent/skills/ | grep makeit-`
 </process>
 
-> ⚠️ Agent PHẢI resolve hết variables **trước khi** hiển thị CHANGELOG instructions cho user. User KHÔNG BAO GIỜ phải tự thay `{BLUEPRINT}`, `{WORKSPACE}`, `{SKILL}`, hay `{ROLE}`.
+> ⚠️ Agent PHẢI resolve hết variables **trước khi** hiển thị instructions cho user. User KHÔNG BAO GIỜ phải tự thay `{BLUEPRINT}`, `{WORKSPACE}`, `{SKILL}`, hay `{ROLE}`.
 
-### Step 2: Workspace Integrity Check (from Blueprint repo)
+### Step 2: Scan Blueprint → Detect Workspace Gaps
 
-> 🔑 **Source of truth = blueprint repo files, NOT version number.**
-> Version chỉ là indicator. Luôn check thực tế files từ repo.
+Scan trực tiếp files trong blueprint repo và so sánh với workspace.
 
 <process>
-**2A. Scan blueprint repo → build expected file list:**
+**2A. Build expected file list từ blueprint repo:**
 
 1. Knowledge base docs:
-   - List files in `{BLUEPRINT}/.makeit/knowledge/product/*.md`
-   - Check `{BLUEPRINT}/.makeit/knowledge/INDEX.md`
+   - List files in `{BLUEPRINT}/.makeit/knowledge/product/*.md` → target: `.makeit/knowledge/product/`
+   - Check `{BLUEPRINT}/.makeit/knowledge/INDEX.md` → target: `.makeit/knowledge/INDEX.md`
 
-2. Shared skills:
-   - List folders in `{BLUEPRINT}/templates/roles/_shared/skills/`
-   - Map mỗi folder → `.agent/skills/{SKILL}/_shared/skills/{name}/`
+2. Knowledge templates (in skill dir):
+   - `{BLUEPRINT}/templates/roles/_shared/knowledge/*` → target: `.agent/skills/{SKILL}/_shared/knowledge/`
 
-3. Role workflows:
-   - List files in `{BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/*.md`
-   - Map mỗi file → `.agent/workflows/makeit/{name}.md`
+3. Shared skills:
+   - List folders in `{BLUEPRINT}/templates/roles/_shared/skills/` → target: `.agent/skills/{name}/`
 
-4. Role skill files:
-   - `{BLUEPRINT}/templates/roles/{ROLE}/skills/makeit-{ROLE}/SKILL.md` → `.agent/skills/{SKILL}/SKILL.md`
+4. Role workflows:
+   - List files in `{BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/*.md` → target: `.agent/workflows/makeit/{name}.md`
 
-**2B. Check workspace → detect gaps:**
+5. Role skill files (SKILL.md):
+   - `{BLUEPRINT}/templates/roles/{ROLE}/skills/{SKILL}/SKILL.md` → target: `.agent/skills/{SKILL}/SKILL.md`
 
-For each expected file:
-- EXISTS in workspace? → ✅ OK
-- MISSING in workspace? → ❌ Add to `missing_files[]`
+6. Shared agents:
+   - List files in `{BLUEPRINT}/templates/roles/_shared/agents/*.md` → target: `.agent/agents/{name}.md`
 
-**2C. Compare versions (secondary):**
-- If LOCAL_VERSION < REMOTE_VERSION → có version mới, show CHANGELOG (Step 3)
-- If LOCAL_VERSION == REMOTE_VERSION AND no missing files → "✅ Workspace đầy đủ, phiên bản mới nhất!"
-- If LOCAL_VERSION == REMOTE_VERSION AND has missing files → "⚠️ Version đúng nhưng phát hiện {N} file thiếu"
+**2B. Check workspace → classify each file:**
 
-**2D. Report & act on gaps:**
+For each expected file/folder, check workspace:
+- EXISTS in workspace? → ✅ `present_files[]`
+- MISSING in workspace? → ❌ `missing_files[]`
 
-If `missing_files[]` is NOT empty:
+**2C. Report results:**
+
 ```
-⚠️ Phát hiện {N} file thiếu trong workspace:
+## 🔍 Workspace Scan Results
 
-| File | Loại |
-|------|------|
-| .makeit/knowledge/product/PRODUCT-OVERVIEW.md | Knowledge doc |
-| .agent/workflows/makeit/create-doc.md | Workflow router |
-| ... | ... |
-
-Tôi sẽ copy chúng từ blueprint. Tiếp tục?
-```
-- If user confirms → Jump to apply steps (Step 6, 6.5, 7) to copy ONLY missing files
-- After copying → update FRAMEWORK-VERSION if needed → finalize
-</process>
-
-### Step 3: Show What's New
-
-Parse CHANGELOG.md và hiển thị tất cả versions từ LOCAL_VERSION đến REMOTE_VERSION.
-
-<display_format>
-## 📦 What's New
-
-**Workspace:** {WORKSPACE}  ← (đã resolve, không phải placeholder)
-**Your version:** v{LOCAL_VERSION}
-**Latest:** v{REMOTE_VERSION}
+**Workspace:** {WORKSPACE}
+**Blueprint:** {BLUEPRINT}
+**Local version:** v{LOCAL_VERSION} | **Blueprint version:** v{BLUEPRINT_VERSION}
 **Role:** {ROLE} | **Skill:** {SKILL}
 
----
+### Files Status
+| Status | Count |
+|--------|-------|
+| ✅ Present | {N} |
+| ❌ Missing | {N} |
+
+{If missing_files is NOT empty:}
+### ❌ Missing Files
+| File | Loại | Source |
+|------|------|--------|
+| .makeit/knowledge/product/PRODUCT-OVERVIEW.md | Knowledge doc | {BLUEPRINT}/.makeit/knowledge/product/ |
+| .agent/workflows/makeit/create-doc.md | Workflow | {BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/ |
+| ... | ... | ... |
+```
+
+**2D. Decide next action:**
+
+- If `missing_files[]` is empty AND LOCAL_VERSION == BLUEPRINT_VERSION:
+  → "✅ Workspace đầy đủ, đang dùng phiên bản mới nhất!"
+  → DONE
+
+- If `missing_files[]` is NOT empty:
+  → "Tôi sẽ copy {N} file thiếu từ blueprint. Tiếp tục?"
+  → User confirms → Go to Step 4
+
+- If LOCAL_VERSION < BLUEPRINT_VERSION (có version mới):
+  → Show CHANGELOG (Step 3) → then copy missing + update modified (Step 4-7)
+
+- If LOCAL_VERSION unknown:
+  → Copy missing files first, then set version
+</process>
+
+### Step 3: Show What's New (when version updated)
+
+Chỉ hiển thị khi có version mới. Parse CHANGELOG.md:
+
+<display_format>
+## 📦 What's New in v{BLUEPRINT_VERSION}
 
 {For each version newer than LOCAL_VERSION, show:}
 
@@ -138,13 +147,7 @@ Parse CHANGELOG.md và hiển thị tất cả versions từ LOCAL_VERSION đế
 
 **Summary:** {one-line summary from CHANGELOG}
 
-**✨ New files:** {count}
-{list new files relevant to user's role}
-
-**📝 Modified files:** {count}
-{list modified files, highlight ⚠️ USER FILEs}
-
----
+**Changes:** {brief list from CHANGELOG}
 </display_format>
 
 > 🔑 **Variable Resolution Rule:** Khi hiển thị "Update Instructions" từ CHANGELOG, agent PHẢI thay thế:
@@ -155,127 +158,72 @@ Parse CHANGELOG.md và hiển thị tất cả versions từ LOCAL_VERSION đế
 >
 > Kết quả: user nhận được commands **ready-to-run**, chỉ cần copy-paste và chạy.
 
-### Step 5: Apply Updates (Interactive)
+### Step 4: Copy Missing Files
 
-Hướng dẫn user qua từng version, từng category thay đổi.
-
-<process>
-For each version (oldest → newest):
-
-**Category A: New Files (safe to copy)**
-- These files don't exist in workspace yet → safe to copy directly
-- Agent reads file from blueprint → writes to correct location in workspace
-- Ask user: "Tôi sẽ copy {N} file mới. Tiếp tục?"
-
-**Category B: Modified Files (core — safe to overwrite)**
-- Files user normally doesn't customize (SKILL.md, help.md, skill logic files)
-- Agent reads latest version → compares with local → applies changes
-- Ask user: "Tôi sẽ update {N} file. Tiếp tục?"
-
-**Category C: Modified USER FILEs (⚠️ manual merge)**
-- Files user may have customized: GEMINI.md, rules/
-- Show EXACTLY what needs to be added (not full file replacement)
-- Agent adds the specific new content to existing file
-- Ask user to review: "Tôi đã thêm {change}. Kiểm tra giúp?"
-
-**Category D: Knowledge Base files (.makeit/knowledge/)**
-- Product docs, INDEX template, knowledge config files
-- Source: `{BLUEPRINT}/.makeit/knowledge/` or `{BLUEPRINT}/templates/roles/_shared/knowledge/`
-- Target: `{WORKSPACE}/.makeit/knowledge/`
-- Create target directories if needed (e.g., `product/`)
-- Only copy NEW files — do NOT overwrite existing custom knowledge docs
-- Ask user: "Tôi sẽ copy {N} knowledge docs mới. Tiếp tục?"
-
-After all changes applied:
-- Update `.makeit/FRAMEWORK-VERSION` to latest version
-</process>
-
-### Step 6: Apply — New Files
-
-For each new file listed in CHANGELOG's "✨ New" section:
+For each file in `missing_files[]`:
 
 <process>
-1. Resolve source path in blueprint repo:
-   - `_shared/skills/{name}/` → `{BLUEPRINT}/templates/roles/_shared/skills/{name}/`
-   - `{role}/workflows/makeit/{name}.md` → `{BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/{name}.md`
+1. Resolve source path (from Step 2A mapping)
+2. Create target directory if needed
+3. Read source file content from blueprint
+4. Write to target in workspace
+5. Report: "✅ Copied: {target_path}"
 
-2. Resolve target path in workspace:
-   - `_shared/skills/{name}/` → `.agent/skills/{SKILL_NAME}/_shared/skills/{name}/`
-   - `{role}/workflows/makeit/{name}.md` → `.agent/workflows/makeit/{name}.md`
-
-3. Read source file content
-4. Write to target (create directories if needed)
-5. Report: "✅ Copied: {filename}"
+Categories:
+- **Knowledge docs** → copy directly, create category dirs if needed
+- **Shared skills** → copy entire folder
+- **Workflow routers** → copy .md file
+- **Skill files** → copy with care (don't overwrite user-modified SKILL.md)
+- **Agents** → copy .md file
 </process>
 
-### Step 6.5: Apply — Knowledge Base Files
+### Step 5: Update Modified Core Files
 
-For knowledge docs referenced in CHANGELOG update instructions:
+For files that EXIST in workspace but are OUTDATED (when version changed):
 
 <process>
-1. Resolve BLUEPRINT_PATH from `.makeit/BLUEPRINT-PATH`
-
-2. Resolve source → target paths:
-   - `.makeit/knowledge/{category}/*.md` → `{BLUEPRINT}/.makeit/knowledge/{category}/*.md` → `{WORKSPACE}/.makeit/knowledge/{category}/`
-   - `_shared/knowledge/INDEX-TEMPLATE.md` → `{BLUEPRINT}/templates/roles/_shared/knowledge/INDEX-TEMPLATE.md` → `{WORKSPACE}/.agent/skills/{SKILL}/_shared/knowledge/INDEX-TEMPLATE.md`
-
-3. For each knowledge file:
-   a. Check if target already exists
-   b. If NOT exists → copy from blueprint (tạo directory nếu cần)
-   c. If EXISTS → skip (user may have customized). Report: "⏭ Skipped: {file} (already exists)"
-
-4. Copy INDEX.md if CHANGELOG instructs:
-   - `{BLUEPRINT}/.makeit/knowledge/INDEX.md` → `{WORKSPACE}/.makeit/knowledge/INDEX.md`
-   - ⚠️ INDEX.md là auto-generated → safe to overwrite
-
-5. Report: "✅ Copied {N} knowledge docs to .makeit/knowledge/{category}/"
+- SKILL.md, help.md, skill logic files → safe to overwrite
+- Read CHANGELOG update instructions for exact changes
+- Apply specific additions (new table rows, new entries)
+- Report: "✅ Updated: {filename}"
 </process>
 
-### Step 7: Apply — Modified Core Files
+### Step 6: Merge USER FILEs (⚠️ careful)
 
-For SKILL.md, help.md, and other non-user files:
-
-<process>
-1. Read CHANGELOG update instructions for exact changes needed
-2. Read current local file
-3. Apply the specific additions (new table rows, new entries)
-4. Write updated file
-5. Report: "✅ Updated: {filename} — added {what}"
-</process>
-
-### Step 8: Apply — USER FILEs (GEMINI.md, rules)
+Files user may have customized: GEMINI.md, rules/:
 
 <process>
 1. Read CHANGELOG for exact content to add
 2. Read user's current file
-3. Find insertion point (e.g., "### Support Commands" table)
-4. Add new content at correct location
+3. Find insertion point
+4. Add new content at correct location (DO NOT overwrite entire file)
 5. Show user what was added
 6. Ask: "Kiểm tra thay đổi trong GEMINI.md giúp?"
 </process>
 
 > ⚠️ NEVER overwrite GEMINI.md or rules files entirely. Only ADD specific new entries.
 
-### Step 9: Finalize
+### Step 7: Finalize
 
 <process>
-1. Write REMOTE_VERSION to `.makeit/FRAMEWORK-VERSION`
+1. Write BLUEPRINT_VERSION to `.makeit/FRAMEWORK-VERSION`
 2. Show summary of all changes applied
 3. Suggest running `/makeit:health-check` to verify workspace integrity
 </process>
 
 <report_format>
-## ✅ Update Complete
+## ✅ Sync Complete
 
-**Updated:** v{LOCAL_VERSION} → v{REMOTE_VERSION}
+**Workspace:** {WORKSPACE}
+**Version:** v{LOCAL_VERSION} → v{BLUEPRINT_VERSION}
 
 ### Changes Applied
 | Category | Files | Status |
 |----------|-------|--------|
-| ✨ New files | {N} | ✅ Copied |
-| 📝 Core files | {N} | ✅ Updated |
+| ❌ → ✅ Missing files copied | {N} | ✅ Copied |
+| 📝 Core files updated | {N} | ✅ Updated |
 | 📚 Knowledge docs | {N} | ✅ Copied (skipped existing) |
-| ⚠️ User files | {N} | ✅ Merged (review recommended) |
+| ⚠️ User files merged | {N} | ✅ Merged (review recommended) |
 
 ### Files Changed
 {list of all files with action taken}
@@ -283,7 +231,6 @@ For SKILL.md, help.md, and other non-user files:
 ### Next Steps
 - Review GEMINI.md changes if flagged
 - Run `/makeit:health-check` to verify workspace
-- Xem chi tiết: `{BLUEPRINT_PATH}/templates/CHANGELOG.md`
 </report_format>
 
 ## Edge Cases
@@ -291,14 +238,14 @@ For SKILL.md, help.md, and other non-user files:
 | Scenario | Handling |
 |----------|----------|
 | Blueprint path invalid | Ask user to provide correct path |
-| FRAMEWORK-VERSION missing | Treat as "0.0.0", offer to set current version |
-| Multiple versions to apply | Apply sequentially oldest → newest |
-| File already exists (new) | Skip, report as "already present" |
-| CHANGELOG missing instructions | Show raw CHANGELOG, let user apply manually |
+| FRAMEWORK-VERSION missing | Set to "unknown", still scan files normally |
+| No missing files + same version | "✅ Workspace đầy đủ!" |
+| File already exists (in missing list) | Skip, report as "already present" |
 | User declines a change | Skip that file, note in report |
+| Blueprint repo can't pull | Warn but continue with local blueprint files |
 
 ## Integration
 
 - Gọi bởi: `/makeit:whats-new` command
-- Có thể suggest sau `/makeit:health-check` nếu phát hiện outdated version
+- Có thể suggest sau `/makeit:health-check` nếu phát hiện missing files
 - Kết hợp với `check-update.sh` (CLI alternative ngoài agent)
