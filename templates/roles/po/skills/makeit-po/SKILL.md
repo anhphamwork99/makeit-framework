@@ -71,7 +71,7 @@ Dual-Mode Operation:
 | review-feedback | `po-verification/templates/` | review-pr workflow |
 | handoff | `po-lifecycle/templates/` | stage-complete |
 
-## All Commands (16)
+## All Commands (23)
 
 ### Stage Commands (6)
 
@@ -108,6 +108,23 @@ Dual-Mode Operation:
 |---------|-------------|
 | `/makeit:pause-work` | Save context when pausing mid-phase |
 | `/makeit:resume-work` | Restore context from previous pause |
+
+### Shared Commands (3)
+
+| Command | Description |
+|---------|-------------|
+| `/makeit:health-check` | Quét workspace tìm broken references, missing files |
+| `/makeit:whats-new` | Kiểm tra và cập nhật framework version mới |
+| `/makeit:check-handoff` | Check for incoming handoff from upstream role |
+
+### KB Commands (4)
+
+| Command | Description |
+|---------|-------------|
+| `/makeit:create-doc` | Tạo knowledge document — spawn Document Agent → human approve → publish |
+| `/makeit:search-kb` | Tìm kiếm knowledge base — Deep Query → Progressive Disclosure |
+| `/makeit:update-doc` | Cập nhật knowledge document — change tracking + human approve |
+| `/makeit:archive-doc` | Archive knowledge document — move to _archived/, giữ reference integrity |
 
 ## AI Verification Rule
 
