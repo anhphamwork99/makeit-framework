@@ -47,7 +47,7 @@ Thêm `product/` làm category thứ 5 trong Knowledge Base. Agents giờ scan p
 #### Bước 1: Copy files mới (an toàn)
 
 ```bash
-# Thay {BLUEPRINT} = path tới ai-team-blueprint repo
+# Thay {BLUEPRINT} = path tới makeit-framework repo
 # Thay {WORKSPACE} = path tới project workspace
 
 # 1a. Copy _rebuild-index skill (đã update)
@@ -111,7 +111,7 @@ Thêm Health Check skill cho tất cả roles. Health check giúp agent tự sca
 #### Bước 1: Copy files mới (an toàn — không ảnh hưởng customizations)
 
 ```bash
-# Thay {BLUEPRINT} = path tới ai-team-blueprint repo
+# Thay {BLUEPRINT} = path tới makeit-framework repo
 # Thay {WORKSPACE} = path tới project workspace
 # Thay {ROLE} = ba|dev-be|dev-fe|po|techlead
 # Thay {SKILL} = makeit-ba|makeit-dev-be|makeit-dev-fe|makeit-po|makeit-techlead
