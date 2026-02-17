@@ -69,9 +69,35 @@ Required files:
 ### Step 2: Compare Versions
 
 <process>
-- If LOCAL_VERSION == REMOTE_VERSION → "✅ Bạn đang dùng phiên bản mới nhất!"
 - If LOCAL_VERSION < REMOTE_VERSION → Continue to Step 3
 - If LOCAL_VERSION unknown → Continue to Step 3 (show all versions)
+- If LOCAL_VERSION == REMOTE_VERSION → Run **Integrity Check** (Step 2.5) before concluding
+</process>
+
+### Step 2.5: Integrity Check (when versions match)
+
+Dù version đã match, một số files có thể bị thiếu nếu update trước đó chưa apply đầy đủ (vd: skill logic được update nhưng knowledge docs chưa copy).
+
+<process>
+1. Check knowledge base files exist:
+   - `.makeit/knowledge/product/` directory exists?
+   - `.makeit/knowledge/product/PRODUCT-OVERVIEW.md` exists?
+   - `.makeit/knowledge/INDEX.md` exists?
+
+2. Check KB workflow routers exist:
+   - `.agent/workflows/makeit/create-doc.md` exists?
+   - `.agent/workflows/makeit/search-kb.md` exists?
+   - `.agent/workflows/makeit/update-doc.md` exists?
+   - `.agent/workflows/makeit/archive-doc.md` exists?
+
+3. Check key skill files:
+   - `.agent/skills/whats-new/` exists? (not old `what-new/`)
+
+4. Evaluate results:
+   - If ALL files present → "✅ Bạn đang dùng phiên bản mới nhất! Workspace đầy đủ."
+   - If ANY file missing → Report missing files, then ask:
+     "⚠️ Version đúng (v{VERSION}) nhưng phát hiện {N} file thiếu. Tôi sẽ copy chúng từ blueprint. Tiếp tục?"
+   - If user confirms → Jump to relevant apply steps (Step 6, 6.5, 7) to copy ONLY missing files
 </process>
 
 ### Step 3: Show What's New
