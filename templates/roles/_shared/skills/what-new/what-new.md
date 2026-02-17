@@ -43,8 +43,14 @@ Required files:
 3. If either file missing:
    - Ask user for blueprint repo path
    - If FRAMEWORK-VERSION missing → assume version "0.0.0" (needs full update)
-4. Read `{BLUEPRINT_PATH}/templates/VERSION` → `REMOTE_VERSION`
-5. Read `{BLUEPRINT_PATH}/templates/CHANGELOG.md` → `CHANGELOG`
+4. **Auto-sync blueprint repo** (ensure latest version):
+   ```bash
+   git -C {BLUEPRINT_PATH} pull --ff-only 2>/dev/null
+   ```
+   - If pull fails (no internet, merge conflict) → warn user but continue with local version
+   - If pull succeeds → blueprint is now up-to-date
+5. Read `{BLUEPRINT_PATH}/templates/VERSION` → `REMOTE_VERSION`
+6. Read `{BLUEPRINT_PATH}/templates/CHANGELOG.md` → `CHANGELOG`
 </process>
 
 ### Step 2: Compare Versions
