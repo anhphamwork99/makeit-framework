@@ -177,6 +177,14 @@ install_role() {
     echo "       + $shared_skill_count shared skill folders (health-check, kb-management, whats-new)"
   fi
 
+  # Step 7d: Copy shared knowledge templates into role skill's _shared/ directory
+  # KB commands (create-doc, update-doc) reference @_shared/knowledge/INDEX-TEMPLATE.md
+  if [ -d "$TEMPLATES_DIR/roles/_shared/knowledge" ]; then
+    mkdir -p "$target_dir/.agent/skills/$role_skill/_shared/knowledge"
+    cp -r "$TEMPLATES_DIR/roles/_shared/knowledge/"* "$target_dir/.agent/skills/$role_skill/_shared/knowledge/" 2>/dev/null || true
+    echo "       + _shared/knowledge/ templates (INDEX-TEMPLATE, conventions)"
+  fi
+
   # Step 8: Save framework version + blueprint path for update tracking (renumbered)
   if [ -f "$TEMPLATES_DIR/VERSION" ]; then
     cp "$TEMPLATES_DIR/VERSION" "$target_dir/.makeit/FRAMEWORK-VERSION"
@@ -347,7 +355,21 @@ verify_installation() {
     echo "  ⚠️  Knowledge base directory incomplete"
   fi
 
-  return $errors
+  # Check knowledge templates in skill directory (used by KB commands)
+  if [ -f "$target_dir/.agent/skills/$role_skill/_shared/knowledge/INDEX-TEMPLATE.md" ]; then
+    echo "  ✅ KB templates: _shared/knowledge/INDEX-TEMPLATE.md"
+  else
+    echo "  ⚠️  KB templates missing in skill directory (create-doc/update-doc may fail)"
+  fi
+
+  # Check product knowledge docs
+  local product_doc_count
+  product_doc_count=$(find "$target_dir/.makeit/knowledge/product" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$product_doc_count" -ge 1 ]; then
+    echo "  ✅ Product knowledge: $product_doc_count docs"
+  else
+    echo "  ⚠️  Product knowledge: no docs found in .makeit/knowledge/product/"
+  fi
 }
 
 show_summary() {
