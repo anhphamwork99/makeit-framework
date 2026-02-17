@@ -118,12 +118,14 @@ Skill hub: `@skills/makeit-techlead/SKILL.md`
 ## Knowledge Base
 
 Product Memory System cung cấp trí nhớ dài hạn across sprints.
-- **Knowledge docs:** `.makeit/knowledge/{architecture,business,technical,operational}/`
+- **Knowledge docs:** `.makeit/knowledge/{architecture,business,product,technical,operational}/`
 - **Master index:** `.makeit/knowledge/INDEX.md` (auto-generated)
 - **Convention:** 3-layer structure — L0 metadata, L1 summary, L2 detail
 - **Retrieval:** Deep Query (Reasoning RAG) — AI reasons over INDEX instead of keyword search
 
 > Agent tự động load relevant knowledge tại sprint start (stage-clarify/start-sprint) và suggest knowledge capture tại sprint end (stage-complete).
+
+> 📝 **Update rule:** Khi tạo, sửa nội dung, hoặc xóa file trong `.makeit/knowledge/`, PHẢI update INDEX.md (qua `/makeit:update-doc` hoặc `/makeit:create-doc`).
 
 ### Knowledge Base Commands
 

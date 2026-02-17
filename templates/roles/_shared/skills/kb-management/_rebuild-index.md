@@ -22,6 +22,7 @@ Recursively scan `.makeit/knowledge/` for `.md` files.
 **INCLUDE these directories:**
 - `architecture/`
 - `business/`
+- `product/`
 - `technical/`
 - `operational/`
 
@@ -33,7 +34,7 @@ Recursively scan `.makeit/knowledge/` for `.md` files.
 
 ```bash
 # Find all knowledge docs
-find .makeit/knowledge/architecture .makeit/knowledge/business .makeit/knowledge/technical .makeit/knowledge/operational -name "*.md" -type f 2>/dev/null | sort
+find .makeit/knowledge/architecture .makeit/knowledge/business .makeit/knowledge/product .makeit/knowledge/technical .makeit/knowledge/operational -name "*.md" -type f 2>/dev/null | sort
 ```
 
 **If no directories exist or no .md files found:**
@@ -50,6 +51,7 @@ Generate an empty INDEX.md with zero counts:
 |----------|-------|--------------|
 | Architecture | 0 | — |
 | Business | 0 | — |
+| Product | 0 | — |
 | Technical | 0 | — |
 | Operational | 0 | — |
 
@@ -150,7 +152,7 @@ Build the INDEX.md content following the INDEX-TEMPLATE format:
 ```
 
 ### Quick Stats Table
-For each of the 4 categories, calculate:
+For each of the 5 categories, calculate:
 - **Count:** Number of active docs in that category
 - **Last Updated:** Most recent `updated` date across docs in that category
 - If category has 0 docs, show count as `0` and Last Updated as `—`
@@ -162,6 +164,7 @@ For each of the 4 categories, calculate:
 |----------|-------|--------------|
 | Architecture | {N} | {date or —} |
 | Business | {N} | {date or —} |
+| Product | {N} | {date or —} |
 | Technical | {N} | {date or —} |
 | Operational | {N} | {date or —} |
 ```

@@ -46,6 +46,7 @@
 |----------|-------|--------------|
 | Architecture | {N} | {YYYY-MM-DD} |
 | Business | {N} | {YYYY-MM-DD} |
+| Product | {N} | {YYYY-MM-DD} |
 | Technical | {N} | {YYYY-MM-DD} |
 | Operational | {N} | {YYYY-MM-DD} |
 
@@ -129,6 +130,7 @@ Format: `` `{id}` → related: {id-1}, {id-2} ``
 |----------|-------|--------------|
 | Architecture | 6 | 2026-02-14 |
 | Business | 5 | 2026-02-15 |
+| Product | 4 | 2026-02-17 |
 | Technical | 8 | 2026-02-15 |
 | Operational | 4 | 2026-02-13 |
 

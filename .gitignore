@@ -32,8 +32,9 @@ npm-debug.log*
 # Planning & project management
 .planning/
 
-# Sprint data
-.makeit/
+# Sprint data (except knowledge base — shared across team)
+.makeit/*
+!.makeit/knowledge/
 
 # Workspace orchestrator config
 GEMINI.md
