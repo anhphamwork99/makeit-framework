@@ -66,38 +66,56 @@ Required files:
 
 > ⚠️ Agent PHẢI resolve hết variables **trước khi** hiển thị CHANGELOG instructions cho user. User KHÔNG BAO GIỜ phải tự thay `{BLUEPRINT}`, `{WORKSPACE}`, `{SKILL}`, hay `{ROLE}`.
 
-### Step 2: Compare Versions
+### Step 2: Workspace Integrity Check (from Blueprint repo)
+
+> 🔑 **Source of truth = blueprint repo files, NOT version number.**
+> Version chỉ là indicator. Luôn check thực tế files từ repo.
 
 <process>
-- If LOCAL_VERSION < REMOTE_VERSION → Continue to Step 3
-- If LOCAL_VERSION unknown → Continue to Step 3 (show all versions)
-- If LOCAL_VERSION == REMOTE_VERSION → Run **Integrity Check** (Step 2.5) before concluding
-</process>
+**2A. Scan blueprint repo → build expected file list:**
 
-### Step 2.5: Integrity Check (when versions match)
+1. Knowledge base docs:
+   - List files in `{BLUEPRINT}/.makeit/knowledge/product/*.md`
+   - Check `{BLUEPRINT}/.makeit/knowledge/INDEX.md`
 
-Dù version đã match, một số files có thể bị thiếu nếu update trước đó chưa apply đầy đủ (vd: skill logic được update nhưng knowledge docs chưa copy).
+2. Shared skills:
+   - List folders in `{BLUEPRINT}/templates/roles/_shared/skills/`
+   - Map mỗi folder → `.agent/skills/{SKILL}/_shared/skills/{name}/`
 
-<process>
-1. Check knowledge base files exist:
-   - `.makeit/knowledge/product/` directory exists?
-   - `.makeit/knowledge/product/PRODUCT-OVERVIEW.md` exists?
-   - `.makeit/knowledge/INDEX.md` exists?
+3. Role workflows:
+   - List files in `{BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/*.md`
+   - Map mỗi file → `.agent/workflows/makeit/{name}.md`
 
-2. Check KB workflow routers exist:
-   - `.agent/workflows/makeit/create-doc.md` exists?
-   - `.agent/workflows/makeit/search-kb.md` exists?
-   - `.agent/workflows/makeit/update-doc.md` exists?
-   - `.agent/workflows/makeit/archive-doc.md` exists?
+4. Role skill files:
+   - `{BLUEPRINT}/templates/roles/{ROLE}/skills/makeit-{ROLE}/SKILL.md` → `.agent/skills/{SKILL}/SKILL.md`
 
-3. Check key skill files:
-   - `.agent/skills/whats-new/` exists? (not old `what-new/`)
+**2B. Check workspace → detect gaps:**
 
-4. Evaluate results:
-   - If ALL files present → "✅ Bạn đang dùng phiên bản mới nhất! Workspace đầy đủ."
-   - If ANY file missing → Report missing files, then ask:
-     "⚠️ Version đúng (v{VERSION}) nhưng phát hiện {N} file thiếu. Tôi sẽ copy chúng từ blueprint. Tiếp tục?"
-   - If user confirms → Jump to relevant apply steps (Step 6, 6.5, 7) to copy ONLY missing files
+For each expected file:
+- EXISTS in workspace? → ✅ OK
+- MISSING in workspace? → ❌ Add to `missing_files[]`
+
+**2C. Compare versions (secondary):**
+- If LOCAL_VERSION < REMOTE_VERSION → có version mới, show CHANGELOG (Step 3)
+- If LOCAL_VERSION == REMOTE_VERSION AND no missing files → "✅ Workspace đầy đủ, phiên bản mới nhất!"
+- If LOCAL_VERSION == REMOTE_VERSION AND has missing files → "⚠️ Version đúng nhưng phát hiện {N} file thiếu"
+
+**2D. Report & act on gaps:**
+
+If `missing_files[]` is NOT empty:
+```
+⚠️ Phát hiện {N} file thiếu trong workspace:
+
+| File | Loại |
+|------|------|
+| .makeit/knowledge/product/PRODUCT-OVERVIEW.md | Knowledge doc |
+| .agent/workflows/makeit/create-doc.md | Workflow router |
+| ... | ... |
+
+Tôi sẽ copy chúng từ blueprint. Tiếp tục?
+```
+- If user confirms → Jump to apply steps (Step 6, 6.5, 7) to copy ONLY missing files
+- After copying → update FRAMEWORK-VERSION if needed → finalize
 </process>
 
 ### Step 3: Show What's New
