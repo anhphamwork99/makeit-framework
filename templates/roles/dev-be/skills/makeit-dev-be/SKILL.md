@@ -149,7 +149,7 @@ Shared references across BE skills.
 | `team-workflow.md` | Pipeline position, handoff points |
 | `skills/kb-management/` | Knowledge base CRUD skills (shared) |
 | `skills/health-check/` | Workspace health check — broken reference detection (shared) |
-| `skills/what-new/` | Framework update assistant — check & apply updates (shared) |
+| `skills/whats-new/` | Framework update assistant — check & apply updates (shared) |
 
 ## Template Registry
 

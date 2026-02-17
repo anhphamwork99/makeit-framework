@@ -1,7 +1,7 @@
 ---
-name: what-new
+name: whats-new
 description: Check framework updates and guide user through applying changes to current workspace
-trigger: /makeit:what-new
+trigger: /makeit:whats-new
 ---
 
 # What's New — Framework Update Assistant
@@ -218,6 +218,6 @@ For SKILL.md, help.md, and other non-user files:
 
 ## Integration
 
-- Gọi bởi: `/makeit:what-new` command
+- Gọi bởi: `/makeit:whats-new` command
 - Có thể suggest sau `/makeit:health-check` nếu phát hiện outdated version
 - Kết hợp với `check-update.sh` (CLI alternative ngoài agent)

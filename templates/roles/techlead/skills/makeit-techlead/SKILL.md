@@ -222,7 +222,7 @@ Located in `_shared/references/`:
 | `sub-agent-spawning.md` | When to spawn vs inline for TL tasks |
 | `skills/kb-management/` | Knowledge base CRUD skills (shared) |
 | `skills/health-check/` | Workspace health check — broken reference detection (shared) |
-| `skills/what-new/` | Framework update assistant — check & apply updates (shared) |
+| `skills/whats-new/` | Framework update assistant — check & apply updates (shared) |
 
 ### kb-management/ — Knowledge Base Management (4 skills)
 

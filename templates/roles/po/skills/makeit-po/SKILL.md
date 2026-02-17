@@ -42,7 +42,7 @@ Dual-Mode Operation:
 | `_shared/references/` | quality-gates, team-workflow, sub-agent-spawning | Reference docs — gates, pipeline, spawn guide |
 | `_shared/skills/` | kb-management/ | Shared KB management skills — installed by `install.sh` |
 | `_shared/skills/` | health-check/ | Workspace health check — broken reference detection (shared) |
-| `_shared/skills/` | what-new/ | Framework update assistant — check & apply updates (shared) |
+| `_shared/skills/` | whats-new/ | Framework update assistant — check & apply updates (shared) |
 
 ## Internal Workflows (called by stage skills, not slash commands)
 

@@ -211,7 +211,7 @@ This role follows a 9-stage sprint lifecycle. IDE routes `/makeit:*` commands to
 | Sub-agent Spawning | `_shared/references/sub-agent-spawning.md` | When to spawn sub-agents |
 | KB Management | `_shared/skills/kb-management/` | Knowledge base CRUD skills (shared) |
 | Health Check | `_shared/skills/health-check/` | Workspace health check — broken reference detection (shared) |
-| What's New | `_shared/skills/what-new/` | Framework update assistant — check & apply updates (shared) |
+| What's New | `_shared/skills/whats-new/` | Framework update assistant — check & apply updates (shared) |
 
 ## Pipeline Position
 

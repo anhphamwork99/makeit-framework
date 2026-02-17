@@ -28,7 +28,7 @@ Display all available PO commands with descriptions, organized by category for q
     /makeit:lesson-learned   Capture what went well/wrong for improvement
     /makeit:debug            Systematic debugging for PO workflow issues
     /makeit:health-check     Scan workspace for broken references
-    /makeit:what-new         Check and apply framework updates
+    /makeit:whats-new         Check and apply framework updates
 
     ━━━ Lifecycle Extras ━━━
     /makeit:pause-work       Save context when pausing mid-phase

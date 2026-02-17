@@ -41,7 +41,7 @@ Display all available BA commands with descriptions, organized by category for q
     /makeit:resume-work      Restore context from saved state
     /makeit:debug            Systematic debugging with state tracking
     /makeit:health-check     Scan workspace for broken references
-    /makeit:what-new         Check and apply framework updates
+    /makeit:whats-new         Check and apply framework updates
     /makeit:check-handoff    Check for incoming handoff from upstream role
     /makeit:sync-scope       Pull scope changes from upstream sender
     ```

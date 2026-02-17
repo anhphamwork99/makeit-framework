@@ -43,7 +43,7 @@ Display all available FE commands organized by category for quick reference.
     ━━━ Debugging ━━━
     /makeit:debug            Systematic hypothesis-driven debugging
     /makeit:health-check     Scan workspace for broken references
-    /makeit:what-new         Check and apply framework updates
+    /makeit:whats-new         Check and apply framework updates
     /makeit:check-handoff    Check for incoming handoff from upstream role
     /makeit:sync-scope       Pull scope changes from upstream TL
 

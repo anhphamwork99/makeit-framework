@@ -92,7 +92,7 @@ Skill hub: `@skills/makeit-ba/SKILL.md`
 | `/makeit:lesson-learned` | Ghi nhận bài học kinh nghiệm |
 | `/makeit:debug` | Systematic debugging with state tracking |
 | `/makeit:health-check` | Quét workspace tìm broken references, missing files |
-| `/makeit:what-new` | Kiểm tra và cập nhật framework version mới |
+| `/makeit:whats-new` | Kiểm tra và cập nhật framework version mới |
 | `/makeit:pause-work` | Lưu context khi tạm dừng công việc |
 | `/makeit:resume-work` | Khôi phục context từ lần pause trước |
 | `/makeit:progress` | Xem sprint progress với deliverable status |

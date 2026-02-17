@@ -107,7 +107,7 @@ start-my-tasks → discuss-phase → show-approach → research → plan → exe
 | `references/sub-agent-spawning.md` | BA sub-agent spawning guide — when and how to delegate work |
 | `skills/kb-management/` | Knowledge base CRUD skills (shared) |
 | `skills/health-check/` | Workspace health check — broken reference detection (shared) |
-| `skills/what-new/` | Framework update assistant — check & apply updates (shared) |
+| `skills/whats-new/` | Framework update assistant — check & apply updates (shared) |
 
 ## Templates
 

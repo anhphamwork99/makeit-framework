@@ -46,7 +46,7 @@ Display all available Techlead commands with descriptions, organized by category
     |---------|-------------|
     | `/makeit:debug` | Systematic debugging with hypothesis tracking |
     | `/makeit:health-check` | Scan workspace for broken references |
-    | `/makeit:what-new` | Check and apply framework updates |
+    | `/makeit:whats-new` | Check and apply framework updates |
     | `/makeit:pause-work` | Save context for later resume |
     | `/makeit:resume-work` | Restore context from saved state |
     | `/makeit:progress` | Sprint progress with deliverable status |

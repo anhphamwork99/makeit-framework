@@ -157,12 +157,12 @@ install_role() {
     echo "       + shared agents (Document Agent)"
   fi
 
-  # Step 7c: Copy shared skills (health-check, kb-management, what-new)
+  # Step 7c: Copy shared skills (health-check, kb-management, whats-new)
   if [ -d "$TEMPLATES_DIR/roles/_shared/skills" ]; then
     cp -r "$TEMPLATES_DIR/roles/_shared/skills/"* "$target_dir/.agent/skills/" 2>/dev/null || true
     local shared_skill_count
     shared_skill_count=$(find "$TEMPLATES_DIR/roles/_shared/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-    echo "       + $shared_skill_count shared skill folders (health-check, kb-management, what-new)"
+    echo "       + $shared_skill_count shared skill folders (health-check, kb-management, whats-new)"
   fi
 
   # Step 8: Save framework version + blueprint path for update tracking (renumbered)
@@ -279,13 +279,13 @@ verify_installation() {
 
   # Check shared skills
   local shared_skill_ok=0
-  for sk in health-check kb-management what-new; do
+  for sk in health-check kb-management whats-new; do
     if [ -d "$target_dir/.agent/skills/$sk" ]; then
       shared_skill_ok=$((shared_skill_ok + 1))
     fi
   done
   if [ "$shared_skill_ok" -ge 3 ]; then
-    echo "  ✅ Shared skills: $shared_skill_ok/3 (health-check, kb-management, what-new)"
+    echo "  ✅ Shared skills: $shared_skill_ok/3 (health-check, kb-management, whats-new)"
   else
     echo "  ⚠️  Shared skills: only $shared_skill_ok/3 found"
   fi
@@ -339,7 +339,7 @@ show_summary() {
   echo "📋 What was installed:"
   echo "   • GEMINI.md                    — AI workspace config cho $role_display"
   echo "   • .agent/skills/$role_skill/   — GSD-aligned skill hub + domain folders"
-  echo "   • .agent/skills/{shared}/      — health-check, kb-management, what-new"
+  echo "   • .agent/skills/{shared}/      — health-check, kb-management, whats-new"
   echo "   • .agent/workflows/makeit/     — Per-role workflow routers (/makeit:xxx)"
   echo "   • .agent/rules/               — Universal + per-role rules"
   echo "   • .agent/agents/              — Sub-agents + Document Agent (shared)"
