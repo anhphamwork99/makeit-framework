@@ -189,15 +189,28 @@ setup_makeit_dir() {
   # Create sprint workspace directory (Phase 4.4)
   mkdir -p "$target_dir/.makeit/sprint"
 
-  # Knowledge Base (Phase 4.9)
+  # Knowledge Base (Phase 4.9 + 0.6.0: added product/)
   mkdir -p "$target_dir/.makeit/knowledge/architecture"
   mkdir -p "$target_dir/.makeit/knowledge/business"
+  mkdir -p "$target_dir/.makeit/knowledge/product"
   mkdir -p "$target_dir/.makeit/knowledge/technical"
   mkdir -p "$target_dir/.makeit/knowledge/operational"
   mkdir -p "$target_dir/.makeit/knowledge/_archived"
 
   # Knowledge templates (shared across roles)
   cp -r "$TEMPLATES_DIR/roles/_shared/knowledge/" "$target_dir/.makeit/knowledge/_templates/"
+
+  # Copy shared product knowledge docs from blueprint (if available)
+  local blueprint_root
+  blueprint_root="$(cd "$TEMPLATES_DIR/.." && pwd)"
+  if [ -d "$blueprint_root/.makeit/knowledge/product" ]; then
+    cp "$blueprint_root/.makeit/knowledge/product/"*.md "$target_dir/.makeit/knowledge/product/" 2>/dev/null || true
+    echo "       Knowledge: copied shared product docs from blueprint"
+  fi
+  if [ -f "$blueprint_root/.makeit/knowledge/INDEX.md" ]; then
+    cp "$blueprint_root/.makeit/knowledge/INDEX.md" "$target_dir/.makeit/knowledge/INDEX.md"
+    echo "       Knowledge: copied INDEX.md from blueprint"
+  fi
 
   # Copy config template with role pre-filled
   if [ -f "$TEMPLATES_DIR/roles/_shared/config-template.md" ]; then
@@ -315,9 +328,9 @@ verify_installation() {
     echo "  ⚠️  Sprint templates: only $template_count found (expected ≥4)"
   fi
 
-  # Check knowledge directory (Phase 4.9)
-  if [ -d "$target_dir/.makeit/knowledge/architecture" ] && [ -d "$target_dir/.makeit/knowledge/_templates" ]; then
-    echo "  ✅ Knowledge base: .makeit/knowledge/ (4 categories + _templates)"
+  # Check knowledge directory (Phase 4.9 + 0.6.0)
+  if [ -d "$target_dir/.makeit/knowledge/architecture" ] && [ -d "$target_dir/.makeit/knowledge/product" ] && [ -d "$target_dir/.makeit/knowledge/_templates" ]; then
+    echo "  ✅ Knowledge base: .makeit/knowledge/ (5 categories + _templates)"
   else
     echo "  ⚠️  Knowledge base directory incomplete"
   fi
@@ -345,7 +358,7 @@ show_summary() {
   echo "   • .agent/agents/              — Sub-agents + Document Agent (shared)"
   echo "   • .makeit/sprint/             — Sprint workspace directory"
   echo "   • .makeit/templates/           — Sprint lifecycle templates"
-  echo "   • .makeit/knowledge/           — Knowledge base (4 categories + templates)"
+  echo "   • .makeit/knowledge/           — Knowledge base (5 categories + templates + shared docs)"
   echo ""
   echo "🚀 Next steps:"
   echo "   1. Mở project trong IDE (Antigravity, Cursor, Windsurf, etc.)"
