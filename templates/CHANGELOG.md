@@ -16,6 +16,71 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ---
 
+## [0.6.0] — 2026-02-17
+
+### Summary
+Thêm `product/` làm category thứ 5 trong Knowledge Base. Agents giờ scan product docs khi rebuild INDEX.md và được nhắc update INDEX khi thay đổi knowledge files. Kèm theo 4 product knowledge docs cho makeit-framework.
+
+### ✨ New
+
+| File | Roles | Mô tả |
+|------|-------|--------|
+| `.makeit/knowledge/INDEX.md` | Framework | Master index cho Knowledge Base |
+| `.makeit/knowledge/product/PRODUCT-OVERVIEW.md` | Framework | Tổng quan sản phẩm makeit-framework |
+| `.makeit/knowledge/product/DOMAIN-MODEL.md` | Framework | Domain model: entities, relationships |
+| `.makeit/knowledge/product/FEATURE-MAP.md` | Framework | Feature map chi tiết theo modules |
+| `.makeit/knowledge/product/USER-JOURNEYS.md` | Framework | User journeys cho các roles |
+
+### 📝 Modified
+
+| File | Roles | Thay đổi | ⚠️ |
+|------|-------|----------|-----|
+| `_shared/skills/kb-management/_rebuild-index.md` | [ALL] | Thêm `product/` vào scan directories, find command, Quick Stats (4→5 categories) | |
+| `_shared/knowledge/INDEX-TEMPLATE.md` | [ALL] | Thêm `Product` row trong template + example | |
+| `{role}/GEMINI.md` | [ALL] | Thêm `product` vào knowledge docs path + INDEX update rule | ⚠️ USER FILE |
+| `.gitignore` | Framework | Un-ignore `.makeit/knowledge/` (shared team resource) | |
+
+### 📋 Update Instructions
+
+**Áp dụng cho mỗi role workspace đã cài đặt:**
+
+#### Bước 1: Copy files mới (an toàn)
+
+```bash
+# Thay {BLUEPRINT} = path tới ai-team-blueprint repo
+# Thay {WORKSPACE} = path tới project workspace
+
+# 1a. Copy _rebuild-index skill (đã update)
+cp {BLUEPRINT}/templates/roles/_shared/skills/kb-management/_rebuild-index.md \
+   {WORKSPACE}/.agent/skills/{SKILL}/_shared/skills/kb-management/_rebuild-index.md
+
+# 1b. Copy INDEX-TEMPLATE (đã update)  
+cp {BLUEPRINT}/templates/roles/_shared/knowledge/INDEX-TEMPLATE.md \
+   {WORKSPACE}/.agent/skills/{SKILL}/_shared/knowledge/INDEX-TEMPLATE.md
+```
+
+#### Bước 2: Merge thay đổi vào GEMINI.md (⚠️ manual — user đã customize)
+
+Mở `{WORKSPACE}/GEMINI.md`, tìm `## Knowledge Base` section:
+
+1. Sửa Knowledge docs line:
+```markdown
+- **Knowledge docs:** `.makeit/knowledge/{architecture,business,product,technical,operational}/`
+```
+
+2. Thêm sau dòng "Agent tự động load...":
+```markdown
+> 📝 **Update rule:** Khi tạo, sửa nội dung, hoặc xóa file trong `.makeit/knowledge/`, PHẢI update INDEX.md (qua `/makeit:update-doc` hoặc `/makeit:create-doc`).
+```
+
+#### Bước 3: Tạo product/ folder (optional — cho projects mới)
+
+```bash
+mkdir -p {WORKSPACE}/.makeit/knowledge/product/
+```
+
+---
+
 ## [0.5.0] — 2026-02-13
 
 ### Summary
