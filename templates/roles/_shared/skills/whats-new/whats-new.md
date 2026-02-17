@@ -134,6 +134,14 @@ For each version (oldest → newest):
 - Agent adds the specific new content to existing file
 - Ask user to review: "Tôi đã thêm {change}. Kiểm tra giúp?"
 
+**Category D: Knowledge Base files (.makeit/knowledge/)**
+- Product docs, INDEX template, knowledge config files
+- Source: `{BLUEPRINT}/.makeit/knowledge/` or `{BLUEPRINT}/templates/roles/_shared/knowledge/`
+- Target: `{WORKSPACE}/.makeit/knowledge/`
+- Create target directories if needed (e.g., `product/`)
+- Only copy NEW files — do NOT overwrite existing custom knowledge docs
+- Ask user: "Tôi sẽ copy {N} knowledge docs mới. Tiếp tục?"
+
 After all changes applied:
 - Update `.makeit/FRAMEWORK-VERSION` to latest version
 </process>
@@ -154,6 +162,29 @@ For each new file listed in CHANGELOG's "✨ New" section:
 3. Read source file content
 4. Write to target (create directories if needed)
 5. Report: "✅ Copied: {filename}"
+</process>
+
+### Step 6.5: Apply — Knowledge Base Files
+
+For knowledge docs referenced in CHANGELOG update instructions:
+
+<process>
+1. Resolve BLUEPRINT_PATH from `.makeit/BLUEPRINT-PATH`
+
+2. Resolve source → target paths:
+   - `.makeit/knowledge/{category}/*.md` → `{BLUEPRINT}/.makeit/knowledge/{category}/*.md` → `{WORKSPACE}/.makeit/knowledge/{category}/`
+   - `_shared/knowledge/INDEX-TEMPLATE.md` → `{BLUEPRINT}/templates/roles/_shared/knowledge/INDEX-TEMPLATE.md` → `{WORKSPACE}/.agent/skills/{SKILL}/_shared/knowledge/INDEX-TEMPLATE.md`
+
+3. For each knowledge file:
+   a. Check if target already exists
+   b. If NOT exists → copy from blueprint (tạo directory nếu cần)
+   c. If EXISTS → skip (user may have customized). Report: "⏭ Skipped: {file} (already exists)"
+
+4. Copy INDEX.md if CHANGELOG instructs:
+   - `{BLUEPRINT}/.makeit/knowledge/INDEX.md` → `{WORKSPACE}/.makeit/knowledge/INDEX.md`
+   - ⚠️ INDEX.md là auto-generated → safe to overwrite
+
+5. Report: "✅ Copied {N} knowledge docs to .makeit/knowledge/{category}/"
 </process>
 
 ### Step 7: Apply — Modified Core Files
@@ -199,6 +230,7 @@ For SKILL.md, help.md, and other non-user files:
 |----------|-------|--------|
 | ✨ New files | {N} | ✅ Copied |
 | 📝 Core files | {N} | ✅ Updated |
+| 📚 Knowledge docs | {N} | ✅ Copied (skipped existing) |
 | ⚠️ User files | {N} | ✅ Merged (review recommended) |
 
 ### Files Changed
