@@ -118,10 +118,20 @@ Skill hub: `@skills/makeit-dev-fe/SKILL.md`
 ## Knowledge Base
 
 Product Memory System cung cấp trí nhớ dài hạn across sprints.
-- **Knowledge docs:** `.makeit/knowledge/{architecture,business,product,technical,operational}/`
+- **Knowledge docs:** `.makeit/knowledge/{category}/`
 - **Master index:** `.makeit/knowledge/INDEX.md` (auto-generated)
 - **Convention:** 3-layer structure — L0 metadata, L1 summary, L2 detail
 - **Retrieval:** Deep Query (Reasoning RAG) — AI reasons over INDEX instead of keyword search
+
+### Categories
+
+| Category | Path | Lưu gì |
+|----------|------|--------|
+| `product` | `.makeit/knowledge/product/` | Product overview, feature map, domain model, user journeys |
+| `architecture` | `.makeit/knowledge/architecture/` | System design, tech stack, ADRs, diagrams |
+| `business` | `.makeit/knowledge/business/` | Business rules, domain context, stakeholder needs |
+| `technical` | `.makeit/knowledge/technical/` | Implementation patterns, API docs, integration guides |
+| `operational` | `.makeit/knowledge/operational/` | Processes, runbooks, deployment, monitoring |
 
 > Agent tự động load relevant knowledge tại sprint start (stage-clarify/start-sprint) và suggest knowledge capture tại sprint end (stage-complete).
 
