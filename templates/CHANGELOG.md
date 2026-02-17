@@ -16,6 +16,69 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ---
 
+## [0.7.0] — 2026-02-17
+
+### Summary
+- **Paradigm shift:** `/makeit:whats-new` giờ scan trực tiếp files từ blueprint repo thay vì dựa vào version number
+- Source of truth = blueprint repo files, NOT version number
+- `install.sh` thêm Step 7d: copy `_shared/knowledge/` templates vào skill directory (fix KB commands thiếu INDEX-TEMPLATE)
+- Tất cả 5 workflow routers updated theo tư duy file-based
+
+### 📝 Modified
+
+| File | Roles | Thay đổi | ⚠️ |
+|------|-------|----------|-----|
+| `_shared/skills/whats-new/whats-new.md` | [ALL] | Complete rewrite — file-based scan, version chỉ là display info | |
+| `{role}/workflows/makeit/whats-new.md` | [ALL] | Updated objective + process steps + success criteria theo file-based flow | |
+| `install.sh` | Framework | Thêm Step 7d: copy `_shared/knowledge/` → `.agent/skills/{SKILL}/_shared/knowledge/` + verify KB templates + verify product docs | |
+
+### 🔧 Fixed
+
+| Issue | Mô tả |
+|-------|--------|
+| whats-new exit sớm khi version match | Trước: `LOCAL == REMOTE` → exit, không check files thiếu. Giờ: luôn scan files |
+| KB commands thiếu INDEX-TEMPLATE | `install.sh` chỉ copy `_shared/knowledge/` vào `.makeit/knowledge/_templates/` nhưng KB commands đọc từ `.agent/skills/{SKILL}/_shared/knowledge/`. Giờ copy vào cả 2 nơi |
+| Workflow routers mô tả sai flow | Routers vẫn nói "compare version → show changes". Giờ mô tả đúng: "scan blueprint → detect gaps → copy missing" |
+
+### 📋 Update Instructions
+
+**Áp dụng cho mỗi role workspace đã cài đặt:**
+
+> 💡 Thay `{BLUEPRINT}` = path tới makeit-framework repo, `{WORKSPACE}` = path tới project workspace, `{SKILL}` = tên skill folder (vd: `makeit-po`, `makeit-ba`...), `{ROLE}` = `po`|`ba`|`techlead`|`dev-fe`|`dev-be`
+
+#### Bước 1: Update whats-new skill (⭐ quan trọng nhất)
+
+```bash
+# Copy skill mới (file-based scan)
+cp -r {BLUEPRINT}/templates/roles/_shared/skills/whats-new/ \
+      {WORKSPACE}/.agent/skills/whats-new/
+```
+
+#### Bước 2: Update workflow router
+
+```bash
+cp {BLUEPRINT}/templates/roles/{ROLE}/workflows/makeit/whats-new.md \
+   {WORKSPACE}/.agent/workflows/makeit/whats-new.md
+```
+
+#### Bước 3: Copy _shared/knowledge/ templates (fix KB commands)
+
+```bash
+mkdir -p {WORKSPACE}/.agent/skills/{SKILL}/_shared/knowledge/
+cp {BLUEPRINT}/templates/roles/_shared/knowledge/* \
+   {WORKSPACE}/.agent/skills/{SKILL}/_shared/knowledge/
+```
+
+#### Bước 4: Update version
+
+```bash
+echo "0.7.0" > {WORKSPACE}/.makeit/FRAMEWORK-VERSION
+```
+
+> 💡 Sau update này, chạy `/makeit:whats-new` sẽ tự động detect gaps trong tương lai — không cần manual update nữa!
+
+---
+
 ## [0.6.0] — 2026-02-17
 
 ### Summary
